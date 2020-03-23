@@ -1,50 +1,47 @@
 import { Component, OnInit } from "@angular/core";
-import { latLng, LatLng, tileLayer } from "leaflet";
+import * as L from 'leaflet';
+import { Observable } from 'rxjs';
+import { AngularFirestore } from 'angularfire2/firestore';
 
 @Component({
-  selector: "app-home",
-  templateUrl: "./home.component.html",
-  styleUrls: ["./home.component.css"]
+	selector: "app-home",
+	templateUrl: "./home.component.html",
+	styleUrls: ["./home.component.css"]
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
 
-  optionsSpec: any = {
-		layers: [{ url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', attribution: 'Open Street Map' }],
-		zoom: 6,
-		center: [ 40.4893538, -3.6827461 ]
-	};
+	private map;
+	private localizations: Observable<any[]>;
 
-	// Leaflet bindings
-	zoom = this.optionsSpec.zoom;
-	center = latLng(this.optionsSpec.center);
-	options = {
-		layers: [ tileLayer(this.optionsSpec.layers[0].url, { attribution: this.optionsSpec.layers[0].attribution }) ],
-		zoom: this.optionsSpec.zoom,
-		center: latLng(this.optionsSpec.center)
-	};
+	constructor(
+		private db: AngularFirestore
+	) {
 
-	// Form bindings
-	formZoom = this.zoom;
-	zoomLevels = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ];
-	lat = this.center.lat;
-	lng = this.center.lng;
+	}
 
-	// Output binding for center
-	onCenterChange(center: LatLng) {
-		setTimeout(() => {
-			this.lat = center.lat;
-			this.lng = center.lng;
+	ngOnInit(): void {
+		this.initMap();
+	}
+
+	ngAfterViewInit(): void {
+		this.localizations = this.db.collection('/localization').valueChanges();
+
+		this.localizations.forEach(localization => {
+			L.marker([localization[0].latitude, localization[0].altitude], {title: localization[0].name}).addTo(this.map).bindPopup(localization[0].name);;
 		});
 	}
 
-	onZoomChange(zoom: number) {
-		setTimeout(() => {
-			this.formZoom = zoom;
+	private initMap(): void {
+		this.map = L.map('map', {
+			center: [40.4636688, -3.7492199],
+			zoom: 6
 		});
-	}
 
-	doApply() {
-		this.center = latLng(this.lat, this.lng);
-		this.zoom = this.formZoom;
+		const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			maxZoom: 15,
+			attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+		});
+
+		tiles.addTo(this.map);
 	}
 }

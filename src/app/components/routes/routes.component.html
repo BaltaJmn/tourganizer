@@ -1,1 +1,5 @@
-<p>routes works!</p>
+<ul>
+  <li *ngFor="let item of routes | async">
+    <pre>{{ item.name | json }}</pre>
+  </li>
+</ul>
