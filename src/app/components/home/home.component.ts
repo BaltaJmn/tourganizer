@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import * as L from 'leaflet';
 import { Observable } from 'rxjs';
 import { AngularFirestore } from 'angularfire2/firestore';
+import { LocalizationService } from '../../services/localization.service';
 
 @Component({
 	selector: "app-home",
@@ -11,10 +12,10 @@ import { AngularFirestore } from 'angularfire2/firestore';
 export class HomeComponent implements OnInit {
 
 	private map;
-	private localizations: Observable<any[]>;
+	private localizations = [];
 
 	constructor(
-		private db: AngularFirestore
+		private localizationService: LocalizationService
 	) {
 
 	}
@@ -24,10 +25,13 @@ export class HomeComponent implements OnInit {
 	}
 
 	ngAfterViewInit(): void {
-		this.localizations = this.db.collection('/localization').valueChanges();
-
-		this.localizations.forEach(localization => {
-			L.marker([localization[0].latitude, localization[0].altitude], {title: localization[0].name}).addTo(this.map).bindPopup(localization[0].name);;
+		this.localizationService.getLocalizations().subscribe((localizationsSnapshot) => {
+			this.localizations = [];
+			localizationsSnapshot.forEach((doc: any) => {
+				let marker = L.marker([doc.payload.doc.data().latitude, doc.payload.doc.data().longitude], { title: doc.payload.doc.data().name });
+				marker.bindPopup(doc.payload.doc.data().name);
+				marker.addTo(this.map)
+			})
 		});
 	}
 

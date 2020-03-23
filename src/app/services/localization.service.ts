@@ -7,11 +7,9 @@ import { AngularFirestore } from 'angularfire2/firestore';
 })
 export class LocalizationService {
 
-  db: AngularFirestore;
-
-  constructor() { }
+  constructor(private db: AngularFirestore) { }
 
   getLocalizations() {
-    return this.db.collection('/localization').valueChanges();
+    return this.db.collection('localization').snapshotChanges();
   }
 }
