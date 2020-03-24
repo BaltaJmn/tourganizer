@@ -4,6 +4,7 @@ import { HomeComponent } from "./components/home/home.component";
 import { RoutesComponent } from "./components/routes/routes.component";
 
 const routes: Routes = [
+  { path: "", component: HomeComponent, pathMatch: 'full' },
   { path: "home", component: HomeComponent },
   { path: "routes", component: RoutesComponent },
   { path: "**", component: HomeComponent }
@@ -13,4 +14,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

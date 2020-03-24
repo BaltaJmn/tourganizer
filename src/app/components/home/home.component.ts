@@ -1,14 +1,20 @@
 import { Component, OnInit } from "@angular/core";
 
-import { latLng, tileLayer, Icon, icon, Marker } from "leaflet";
 import 'leaflet';
 import "leaflet/dist/leaflet.css";
-import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
 import "leaflet-routing-machine";
+import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
 
 declare let L;
 
 import { LocalizationService } from '../../services/localization.service';
+
+let DefaultIcon = L.icon({
+	iconUrl: "assets/marker-icon.png",
+	shadowUrl: "assets/marker-shadow.png"
+});
+
+L.Marker.prototype.options.icon = DefaultIcon;
 
 @Component({
 	selector: "app-home",
@@ -25,10 +31,15 @@ export class HomeComponent implements OnInit {
 	) { }
 
 	ngOnInit(): void {
-		this.localizationService.getCurrentPosition().then(pos => {
-			this.initMap(pos.lat, pos.lng);
-			this.initMarkers();
-		});
+		this.localizationService.getCurrentPosition().then(
+			(pos) => {
+				this.initCurrentMap(pos.lat, pos.lng);
+				this.initMarkers();
+			},
+			(err) => {
+				this.initMap();
+				this.initMarkers();
+			});
 	}
 
 	onMapReady(map: L.Map) {
@@ -38,10 +49,24 @@ export class HomeComponent implements OnInit {
 		}).addTo(map);
 	}
 
-	private initMap(lat, lon): void {
+	private initMap() {
+		this.map = L.map('map', {
+			center: ["40.4636688", "-3.7492199"],
+			zoom: 10
+		});
+
+		const tiles1 = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			maxZoom: 15,
+			attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+		});
+
+		tiles1.addTo(this.map);
+	}
+
+	private initCurrentMap(lat?, lon?): void {
 		this.map = L.map('map', {
 			center: [lat, lon],
-			zoom: 10
+			zoom: 7
 		});
 
 		var currentPositionIcon = L.icon({
@@ -73,7 +98,12 @@ export class HomeComponent implements OnInit {
 	private initMarkers() {
 		this.localizationService.getLocalizations().subscribe((localizationsSnapshot) => {
 			localizationsSnapshot.forEach((doc: any) => {
-				let marker = L.marker([doc.payload.doc.data().latitude, doc.payload.doc.data().longitude], { title: doc.payload.doc.data().name });
+
+				let marker = L.marker(
+					[doc.payload.doc.data().latitude, doc.payload.doc.data().longitude],
+					{ title: doc.payload.doc.data().name }
+				);
+
 				marker.bindPopup(doc.payload.doc.data().name);
 				marker.on("click", this.addToRoute)
 				marker.addTo(this.map)
