@@ -1,7 +1,13 @@
 import { Component, OnInit } from "@angular/core";
-import * as L from 'leaflet';
-import { Observable } from 'rxjs';
-import { AngularFirestore } from 'angularfire2/firestore';
+
+import { latLng, tileLayer, Icon, icon, Marker } from "leaflet";
+import 'leaflet';
+import "leaflet/dist/leaflet.css";
+import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
+import "leaflet-routing-machine";
+
+declare let L;
+
 import { LocalizationService } from '../../services/localization.service';
 
 @Component({
@@ -12,19 +18,24 @@ import { LocalizationService } from '../../services/localization.service';
 export class HomeComponent implements OnInit {
 
 	private map;
-	private localizations = [];
+	private route = [];
 
 	constructor(
 		private localizationService: LocalizationService
-	) {
-
-	}
+	) { }
 
 	ngOnInit(): void {
 		this.localizationService.getCurrentPosition().then(pos => {
 			this.initMap(pos.lat, pos.lng);
 			this.initMarkers();
 		});
+	}
+
+	onMapReady(map: L.Map) {
+		L.Routing.control({
+			waypoints: [L.latLng(57.74, 11.94), L.latLng(57.6792, 11.949)],
+			routeWhileDragging: true
+		}).addTo(map);
 	}
 
 	private initMap(lat, lon): void {
@@ -61,7 +72,6 @@ export class HomeComponent implements OnInit {
 
 	private initMarkers() {
 		this.localizationService.getLocalizations().subscribe((localizationsSnapshot) => {
-			this.localizations = [];
 			localizationsSnapshot.forEach((doc: any) => {
 				let marker = L.marker([doc.payload.doc.data().latitude, doc.payload.doc.data().longitude], { title: doc.payload.doc.data().name });
 				marker.bindPopup(doc.payload.doc.data().name);
