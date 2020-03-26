@@ -6,6 +6,9 @@ import { AppComponent } from './app.component';
 
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireModule } from 'angularfire2';
+import { AngularFireStorageModule } from "@angular/fire/storage";
+import { AngularFireDatabaseModule } from "@angular/fire/database";
+
 import { environment } from '../environments/environment';
 
 import { HeaderComponent } from './components/header/header.component';
@@ -26,6 +29,8 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
     BrowserModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
+    AngularFireStorageModule,
+    AngularFireDatabaseModule,
     AppRoutingModule,
     LeafletModule.forRoot()
   ],
