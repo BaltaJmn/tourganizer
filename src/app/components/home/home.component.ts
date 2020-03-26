@@ -3,7 +3,7 @@ import { Component, OnInit } from "@angular/core";
 import 'leaflet';
 import "leaflet/dist/leaflet.css";
 import "leaflet-routing-machine";
-import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
+import "leaflet/dist/leaflet.ajax.min.js"
 
 declare let L;
 
@@ -21,10 +21,14 @@ L.Marker.prototype.options.icon = DefaultIcon;
 	templateUrl: "./home.component.html",
 	styleUrls: ["./home.component.css"]
 })
+
 export class HomeComponent implements OnInit {
 
 	private map;
+	private control;
 	private route = [];
+
+	private auxLocalization; //Para guardar al hacer click la posible localización
 
 	constructor(
 		private localizationService: LocalizationService
@@ -34,19 +38,12 @@ export class HomeComponent implements OnInit {
 		this.localizationService.getCurrentPosition().then(
 			(pos) => {
 				this.initCurrentMap(pos.lat, pos.lng);
-				this.initMarkers();
 			},
 			(err) => {
 				this.initMap();
-				this.initMarkers();
 			});
-	}
 
-	onMapReady(map: L.Map) {
-		L.Routing.control({
-			waypoints: [L.latLng(57.74, 11.94), L.latLng(57.6792, 11.949)],
-			routeWhileDragging: true
-		}).addTo(map);
+		this.initMarkers();
 	}
 
 	private initMap() {
@@ -63,18 +60,15 @@ export class HomeComponent implements OnInit {
 		tiles1.addTo(this.map);
 	}
 
-	private initCurrentMap(lat?, lon?): void {
+	private initCurrentMap(lat, lon): void {
 		this.map = L.map('map', {
 			center: [lat, lon],
 			zoom: 7
 		});
 
 		var currentPositionIcon = L.icon({
-			iconUrl: 'assets/current_position_icon.png',
-
-			iconSize: [35, 50],
-			iconAnchor: [10, 70],
-			popupAnchor: [7, -70]
+			iconUrl: "assets/marker-icon-current.png",
+			shadowUrl: "assets/marker-shadow.png"
 		});
 
 		let currentPositionMarker = L.marker([lat, lon], { icon: currentPositionIcon });
@@ -93,6 +87,25 @@ export class HomeComponent implements OnInit {
 
 		tiles1.addTo(this.map);
 		tiles2.addTo(this.map);
+
+		// var geojsonLayer = L.geoJson.ajax("assets/leaflet-geojson.json",{dataType:"json"});
+		// geojsonLayer.addTo(this.map);
+
+		// L.Routing.control({
+		// 	router: L.Routing.osrmv1({
+		// 		serviceUrl: `http://router.project-osrm.org/route/v1/`
+		// 	}),
+		// 	showAlternatives: true,
+		// 	lineOptions: { styles: [{ color: '#242c81', weight: 7 }] },
+		// 	fitSelectedRoutes: false,
+		// 	altLineOptions: { styles: [{ color: '#ed6852', weight: 7 }] },
+		// 	show: false,
+		// 	routeWhileDragging: true,
+		// 	waypoints: [
+		// 		L.latLng(57.74, 11.94),
+		// 		L.latLng(57.6792, 11.949)
+		// 	]
+		// }).addTo(this.map);
 	}
 
 	private initMarkers() {
@@ -105,13 +118,26 @@ export class HomeComponent implements OnInit {
 				);
 
 				marker.bindPopup(doc.payload.doc.data().name);
+				marker.on('mouseover', function (e) {
+					this.openPopup();
+				});
+				marker.on('mouseout', function (e) {
+					this.closePopup();
+				});
 				marker.on("click", this.addToRoute)
 				marker.addTo(this.map)
 			})
 		});
 	}
 
-	private addToRoute(event) {
-		console.log(event.target.options.title);
+	public addToRoute(event) {
+		console.log(event.target);
+		let positionSrc = event.target._icon.src.split("/").length - 1;
+
+		if (event.target._icon.src.split("/")[positionSrc] == "marker-icon.png") {
+			event.target._icon.src = "assets/marker-icon-selected.png"
+		} else {
+			event.target._icon.src = "assets/marker-icon.png"
+		}
 	}
 }
