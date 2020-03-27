@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { RouteService } from '../../services/route.service';
 import { Route } from '../../interfaces/Route';
 
+import Swal from 'sweetalert2'
+
 @Component({
   selector: 'app-routes',
   templateUrl: './routes.component.html',
@@ -31,6 +33,7 @@ export class RoutesComponent implements OnInit {
           name: doc.payload.doc.data().name,
           localizations: doc.payload.doc.data().localizations,
           rating: doc.payload.doc.data().rating,
+          ratingTotal: doc.payload.doc.data().ratingTotal,
           votes: doc.payload.doc.data().votes
         }
 
@@ -42,10 +45,17 @@ export class RoutesComponent implements OnInit {
   }
 
   public updateRating(route, index) {
-    route.rating = this.ratingVariable[index]
+    route.votes++;
+    route.ratingTotal += this.ratingVariable[index];
+    route.rating = route.ratingTotal / route.votes;
+    this.ratingVariable[index] = route.rating;
 
     this.routeService.updateRoute(route).then(() => {
-      console.log("ole");
+      Swal.fire(
+        'Thank you!',
+        'Your vote was save succesfully!',
+        'success'
+      )
     });
   }
 }

@@ -15,6 +15,6 @@ export class RouteService {
   updateRoute(data) {
     return this.db.collection("route")
     .doc(data.id)
-    .set({ rating: data.rating }, { merge: true });
+    .set({ rating: data.rating, ratingTotal: data.ratingTotal, votes: data.votes }, { merge: true });
   }
 }

@@ -3,6 +3,7 @@ export interface Route {
     userId: string;
     name: string;
     localizations: Array<string>;
-    rating: string;
-    votes: string;
+    rating: number;
+    ratingTotal: number;
+    votes: number;
 }
