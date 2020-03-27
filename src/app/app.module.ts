@@ -15,8 +15,11 @@ import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './components/home/home.component';
 import { RoutesComponent } from './components/routes/routes.component';
 
-//
+//Maps
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+
+//Rating
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -32,7 +35,8 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
     AngularFireStorageModule,
     AngularFireDatabaseModule,
     AppRoutingModule,
-    LeafletModule.forRoot()
+    LeafletModule.forRoot(),
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]

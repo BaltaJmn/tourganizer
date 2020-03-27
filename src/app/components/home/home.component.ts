@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { LocalizationService } from '../../services/localization.service';
 
 import 'leaflet';
 import "leaflet/dist/leaflet.css";
@@ -6,8 +7,6 @@ import "leaflet-routing-machine";
 import "leaflet/dist/leaflet.ajax.min.js"
 
 declare let L;
-
-import { LocalizationService } from '../../services/localization.service';
 
 let DefaultIcon = L.icon({
 	iconUrl: "assets/marker-icon.png",
@@ -28,8 +27,6 @@ export class HomeComponent implements OnInit {
 	private control;
 	private route = [];
 
-	private auxLocalization; //Para guardar al hacer click la posible localización
-
 	constructor(
 		private localizationService: LocalizationService
 	) { }
@@ -38,12 +35,12 @@ export class HomeComponent implements OnInit {
 		this.localizationService.getCurrentPosition().then(
 			(pos) => {
 				this.initCurrentMap(pos.lat, pos.lng);
+				this.initMarkers();
 			},
 			(err) => {
 				this.initMap();
+				this.initMarkers();
 			});
-
-		this.initMarkers();
 	}
 
 	private initMap() {

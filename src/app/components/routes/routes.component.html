@@ -1,5 +1,15 @@
 <ul>
-  <li *ngFor="let item of routes | async">
-    <pre>{{ item.name | json }}</pre>
+  <li *ngFor="let route of routes; let i = index">
+    <hr>
+
+    <pre>Name: <b>{{route.name}}</b></pre>
+
+    <ngb-rating [(rate)]="ratingVariable[i]"></ngb-rating>
+
+    <button class="btn btn-sm btn-outline-success}}" (click)="updateRating(route, i)">
+      Vote
+    </button>
+
+    <hr>
   </li>
 </ul>

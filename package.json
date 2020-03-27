@@ -20,6 +20,7 @@
     "@angular/platform-browser-dynamic": "~8.2.14",
     "@angular/router": "~8.2.14",
     "@asymmetrik/ngx-leaflet": "^6.0.1",
+    "@ng-bootstrap/ng-bootstrap": "~5.2.2",
     "@types/leaflet-routing-machine": "^3.2.1",
     "angularfire2": "^5.4.2",
     "bootstrap": "^4.3.1",
