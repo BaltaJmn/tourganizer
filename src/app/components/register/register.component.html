@@ -1,0 +1,29 @@
+<form class="text-center border border-light p-5" [formGroup]="user" (ngSubmit)="onSubmit(user)">
+
+    <p class="h4 mb-4">Register</p>
+  
+    <!-- Email -->
+    <input type="email" id="defaultRegisterFormEmail" class="form-control mb-4" placeholder="E-mail" formControlName="username">
+  
+    <!-- Password -->
+    <input type="password" id="defaultRegisterFormPassword" class="form-control mb-4" placeholder="Password" formControlName="password">
+  
+    <div class="d-flex justify-content-around">
+      <div>
+        <!-- Forgot password -->
+        <a href="">Forgot password?</a>
+      </div>
+    </div>
+  
+    <!-- Register button -->
+    <button mdbBtn color="info" block="true" class="my-4" type="submit" [disabled]="!user.valid">Register</button>
+  
+    <!-- Social Register -->
+    <p>or register with:</p>
+  
+    <a type="button" class="light-blue-text mx-2" (click)="authService.GoogleAuth()">
+      <i class="fab fa-google"></i>
+    </a>
+  
+  </form>
+  

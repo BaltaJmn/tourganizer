@@ -8,6 +8,7 @@ import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireStorageModule } from "@angular/fire/storage";
 import { AngularFireDatabaseModule } from "@angular/fire/database";
+import { AngularFireAuth } from 'angularfire2/auth';
 
 import { environment } from '../environments/environment';
 
@@ -15,18 +16,27 @@ import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './components/home/home.component';
 import { RoutesComponent } from './components/routes/routes.component';
 
+//Login & Register
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 //Maps
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 
 //Rating
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
+import { FormComponent } from './components/utils/form/form.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     HomeComponent,
-    RoutesComponent
+    RoutesComponent,
+    LoginComponent,
+    RegisterComponent,
+    FormComponent
   ],
   imports: [
     BrowserModule,
@@ -34,11 +44,15 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     AngularFirestoreModule,
     AngularFireStorageModule,
     AngularFireDatabaseModule,
+    FormsModule,
+    ReactiveFormsModule,
     AppRoutingModule,
     LeafletModule.forRoot(),
     NgbModule
   ],
-  providers: [],
+  providers: [
+    AngularFireAuth
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

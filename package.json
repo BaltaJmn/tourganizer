@@ -28,6 +28,7 @@
     "jquery": "^3.4.1",
     "leaflet": "^1.6.0",
     "leaflet-routing-machine": "^3.2.12",
+    "mdbootstrap": "^4.15.0",
     "popper.js": "^1.16.1",
     "rxjs": "~6.4.0",
     "sweetalert2": "^9.10.2",
