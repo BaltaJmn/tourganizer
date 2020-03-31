@@ -1,12 +1,12 @@
-<form class="text-center border border-light p-5">
+<form class="text-center border border-light p-5" [formGroup]="user" (ngSubmit)="onSubmit(user)">
 
-  <p class="h4 mb-4">Sign in</p>
+  <p class="h4 mb-4">Register</p>
 
   <!-- Email -->
-  <input type="email" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="E-mail">
+  <input type="email" id="defaultRegisterFormEmail" class="form-control mb-4" placeholder="Username" formControlName="username">
 
   <!-- Password -->
-  <input type="password" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="Password">
+  <input type="password" id="defaultRegisterFormPassword" class="form-control mb-4" placeholder="Password" formControlName="password">
 
   <div class="d-flex justify-content-around">
     <div>
@@ -15,11 +15,11 @@
     </div>
   </div>
 
-  <!-- Sign in button -->
-  <button mdbBtn color="info" block="true" class="my-4" type="submit">Sign in</button>
+  <!-- Register button -->
+  <button mdbBtn color="info" block="true" class="my-4" type="submit" [disabled]="!user.valid">Register</button>
 
-  <!-- Social login -->
-  <p>or sign in with:</p>
+  <!-- Social Register -->
+  <p>or register with:</p>
 
   <a type="button" class="light-blue-text mx-2" (click)="authService.GoogleAuth()">
     <i class="fab fa-google"></i>
