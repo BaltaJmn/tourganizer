@@ -6,6 +6,8 @@
 
     <ngb-rating [(rate)]="ratingVariable[i]"></ngb-rating>
 
+    {{ route.rating | number : '1.2-2'}}
+
     <button class="btn btn-sm btn-outline-success}}" (click)="updateRating(route, i)">
       Vote
     </button>

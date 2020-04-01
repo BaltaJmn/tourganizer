@@ -1,18 +1,26 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Output } from '@angular/core';
 
 import { AngularFirestore } from 'angularfire2/firestore';
 import { User } from '../interfaces/User';
 
 import Swal from 'sweetalert2'
+import { Router } from '@angular/router';
+import { EventEmitter } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  private currentUser: User;
+  @Output() loggedEmitter: EventEmitter<any> = new EventEmitter();
+  @Output() userEmitter: EventEmitter<any> = new EventEmitter();
 
-  constructor(private db: AngularFirestore) { }
+  private currentUser: User;
+  private logged: boolean = false;
+
+  constructor(
+    private db: AngularFirestore,
+    private router: Router) { }
 
   getUsers() {
     return this.db.collection("user").get();
@@ -28,6 +36,12 @@ export class UserService {
           routes: result.docs[0].data().routes,
         }
 
+        this.logged = true;
+
+        this.loggedEmitter.emit(this.logged);
+        this.userEmitter.emit(this.currentUser);
+        this.router.navigate(['/home']);
+
         Swal.fire(
           'Succesfully Logged!',
           'You have been succesfully logged!',
@@ -36,7 +50,7 @@ export class UserService {
       } else {
         Swal.fire(
           'Error!',
-          'You have been succesfully registered!',
+          'Your username or password is incorrectF!',
           'error'
         )
       }
@@ -46,4 +60,28 @@ export class UserService {
   insertUser(data) {
     return this.db.collection("user").add(data);
   };
+
+  getCurrentUser() {
+    return this.currentUser;
+  }
+
+  getCurrentUserId() {
+    return this.currentUser.id;
+  }
+
+  getCurrentUserUsername() {
+    return this.currentUser.username;
+  }
+
+  getCurrentUserPassword() {
+    return this.currentUser.password;
+  }
+
+  getCurrentUserRoutes() {
+    return this.currentUser.routes;
+  }
+
+  getLogged(){
+    return this.logged;
+  }
 }

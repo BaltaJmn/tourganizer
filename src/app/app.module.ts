@@ -27,6 +27,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { FormComponent } from './components/utils/form/form.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { FormComponent } from './components/utils/form/form.component';
     RoutesComponent,
     LoginComponent,
     RegisterComponent,
-    FormComponent
+    FormComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
