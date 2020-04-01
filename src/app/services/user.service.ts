@@ -61,6 +61,21 @@ export class UserService {
     return this.db.collection("user").add(data);
   };
 
+  logOut() {
+    this.currentUser = {
+      id: '',
+      username: '',
+      password: '',
+      routes: []
+    };
+
+    this.logged = false;
+
+    this.loggedEmitter.emit(this.logged);
+    this.userEmitter.emit(this.currentUser);
+    this.router.navigate(['/home']);
+  }
+
   getCurrentUser() {
     return this.currentUser;
   }
@@ -81,7 +96,7 @@ export class UserService {
     return this.currentUser.routes;
   }
 
-  getLogged(){
+  getLogged() {
     return this.logged;
   }
 }

@@ -9,8 +9,8 @@ import { User } from '../../interfaces/User';
 })
 export class HeaderComponent implements OnInit {
 
-  private logged: boolean = false;
-  private currentUser: User;
+  public logged: boolean = false;
+  public currentUser: User;
 
   constructor(
     public userService: UserService
@@ -20,6 +20,10 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  logOut(){
+    this.userService.logOut();
   }
 
 }
