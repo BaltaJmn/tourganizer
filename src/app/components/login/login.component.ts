@@ -3,8 +3,6 @@ import { AuthService } from '../../services/auth.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 
-import Swal from 'sweetalert2'
-
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -13,8 +11,8 @@ import Swal from 'sweetalert2'
 export class LoginComponent implements OnInit {
 
   user = new FormGroup({
-    username: new FormControl('asd', [Validators.required]),
-    password: new FormControl('asdasdasd', [Validators.required])
+    username: new FormControl('admin', [Validators.required]),
+    password: new FormControl('admin', [Validators.required])
   });
 
   constructor(

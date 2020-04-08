@@ -2,8 +2,12 @@ export interface Route {
     id?: string;
     userId: string;
     name: string;
-    localizations: Array<string>;
-    rating: number;
+    type: number;
+
+    totalTime: number;
+    
     ratingTotal: number;
     votes: number;
+
+    localizations: Array<string>;
 }

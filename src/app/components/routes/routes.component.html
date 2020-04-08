@@ -1,17 +1,51 @@
+<br>
+
+<div class="row">
+  <div class="col text-right">
+    <button class="btn btn-success mr-1" [routerLink]="['/route', 'add']">
+      <i class="fa fa-plus"></i>
+      Add Route
+    </button>
+  </div>
+</div>
+
+<br>
+
 <ul>
   <li *ngFor="let route of routes; let i = index">
+
+    <div class="row">
+      <div class="col text-left">
+        <pre>Name: <b>{{route.name}}</b></pre>
+
+        <ngb-rating [(rate)]="ratingVariable[i]"></ngb-rating>
+
+        {{ route.rating | number : '1.2-2'}}
+
+        <button class="btn btn-sm btn-outline-success" (click)="updateRating(route, i)">
+          Vote
+        </button>
+      </div>
+
+      <div class="col text-right">
+        <button class="btn btn-info mr-1" [routerLink]="['/route', route.id]">
+          <i class="fa fa-pen"></i>
+        </button>
+
+        <button class="btn btn-danger mr-1" [routerLink]="['/route', route.id]">
+          <i class="fa fa-trash"></i>
+        </button>
+      </div>
+
+    </div>
+
     <hr>
 
-    <pre>Name: <b>{{route.name}}</b></pre>
 
-    <ngb-rating [(rate)]="ratingVariable[i]"></ngb-rating>
 
-    {{ route.rating | number : '1.2-2'}}
+    <br>
 
-    <button class="btn btn-sm btn-outline-success}}" (click)="updateRating(route, i)">
-      Vote
-    </button>
 
-    <hr>
+
   </li>
 </ul>

@@ -29,11 +29,18 @@ export class UserService {
   getUser(data) {
     return this.db.collection("user", ref => ref.where('username', '==', data.username).where('password', '==', data.password)).get().subscribe((result) => {
       if (result.empty == false) {
+
         this.currentUser = {
           id: result.docs[0].id,
           username: result.docs[0].data().username,
           password: result.docs[0].data().password,
-          routes: result.docs[0].data().routes,
+          email: result.docs[0].data().email,
+          confirmed: result.docs[0].data().confirmed,
+          rol: result.docs[0].data().rol,
+          followers: result.docs[0].data().followers,
+          follows: result.docs[0].data().follows,
+          createdRoutes: result.docs[0].data().createdRoutes,
+          savedRoutes: result.docs[0].data().savedRoutes,
         }
 
         this.logged = true;
@@ -63,10 +70,16 @@ export class UserService {
 
   logOut() {
     this.currentUser = {
-      id: '',
-      username: '',
-      password: '',
-      routes: []
+      id: null,
+      username: null,
+      password: null,
+      email: null,
+      confirmed: null,
+      rol: null,
+      followers: null,
+      follows: null,
+      createdRoutes: null,
+      savedRoutes: null,
     };
 
     this.logged = false;
@@ -92,8 +105,32 @@ export class UserService {
     return this.currentUser.password;
   }
 
-  getCurrentUserRoutes() {
-    return this.currentUser.routes;
+  getCurrentUserEmail() {
+    return this.currentUser.email;
+  }
+
+  getCurrentUserConfirmed() {
+    return this.currentUser.confirmed;
+  }
+
+  getCurrentUserRol() {
+    return this.currentUser.rol;
+  }
+
+  getCurrentUserFollowers() {
+    return this.currentUser.followers;
+  }
+
+  getCurrentUserFollows() {
+    return this.currentUser.follows;
+  }
+
+  getCurrentUserCreatedRoutes() {
+    return this.currentUser.createdRoutes;
+  }
+
+  getCurrentUserSavedRoutes() {
+    return this.currentUser.savedRoutes;
   }
 
   getLogged() {

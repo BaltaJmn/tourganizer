@@ -9,12 +9,20 @@ export class RouteService {
   constructor(private db: AngularFirestore) { }
 
   getRoutes() {
-    return this.db.collection('route').snapshotChanges();
+    return this.db.collection('route', ref => ref.orderBy('ratingTotal', 'desc')).snapshotChanges();
   };
+
+  getRoute(data) {
+    return this.db.collection("route").doc(data).get();
+  }
+
+  createRoute(data) {
+    return this.db.collection("route").add(data);
+  }
 
   updateRoute(data) {
     return this.db.collection("route")
-    .doc(data.id)
-    .set({ rating: data.rating, ratingTotal: data.ratingTotal, votes: data.votes }, { merge: true });
+      .doc(data.id)
+      .set(data, { merge: true });
   }
 }

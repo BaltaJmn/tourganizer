@@ -31,14 +31,15 @@ export class RoutesComponent implements OnInit {
           id: doc.payload.doc.id,
           userId: doc.payload.doc.data().userId,
           name: doc.payload.doc.data().name,
-          localizations: doc.payload.doc.data().localizations,
-          rating: doc.payload.doc.data().rating,
+          type: doc.payload.doc.data().type,
+          totalTime: doc.payload.doc.data().totalTime,
           ratingTotal: doc.payload.doc.data().ratingTotal,
-          votes: doc.payload.doc.data().votes
+          votes: doc.payload.doc.data().votes,
+          localizations: doc.payload.doc.data().localizations,
         }
 
         this.routes.push(routeAux);
-        this.ratingVariable.push(routeAux.rating);
+        this.ratingVariable.push(routeAux.ratingTotal / routeAux.votes);
 
       })
     });
