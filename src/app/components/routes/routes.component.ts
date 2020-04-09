@@ -5,6 +5,7 @@ import { RouteService } from '../../services/route.service';
 import { Route } from '../../interfaces/Route';
 
 import Swal from 'sweetalert2'
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-routes',
@@ -17,6 +18,7 @@ export class RoutesComponent implements OnInit {
   public routes = [];
 
   constructor(
+    private userService: UserService,
     private routeService: RouteService
   ) { }
 
@@ -45,7 +47,7 @@ export class RoutesComponent implements OnInit {
     });
   }
 
-  public updateRating(route, index) {
+  updateRating(route, index) {
     route.votes++;
     route.ratingTotal += this.ratingVariable[index];
     route.rating = route.ratingTotal / route.votes;
@@ -58,5 +60,28 @@ export class RoutesComponent implements OnInit {
         'success'
       )
     });
+  }
+
+  deleteRoute(id) {
+    Swal.fire({
+      title: 'Do you want to delete this route?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Delete',
+      cancelButtonText: 'Cancel',
+      focusCancel: true
+    }).then((result) => {
+      if (result.value) {
+        this.routeService.deleteRoute(id).then(() => {
+          Swal.fire(
+            'Deleted!',
+            'This route was deleted succesfully!',
+            'success'
+          )
+        });
+      }
+    })
   }
 }

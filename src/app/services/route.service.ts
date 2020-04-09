@@ -25,4 +25,10 @@ export class RouteService {
       .doc(data.id)
       .set(data, { merge: true });
   }
+
+  deleteRoute(data) {
+    return this.db.collection("route")
+      .doc(data)
+      .delete()
+  }
 }

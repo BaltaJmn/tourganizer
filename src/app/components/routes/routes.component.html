@@ -1,6 +1,6 @@
 <br>
 
-<div class="row">
+<div class="row"  *ngIf="userService.getLogged()">
   <div class="col text-right">
     <button class="btn btn-success mr-1" [routerLink]="['/route', 'add']">
       <i class="fa fa-plus"></i>
@@ -27,12 +27,12 @@
         </button>
       </div>
 
-      <div class="col text-right">
+      <div class="col text-right" *ngIf="userService.getLogged()">
         <button class="btn btn-info mr-1" [routerLink]="['/route', route.id]">
           <i class="fa fa-pen"></i>
         </button>
 
-        <button class="btn btn-danger mr-1" [routerLink]="['/route', route.id]">
+        <button class="btn btn-danger mr-1" (click)="deleteRoute(route.id)">
           <i class="fa fa-trash"></i>
         </button>
       </div>
@@ -40,12 +40,6 @@
     </div>
 
     <hr>
-
-
-
     <br>
-
-
-
   </li>
 </ul>

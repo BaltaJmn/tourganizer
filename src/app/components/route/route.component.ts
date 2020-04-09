@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Route } from '../../interfaces/Route';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-route',
@@ -17,8 +18,7 @@ export class RouteComponent implements OnInit {
   currentRoute: Route;
 
   route = new FormGroup({
-    id: new FormControl({ value: '', disabled: true }, [Validators.required]),
-    userId: new FormControl({ value: '', disabled: true }, [Validators.required]),
+    userId: new FormControl('', [Validators.required]),
     name: new FormControl('', [Validators.required]),
     type: new FormControl(0, [Validators.required]),
     totalTime: new FormControl(0, [Validators.required]),
@@ -28,6 +28,7 @@ export class RouteComponent implements OnInit {
   });
 
   constructor(
+    private userService: UserService,
     private routeService: RouteService,
     private activatedRoute: ActivatedRoute
   ) { }
@@ -37,7 +38,7 @@ export class RouteComponent implements OnInit {
 
       if (params.id != 'add') {
 
-        this.type = params.id;
+        this.type = "update";
 
         this.loaded = false;
 
@@ -54,7 +55,6 @@ export class RouteComponent implements OnInit {
             localizations: result.data().localizations
           };
 
-          this.route.get("id").setValue(this.currentRoute.id);
           this.route.get("userId").setValue(this.currentRoute.userId);
           this.route.get("name").setValue(this.currentRoute.name);
           this.route.get("type").setValue(this.currentRoute.type);
@@ -71,6 +71,9 @@ export class RouteComponent implements OnInit {
 
   onSubmit(route: FormGroup) {
     if (this.type == "add") {
+
+      this.route.get("userId").setValue(this.userService.getCurrentUserId());
+
       this.routeService.createRoute(route.value).then(() => {
         Swal.fire('Great!', 'Your route was created succesfully!', 'success').then(() => {
           route.reset();

@@ -5,12 +5,7 @@
 
 <form class="text-center border border-light p-5" [formGroup]="route" (ngSubmit)="onSubmit(route)">
 
-  <p class="h4 mb-4">Log In</p>
-
-  <input type="text" id="defaultLoginFormId" class="form-control mb-4" placeholder="id" formControlName="id">
-
-  <input type="text" id="defaultLoginFormUserId" class="form-control mb-4" placeholder="userId"
-    formControlName="userId">
+  <p class="h4 mb-4">{{type | titlecase}} route</p>
 
   <input type="text" id="defaultLoginFormName" class="form-control mb-4" placeholder="name" formControlName="name">
 
@@ -19,5 +14,5 @@
   <input type="number" id="defaultLoginFormTotalTime" class="form-control mb-4" placeholder="totalTime"
     formControlName="totalTime">
 
-  <button mdbBtn color="info" block="true" class="my-4" type="submit" [disabled]="!route.valid">Update</button>
+  <button mdbBtn color="info" block="true" class="my-4" type="submit">Update</button>
 </form>
