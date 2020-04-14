@@ -5,7 +5,7 @@
 
 <form class="text-center border border-light p-5" [formGroup]="route" (ngSubmit)="onSubmit(route)">
 
-  <p class="h4 mb-4">{{type | titlecase}} route</p>
+  <p class="h4 mb-4">Edit route</p>
 
   <input type="text" id="defaultLoginFormName" class="form-control mb-4" placeholder="name" formControlName="name">
 
@@ -13,6 +13,13 @@
 
   <input type="number" id="defaultLoginFormTotalTime" class="form-control mb-4" placeholder="totalTime"
     formControlName="totalTime">
+
+  <ng-select placeholder="Select item" bindLabel="name" [multiple]="true" [hideSelected]="true"
+    [searchable]="true" [clearable]="true" [(ngModel)]="currentLocalizations" [ngModelOptions]="{standalone: true}">
+    <ng-option *ngFor="let localization of localizations" [value]="localization.id">
+      {{localization.name}}
+    </ng-option>
+  </ng-select>
 
   <button mdbBtn color="info" block="true" class="my-4" type="submit">Update</button>
 </form>

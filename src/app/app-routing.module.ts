@@ -2,12 +2,17 @@ import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { HomeComponent } from "./components/home/home.component";
 
-import { RoutesComponent } from "./components/routes/routes.component";
-import { RouteComponent } from './components/route/route.component';
-import { UsersComponent } from './components/users/users.component';
-import { UserComponent } from './components/user/user.component';
-import { LocalizationsComponent } from './components/localizations/localizations.component';
-import { LocalizationComponent } from './components/localization/localization.component';
+//Route Components
+import { IndexRouteComponent } from './components/routes/index/index.component';
+import { AddRouteComponent } from './components/routes/add/add.component';
+import { ShowRouteComponent } from './components/routes/show/show.component';
+import { EditRouteComponent } from './components/routes/edit/edit.component';
+
+//Localization Components
+import { IndexLocalizationComponent } from './components/localizations/index/index.component';
+import { AddLocalizationComponent } from './components/localizations/add/add.component';
+import { ShowLocalizationComponent } from './components/localizations/show/show.component';
+import { EditLocalizationComponent } from './components/localizations/edit/edit.component';
 
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
@@ -19,12 +24,52 @@ import { AuthGuard } from './guards/auth.guard';
 const routes: Routes = [
   { path: "", component: HomeComponent, pathMatch: 'full' },
   { path: "home", component: HomeComponent },
-  { path: "routes", component: RoutesComponent },
-  { path: "route/:id", component: RouteComponent, canActivate: [AuthGuard] },
-  { path: "users", component: UsersComponent },
-  { path: "user/:id", component: UserComponent, canActivate: [AuthGuard] },
-  { path: "localizations", component: LocalizationsComponent },
-  { path: "localization/:id", component: LocalizationComponent, canActivate: [AuthGuard] },
+  {
+    path: "routes",
+    children: [
+      {
+        path: '',
+        component: IndexRouteComponent,
+      },
+      {
+        path: 'add',
+        component: AddRouteComponent,
+      },
+      {
+        path: ':id',
+        component: ShowRouteComponent,
+        children: [
+          {
+            path: 'edit',
+            component: EditRouteComponent
+          }
+        ]
+      }
+    ]
+  },
+  {
+    path: "localizations",
+    children: [
+      {
+        path: '',
+        component: IndexLocalizationComponent,
+      },
+      {
+        path: 'add',
+        component: AddLocalizationComponent,
+      },
+      {
+        path: ':id',
+        component: ShowLocalizationComponent,
+        children: [
+          {
+            path: 'edit',
+            component: EditLocalizationComponent
+          }
+        ]
+      }
+    ]
+  },
   { path: "login", component: LoginComponent },
   { path: "register", component: RegisterComponent },
   { path: "profile", component: ProfileComponent, canActivate: [AuthGuard] },

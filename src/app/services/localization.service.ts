@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 
 import { AngularFirestore } from 'angularfire2/firestore';
+import { Observable } from 'rxjs';
+import { Localization } from '../interfaces/Localization';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +12,15 @@ export class LocalizationService {
   constructor(private db: AngularFirestore) { }
 
   getLocalizations() {
-    return this.db.collection('localization').snapshotChanges();
+    return this.db.collection('localization').get();
+  };
+
+  getLocalization(data) {
+    return this.db.collection('localization').doc(data).get();
+  };
+
+  getLocalizationByName(data) {
+    return this.db.collection('localization', ref => ref.where('name', '==', data)).get();
   };
 
   getCurrentPosition(): Promise<any> {
@@ -21,6 +31,5 @@ export class LocalizationService {
         reject(err);
       });
     });
-
   }
 }

@@ -20,10 +20,16 @@ export class RouteService {
     return this.db.collection("route").add(data);
   }
 
-  updateRoute(data) {
+  updateRoute(id, data) {
+    return this.db.collection("route")
+      .doc(id)
+      .set(data, { merge: true });
+  }
+
+  updateRouteRating(data) {
     return this.db.collection("route")
       .doc(data.id)
-      .set(data, { merge: true });
+      .set({ratingTotal: data.ratingTotal, votes: data.votes}, { merge: true });
   }
 
   deleteRoute(data) {

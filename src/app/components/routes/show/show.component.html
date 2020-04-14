@@ -1,0 +1,15 @@
+<div class="center">
+  <mat-progress-spinner *ngIf="!loaded" diameter=50 mode="indeterminate" color="accent">
+  </mat-progress-spinner>
+</div>
+
+<div class="col text-right">
+  <button class="btn btn-info mr-1" [routerLink]="['edit']">
+      <i class="fa fa-pen"></i>
+    </button>
+
+    <button class="btn btn-danger mr-1" (click)="deleteRoute(currentRoute.id)">
+      <i class="fa fa-trash"></i>
+    </button>
+</div>
+<router-outlet></router-outlet>

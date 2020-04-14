@@ -1,24 +1,25 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
 
-import { RouteService } from '../../services/route.service';
-import { Route } from '../../interfaces/Route';
+import { UserService } from '../../../services/user.service';
+import { RouteService } from '../../../services/route.service';
+
+import { Route } from '../../../interfaces/Route';
 
 import Swal from 'sweetalert2'
-import { UserService } from '../../services/user.service';
 
 @Component({
-  selector: 'app-routes',
-  templateUrl: './routes.component.html',
-  styleUrls: ['./routes.component.css']
+  selector: 'app-index',
+  templateUrl: './index.component.html',
+  styleUrls: ['./index.component.css']
 })
-export class RoutesComponent implements OnInit {
+export class IndexRouteComponent implements OnInit {
 
   public ratingVariable = [];
   public routes = [];
+  public selectedCityIds = ["ASD"];
 
   constructor(
-    private userService: UserService,
+    public userService: UserService,
     private routeService: RouteService
   ) { }
 
@@ -50,10 +51,9 @@ export class RoutesComponent implements OnInit {
   updateRating(route, index) {
     route.votes++;
     route.ratingTotal += this.ratingVariable[index];
-    route.rating = route.ratingTotal / route.votes;
-    this.ratingVariable[index] = route.rating;
+    this.ratingVariable[index] = route.ratingTotal / route.votes;
 
-    this.routeService.updateRoute(route).then(() => {
+    this.routeService.updateRouteRating(route).then(() => {
       Swal.fire(
         'Thank you!',
         'Your vote was save succesfully!',
@@ -84,4 +84,10 @@ export class RoutesComponent implements OnInit {
       }
     })
   }
+
+  imprime($event) {
+    console.log(this.selectedCityIds);
+    //console.log($event);
+  }
+
 }

@@ -14,6 +14,7 @@ export class UserService {
 
   @Output() loggedEmitter: EventEmitter<any> = new EventEmitter();
   @Output() userEmitter: EventEmitter<any> = new EventEmitter();
+  @Output() notificationUSEmitter: EventEmitter<any> = new EventEmitter();
 
   private currentUser: User;
   private logged: boolean = false;
@@ -47,6 +48,8 @@ export class UserService {
 
         this.loggedEmitter.emit(this.logged);
         this.userEmitter.emit(this.currentUser);
+        this.notificationUSEmitter.emit("notification");
+
         this.router.navigate(['/home']);
 
         Swal.fire(
@@ -57,7 +60,7 @@ export class UserService {
       } else {
         Swal.fire(
           'Error!',
-          'Your username or password is incorrectF!',
+          'Your username or password is incorrect!',
           'error'
         )
       }
@@ -97,7 +100,7 @@ export class UserService {
     return this.currentUser.id;
   }
 
-  getCurrentUserUsername() {
+  getCurrentUserName() {
     return this.currentUser.username;
   }
 

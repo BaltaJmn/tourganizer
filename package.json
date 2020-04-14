@@ -26,6 +26,7 @@
     "@material/drawer": "^5.1.0",
     "@material/list": "^5.1.0",
     "@ng-bootstrap/ng-bootstrap": "~5.2.2",
+    "@ng-select/ng-select": "^3.0.0",
     "@types/leaflet-routing-machine": "^3.2.1",
     "angularfire2": "^5.4.2",
     "bootstrap": "^4.3.1",

@@ -46,7 +46,7 @@ export class HomeComponent implements OnInit {
 	private initMap() {
 		this.map = L.map('map', {
 			center: ["40.4636688", "-3.7492199"],
-			zoom: 10
+			zoom: 6
 		});
 
 		const tiles1 = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -60,7 +60,7 @@ export class HomeComponent implements OnInit {
 	private initCurrentMap(lat, lon): void {
 		this.map = L.map('map', {
 			center: [lat, lon],
-			zoom: 7
+			zoom: 6
 		});
 
 		var currentPositionIcon = L.icon({
@@ -107,14 +107,14 @@ export class HomeComponent implements OnInit {
 
 	private initMarkers() {
 		this.localizationService.getLocalizations().subscribe((localizationsSnapshot) => {
-			localizationsSnapshot.forEach((doc: any) => {
+			localizationsSnapshot.forEach((doc) => {
 
 				let marker = L.marker(
-					[doc.payload.doc.data().latitude, doc.payload.doc.data().longitude],
-					{ title: doc.payload.doc.data().name }
+					[doc.data().latitude, doc.data().longitude],
+					{ title: doc.data().name }
 				);
 
-				marker.bindPopup(doc.payload.doc.data().name);
+				marker.bindPopup(doc.data().name);
 				marker.on('mouseover', function (e) {
 					this.openPopup();
 				});

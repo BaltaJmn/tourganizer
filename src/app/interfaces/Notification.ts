@@ -3,5 +3,5 @@ export interface Notification {
     content: string;
     sender: string;
     receiver: string;
-    seen: boolean;
+    seen?: boolean;
 }

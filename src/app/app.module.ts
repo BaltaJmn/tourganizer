@@ -15,12 +15,22 @@ import { environment } from '../environments/environment';
 // Components
 import { HeaderComponent } from './components/structure/header/header.component';
 import { HomeComponent } from './components/home/home.component';
-import { RoutesComponent } from './components/routes/routes.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ProfileComponent } from './components/profile/profile.component';
-import { RouteComponent } from './components/route/route.component';
 import { SidebarComponent } from './components/structure/sidebar/sidebar.component';
+
+// Routes Components
+import { IndexRouteComponent } from './components/routes/index/index.component';
+import { ShowRouteComponent } from './components/routes/show/show.component';
+import { AddRouteComponent } from './components/routes/add/add.component';
+import { EditRouteComponent } from './components/routes/edit/edit.component';
+
+//Localizations Components
+import { IndexLocalizationComponent } from './components/localizations/index/index.component';
+import { ShowLocalizationComponent } from './components/localizations/show/show.component';
+import { EditLocalizationComponent } from './components/localizations/edit/edit.component';
+import { AddLocalizationComponent } from './components/localizations/add/add.component';
 
 // Login & Register
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -30,6 +40,9 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 
 // Rating
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+// MultiSelect with search
+import { NgSelectModule } from '@ng-select/ng-select';
 
 // Angular Material
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -63,26 +76,27 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { UsersComponent } from './components/users/users.component';
-import { UserComponent } from './components/user/user.component';
-import { LocalizationsComponent } from './components/localizations/localizations.component';
-import { LocalizationComponent } from './components/localization/localization.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     HomeComponent,
-    RoutesComponent,
+
+    IndexRouteComponent,
+    ShowRouteComponent,
+    AddRouteComponent,
+    EditRouteComponent,
+
+    IndexLocalizationComponent,
+    ShowLocalizationComponent,
+    EditLocalizationComponent,
+    AddLocalizationComponent,
+
     LoginComponent,
     RegisterComponent,
     ProfileComponent,
-    RouteComponent,
     SidebarComponent,
-    UsersComponent,
-    UserComponent,
-    LocalizationsComponent,
-    LocalizationComponent
   ],
   imports: [
     BrowserModule,
@@ -126,7 +140,8 @@ import { LocalizationComponent } from './components/localization/localization.co
     MatSnackBarModule,
     MatTableModule,
     MatSortModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    NgSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]
