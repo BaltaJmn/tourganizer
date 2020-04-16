@@ -35,11 +35,11 @@ export class HomeComponent implements OnInit {
 		this.localizationService.getCurrentPosition().then(
 			(pos) => {
 				this.initCurrentMap(pos.lat, pos.lng);
-				this.initMarkers();
+				// this.initMarkers();
 			},
 			(err) => {
 				this.initMap();
-				this.initMarkers();
+				// this.initMarkers();
 			});
 	}
 
@@ -105,30 +105,29 @@ export class HomeComponent implements OnInit {
 		// }).addTo(this.map);
 	}
 
-	private initMarkers() {
-		this.localizationService.getLocalizations().subscribe((localizationsSnapshot) => {
-			localizationsSnapshot.forEach((doc) => {
+	// private initMarkers() {
+	// 	this.localizationService.getLocalizations().subscribe((localizationsSnapshot) => {
+	// 		localizationsSnapshot.forEach((doc) => {
 
-				let marker = L.marker(
-					[doc.data().latitude, doc.data().longitude],
-					{ title: doc.data().name }
-				);
+	// 			let marker = L.marker(
+	// 				[doc.payload.doc.data().latitude, doc.payload.doc.data().longitude],
+	// 				{ title: doc.data().name }
+	// 			);
 
-				marker.bindPopup(doc.data().name);
-				marker.on('mouseover', function (e) {
-					this.openPopup();
-				});
-				marker.on('mouseout', function (e) {
-					this.closePopup();
-				});
-				marker.on("click", this.addToRoute)
-				marker.addTo(this.map)
-			})
-		});
-	}
+	// 			marker.bindPopup(doc.data().name);
+	// 			marker.on('mouseover', function (e) {
+	// 				this.openPopup();
+	// 			});
+	// 			marker.on('mouseout', function (e) {
+	// 				this.closePopup();
+	// 			});
+	// 			marker.on("click", this.addToRoute)
+	// 			marker.addTo(this.map)
+	// 		})
+	// 	});
+	// }
 
 	public addToRoute(event) {
-		console.log(event.target);
 		let positionSrc = event.target._icon.src.split("/").length - 1;
 
 		if (event.target._icon.src.split("/")[positionSrc] == "marker-icon.png") {

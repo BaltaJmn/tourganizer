@@ -37,8 +37,11 @@ const routes: Routes = [
       },
       {
         path: ':id',
-        component: ShowRouteComponent,
         children: [
+          {
+            path: '',
+            component: ShowRouteComponent,
+          },
           {
             path: 'edit',
             component: EditRouteComponent
@@ -60,8 +63,11 @@ const routes: Routes = [
       },
       {
         path: ':id',
-        component: ShowLocalizationComponent,
         children: [
+          {
+            path: '',
+            component: ShowLocalizationComponent,
+          },
           {
             path: 'edit',
             component: EditLocalizationComponent

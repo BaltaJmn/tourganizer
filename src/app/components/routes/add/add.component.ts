@@ -22,7 +22,6 @@ import { Notification } from '../../../interfaces/Notification';
 export class AddRouteComponent implements OnInit {
 
   loaded = true;
-  currentRoute: Route;
 
   localizations = [];
   currentLocalizations = [];
@@ -42,33 +41,33 @@ export class AddRouteComponent implements OnInit {
     private userService: UserService,
     private routeService: RouteService,
     private localizationService: LocalizationService,
-    private notificationService: NotificationService,
-    private activatedRoute: ActivatedRoute
+    private notificationService: NotificationService
   ) { }
 
   ngOnInit() {
 
     this.loaded = false;
 
-    this.localizationService.getLocalizations().subscribe((localizationSnapshot) => {
-      localizationSnapshot.forEach((doc) => {
+    //Añade items al select
+    this.localizationService.getLocalizations().subscribe((localizationsSnapshot) => {
+      localizationsSnapshot.forEach((doc: any) => {
+
         let localizationAux: Localization = {
-          id: doc.id,
-          name: doc.data().name,
-          description: doc.data().name,
-          latitude: doc.data().latitude,
-          longitude: doc.data().longitude,
-          likes: doc.data().likes,
-          images: doc.data().images,
-          url: doc.data().url,
+          id: doc.payload.doc.id,
+          userId: doc.payload.doc.data().userId,
+          name: doc.payload.doc.data().name,
+          description: doc.payload.doc.data().description,
+          images: doc.payload.doc.data().images,
+          latitude: doc.payload.doc.data().latitude,
+          longitude: doc.payload.doc.data().longitude,
+          likes: doc.payload.doc.data().likes,
+          url: doc.payload.doc.data().url
         }
+        
         this.localizations.push(localizationAux);
-      });
-      
+      })
       this.localizations = Object.values(this.localizations);
-
       this.loaded = true;
-
     });
   }
 

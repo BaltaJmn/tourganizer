@@ -1,5 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 
+import { LocalizationService } from '../../../services/localization.service';
+import { UserService } from '../../../services/user.service';
+
+import { Localization } from 'src/app/interfaces/Localization';
+
+import Swal from 'sweetalert2'
+
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
@@ -7,9 +14,34 @@ import { Component, OnInit } from '@angular/core';
 })
 export class IndexLocalizationComponent implements OnInit {
 
-  constructor() { }
+  public localizations = [];
+
+  constructor(
+    public userService: UserService,
+    private localizationService: LocalizationService
+  ) { }
 
   ngOnInit() {
-  }
+    this.localizationService.getLocalizations().subscribe((localizationsSnapshot) => {
 
+      this.localizations = [];
+
+      localizationsSnapshot.forEach((doc: any) => {
+
+        let localizationAux: Localization = {
+          id: doc.payload.doc.id,
+          userId: doc.payload.doc.data().userId,
+          name: doc.payload.doc.data().name,
+          description: doc.payload.doc.data().description,
+          images: doc.payload.doc.data().images,
+          latitude: doc.payload.doc.data().latitude,
+          longitude: doc.payload.doc.data().longitude,
+          likes: doc.payload.doc.data().likes,
+          url: doc.payload.doc.data().url
+        }
+
+        this.localizations.push(localizationAux);
+      })
+    });
+  };
 }

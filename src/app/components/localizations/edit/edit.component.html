@@ -1,1 +1,26 @@
-<p>edit works!</p>
+<div class="center">
+  <mat-progress-spinner *ngIf="!loaded" diameter=50 mode="indeterminate" color="accent">
+  </mat-progress-spinner>
+</div>
+
+<form class="text-center border border-light p-5" [formGroup]="localization" (ngSubmit)="onSubmit(localization)">
+
+  <p class="h4 mb-4">Edit localization</p>
+
+  <input type="text" id="defaultLoginFormName" class="form-control mb-4" placeholder="name" formControlName="name">
+
+  <input type="text" id="defaultLoginFormDescription" class="form-control mb-4" placeholder="description"
+    formControlName="description">
+
+  <input type="number" id="defaultLoginFormLatitude" class="form-control mb-4" placeholder="latitude"
+    formControlName="latitude">
+
+  <input type="number" id="defaultLoginFormLongitude" class="form-control mb-4" placeholder="longitude"
+    formControlName="longitude">
+
+  <input type="text" id="defaultLoginFormUrl" class="form-control mb-4" placeholder="url" formControlName="url">
+
+  <!-- images -->
+
+  <button mdbBtn color="info" block="true" class="my-4" type="submit">Update</button>
+</form>

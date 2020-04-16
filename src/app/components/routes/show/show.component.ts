@@ -12,6 +12,7 @@ import Swal from 'sweetalert2'
   templateUrl: './show.component.html',
   styleUrls: ['./show.component.css']
 })
+
 export class ShowRouteComponent implements OnInit {
 
   currentRoute: Route;
@@ -40,8 +41,8 @@ export class ShowRouteComponent implements OnInit {
 
         this.loaded = true;
       });
-    })
-  }
+    });
+  };
 
   deleteRoute(id) {
     Swal.fire({
@@ -63,10 +64,9 @@ export class ShowRouteComponent implements OnInit {
           );
 
           this.router.navigate(['/routes'])
-
         });
       }
     })
-  }
+  };
 
 }

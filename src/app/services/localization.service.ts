@@ -12,7 +12,7 @@ export class LocalizationService {
   constructor(private db: AngularFirestore) { }
 
   getLocalizations() {
-    return this.db.collection('localization').get();
+    return this.db.collection('localization', ref => ref.orderBy('likes', 'desc')).snapshotChanges();
   };
 
   getLocalization(data) {
@@ -31,5 +31,21 @@ export class LocalizationService {
         reject(err);
       });
     });
-  }
+  };
+
+  createLocalization(data) {
+    return this.db.collection("localization").add(data);
+  };
+
+  updateLocalization(id, data) {
+    return this.db.collection("localization")
+      .doc(id)
+      .set(data, { merge: true });
+  };
+
+  deleteLocalization(data) {
+    return this.db.collection("localization")
+      .doc(data)
+      .delete()
+  };
 }

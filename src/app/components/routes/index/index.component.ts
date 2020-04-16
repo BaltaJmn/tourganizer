@@ -16,14 +16,13 @@ export class IndexRouteComponent implements OnInit {
 
   public ratingVariable = [];
   public routes = [];
-  public selectedCityIds = ["ASD"];
 
   constructor(
     public userService: UserService,
     private routeService: RouteService
   ) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.routeService.getRoutes().subscribe((routesSnapshot) => {
 
       this.routes = [];
@@ -46,7 +45,7 @@ export class IndexRouteComponent implements OnInit {
 
       })
     });
-  }
+  };
 
   updateRating(route, index) {
     route.votes++;
@@ -60,34 +59,5 @@ export class IndexRouteComponent implements OnInit {
         'success'
       )
     });
-  }
-
-  deleteRoute(id) {
-    Swal.fire({
-      title: 'Do you want to delete this route?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Delete',
-      cancelButtonText: 'Cancel',
-      focusCancel: true
-    }).then((result) => {
-      if (result.value) {
-        this.routeService.deleteRoute(id).then(() => {
-          Swal.fire(
-            'Deleted!',
-            'This route was deleted succesfully!',
-            'success'
-          )
-        });
-      }
-    })
-  }
-
-  imprime($event) {
-    console.log(this.selectedCityIds);
-    //console.log($event);
-  }
-
+  };
 }

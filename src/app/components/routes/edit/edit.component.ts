@@ -72,18 +72,21 @@ export class EditRouteComponent implements OnInit {
         };
 
         //Añade items al select
-        this.localizationService.getLocalizations().subscribe((localizationSnapshot) => {
-          localizationSnapshot.forEach((doc) => {
+        this.localizationService.getLocalizations().subscribe((localizationsSnapshot) => {
+          localizationsSnapshot.forEach((doc: any) => {
+
             let localizationAux: Localization = {
-              id: doc.id,
-              name: doc.data().name,
-              description: doc.data().name,
-              latitude: doc.data().latitude,
-              longitude: doc.data().longitude,
-              likes: doc.data().likes,
-              images: doc.data().images,
-              url: doc.data().url,
-            }
+              id: doc.payload.doc.id,
+              userId: doc.payload.doc.data().userId,
+              name: doc.payload.doc.data().name,
+              description: doc.payload.doc.data().description,
+              images: doc.payload.doc.data().images,
+              latitude: doc.payload.doc.data().latitude,
+              longitude: doc.payload.doc.data().longitude,
+              likes: doc.payload.doc.data().likes,
+              url: doc.payload.doc.data().url
+            };
+
             this.localizations.push(localizationAux);
           });
           this.localizations = Object.values(this.localizations);
@@ -101,8 +104,6 @@ export class EditRouteComponent implements OnInit {
         this.route.get("localizations").setValue(this.currentRoute.localizations);
 
         this.loaded = true;
-
-        console.log(this);
       });
     });
   }

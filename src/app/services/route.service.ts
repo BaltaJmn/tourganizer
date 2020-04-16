@@ -14,27 +14,27 @@ export class RouteService {
 
   getRoute(data) {
     return this.db.collection("route").doc(data).get();
-  }
+  };
 
   createRoute(data) {
     return this.db.collection("route").add(data);
-  }
+  };
 
   updateRoute(id, data) {
     return this.db.collection("route")
       .doc(id)
       .set(data, { merge: true });
-  }
+  };
 
   updateRouteRating(data) {
     return this.db.collection("route")
       .doc(data.id)
       .set({ratingTotal: data.ratingTotal, votes: data.votes}, { merge: true });
-  }
+  };
 
   deleteRoute(data) {
     return this.db.collection("route")
       .doc(data)
       .delete()
-  }
+  };
 }
