@@ -2,6 +2,12 @@ import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { HomeComponent } from "./components/home/home.component";
 
+//User Components
+import { IndexUserComponent } from './components/users/index/index.component';
+import { AddUserComponent } from './components/users/add/add.component';
+import { ShowUserComponent } from './components/users/show/show.component';
+import { EditUserComponent } from './components/users/edit/edit.component';
+
 //Route Components
 import { IndexRouteComponent } from './components/routes/index/index.component';
 import { AddRouteComponent } from './components/routes/add/add.component';
@@ -24,6 +30,32 @@ import { AuthGuard } from './guards/auth.guard';
 const routes: Routes = [
   { path: "", component: HomeComponent, pathMatch: 'full' },
   { path: "home", component: HomeComponent },
+  {
+    path: "users",
+    children: [
+      {
+        path: '',
+        component: IndexUserComponent,
+      },
+      {
+        path: 'add',
+        component: AddUserComponent,
+      },
+      {
+        path: ':id',
+        children: [
+          {
+            path: '',
+            component: ShowUserComponent,
+          },
+          {
+            path: 'edit',
+            component: EditUserComponent
+          }
+        ]
+      }
+    ]
+  },
   {
     path: "routes",
     children: [

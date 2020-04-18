@@ -11,6 +11,8 @@
   <button class="btn btn-danger mr-1" (click)="deleteLocalization(currentLocalization.id)">
     <i class="fa fa-trash"></i>
   </button>
+
+  <ngx-imageviewer [src]="imageSrc"></ngx-imageviewer>
 </div>
 
 <router-outlet></router-outlet>

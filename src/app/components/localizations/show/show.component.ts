@@ -17,6 +17,8 @@ export class ShowLocalizationComponent implements OnInit {
   currentLocalization: Localization;
   loaded = true;
 
+  imageSrc;
+
   constructor(
     private router: Router,
     private localizationService: LocalizationService,
@@ -38,6 +40,8 @@ export class ShowLocalizationComponent implements OnInit {
           likes: result.data().likes,
           url: result.data().url
         };
+
+        this.imageSrc = this.currentLocalization.images[0];
 
         this.loaded = true;
       });

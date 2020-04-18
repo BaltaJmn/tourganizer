@@ -15,8 +15,6 @@ import Swal from 'sweetalert2';
 })
 export class AddLocalizationComponent implements OnInit {
 
-  loaded = true;
-
   localization = new FormGroup({
     userId: new FormControl('', [Validators.required]),
     name: new FormControl('', [Validators.required]),

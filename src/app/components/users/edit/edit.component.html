@@ -1,0 +1,21 @@
+<div class="center">
+  <mat-progress-spinner *ngIf="!loaded" diameter=50 mode="indeterminate" color="accent">
+  </mat-progress-spinner>
+</div>
+
+<form class="text-center border border-light p-5" [formGroup]="user" (ngSubmit)="onSubmit(user)">
+
+  <p class="h4 mb-4">Edit user</p>
+
+  <input type="text" id="defaultLoginFormUsername" class="form-control mb-4" placeholder="username"
+    formControlName="username">
+
+  <input type="text" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="password"
+    formControlName="password">
+
+  <input type="text" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="email" formControlName="email">
+
+  <input type="number" id="defaultLoginFormRol" class="form-control mb-4" placeholder="rol" formControlName="rol">
+
+  <button mdbBtn color="info" block="true" class="my-4" type="submit">Update</button>
+</form>

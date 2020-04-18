@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(user: FormGroup) {
-    this.userService.getUser(user.value);
+    this.userService.login(user.value);
   }
 
 }

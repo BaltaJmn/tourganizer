@@ -6,6 +6,7 @@ import { User } from '../interfaces/User';
 import Swal from 'sweetalert2'
 import { Router } from '@angular/router';
 import { EventEmitter } from '@angular/core';
+import { EmailService } from './email.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,13 +22,34 @@ export class UserService {
 
   constructor(
     private db: AngularFirestore,
+    private emailService: EmailService,
     private router: Router) { }
 
   getUsers() {
-    return this.db.collection("user").get();
+    return this.db.collection('user', ref => ref.orderBy('username', 'desc')).snapshotChanges();
   }
 
   getUser(data) {
+    return this.db.collection('user').doc(data).get();
+  }
+
+  createUser(data) {
+    return this.db.collection("user").add(data);
+  };
+
+  updateUser(id, data) {
+    return this.db.collection("user")
+      .doc(id)
+      .set(data, { merge: true });
+  };
+
+  deleteUser(data){
+    return this.db.collection("user")
+      .doc(data)
+      .delete()
+  }
+
+  login(data) {
     return this.db.collection("user", ref => ref.where('username', '==', data.username).where('password', '==', data.password)).get().subscribe((result) => {
       if (result.empty == false) {
 
@@ -67,8 +89,27 @@ export class UserService {
     })
   }
 
-  insertUser(data) {
-    return this.db.collection("user").add(data);
+  register(data) {
+    return this.db.collection("user", ref => ref.where('username', '==', data.email).where('password', '==', data.password)).get().subscribe((result) => {
+      if (result.empty) {
+        this.db.collection("user").add(data);
+
+        this.emailService.sendEmail();
+
+        Swal.fire(
+          'Succesfully Registered!',
+          'You have been succesfully registered!',
+          'success'
+        );
+      } else {
+        Swal.fire(
+          'Error!',
+          'Your username is already taken!',
+          'error'
+        )
+      }
+    });
+
   };
 
   logOut() {

@@ -14,7 +14,14 @@ export class RegisterComponent implements OnInit {
 
   user = new FormGroup({
     username: new FormControl('', [Validators.required]),
-    password: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(20)])
+    email: new FormControl('', [Validators.required]),
+    password: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(20)]),
+    confirmed: new FormControl(false),
+    createdRoutes: new FormControl([]),
+    savedRoutes: new FormControl([]),
+    followers: new FormControl([]),
+    follows: new FormControl([]),
+    rol: new FormControl(3),
   });
 
   constructor(
@@ -26,13 +33,7 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit(user: FormGroup) {
-    this.userService.insertUser(user.value).then(function () {
-      Swal.fire(
-        'Succesfully Registered!',
-        'You have been succesfully registered!',
-        'success'
-      )
-    });
+    console.log(user.value);
+    this.userService.register(user.value);
   }
-
 }

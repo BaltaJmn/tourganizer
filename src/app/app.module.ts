@@ -20,6 +20,12 @@ import { RegisterComponent } from './components/register/register.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { SidebarComponent } from './components/structure/sidebar/sidebar.component';
 
+// Users Components
+import { IndexUserComponent } from './components/users/index/index.component';
+import { ShowUserComponent } from './components/users/show/show.component';
+import { EditUserComponent } from './components/users/edit/edit.component';
+import { AddUserComponent } from './components/users/add/add.component';
+
 // Routes Components
 import { IndexRouteComponent } from './components/routes/index/index.component';
 import { ShowRouteComponent } from './components/routes/show/show.component';
@@ -43,6 +49,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // MultiSelect with search
 import { NgSelectModule } from '@ng-select/ng-select';
+
+//Imageviewer
+import { ImageViewerModule } from '@hallysonh/ngx-imageviewer';
 
 // Angular Material
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -93,6 +102,11 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     EditLocalizationComponent,
     AddLocalizationComponent,
 
+    IndexUserComponent,
+    ShowUserComponent,
+    EditUserComponent,
+    AddUserComponent,
+
     LoginComponent,
     RegisterComponent,
     ProfileComponent,
@@ -111,6 +125,10 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     AppRoutingModule,
     LeafletModule.forRoot(),
     NgbModule,
+    NgSelectModule,
+    ImageViewerModule,
+    
+    //Material
     MatCheckboxModule,
     MatButtonModule,
     MatInputModule,
@@ -140,8 +158,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatSnackBarModule,
     MatTableModule,
     MatSortModule,
-    MatPaginatorModule,
-    NgSelectModule
+    MatPaginatorModule
   ],
   providers: [],
   bootstrap: [AppComponent]
