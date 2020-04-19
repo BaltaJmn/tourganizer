@@ -11,8 +11,17 @@
 
 <br>
 
+<form class="example-form">
+  <mat-form-field class="example-full-width">
+    <mat-label>Name</mat-label>
+    <input matInput name="name" [(ngModel)]="filter.name">
+  </mat-form-field>
+</form>
+
+<br>
+
 <div class="row">
-  <div class="card" style="width: 18rem;" *ngFor="let user of users">
+  <div class="card" style="width: 18rem;" *ngFor="let user of users | filter: {username: filter.name} : false">
 
     <div class="card-body">
       <h5 class="card-title">{{user.username}}</h5>
@@ -23,6 +32,23 @@
         <i class="fa fa-eye"></i>
         See more
       </a>
+
+      <div *ngIf="userService.getLogged()">
+        <div *ngIf="userService.getCurrentUserFollows().includes(user.id)">
+          <button class="btn btn-danger mr-1" (click)="this.userService.unfollow(user.id)">
+            <i class="far fa-times-circle"></i>
+            Unfollow
+          </button>
+        </div>
+
+        <div *ngIf="!userService.getCurrentUserFollows().includes(user.id)">
+          <button class="btn btn-success mr-1" (click)="this.userService.follow(user.id)">
+            <i class="fa fa-plus"></i>
+            Follow
+          </button>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>

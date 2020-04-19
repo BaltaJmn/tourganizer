@@ -4,8 +4,10 @@ import { LocalizationService } from '../../../services/localization.service';
 import { UserService } from '../../../services/user.service';
 
 import { Localization } from 'src/app/interfaces/Localization';
+import { Filter } from '../../../interfaces/Filter';
 
 import Swal from 'sweetalert2'
+
 
 @Component({
   selector: 'app-index',
@@ -13,6 +15,10 @@ import Swal from 'sweetalert2'
   styleUrls: ['./index.component.css']
 })
 export class IndexLocalizationComponent implements OnInit {
+
+  public filter: Filter = {
+    name: ''
+  };
 
   public localizations = [];
 

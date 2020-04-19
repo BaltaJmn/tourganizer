@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+
 import { UserService } from '../../../services/user.service';
+
 import { User } from '../../../interfaces/User';
+import { Filter } from '../../../interfaces/Filter';
 
 @Component({
   selector: 'app-index',
@@ -9,6 +12,10 @@ import { User } from '../../../interfaces/User';
 })
 export class IndexUserComponent implements OnInit {
 
+  public filter: Filter = {
+    name: ''
+  };
+  
   public users = [];
 
   constructor(
@@ -38,6 +45,5 @@ export class IndexUserComponent implements OnInit {
         this.users.push(userAux);
       })
     });
-  }
-
+  };
 }

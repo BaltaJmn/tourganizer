@@ -2,7 +2,7 @@ export interface Route {
     id?: string;
     userId: string;
     name: string;
-    type: number;
+    type: string;
 
     totalTime: number;
     

@@ -85,6 +85,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { FilterPipe } from './pipes/filter.pipe';
 
 @NgModule({
   declarations: [
@@ -111,6 +112,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     RegisterComponent,
     ProfileComponent,
     SidebarComponent,
+    FilterPipe,
   ],
   imports: [
     BrowserModule,

@@ -43,11 +43,33 @@ export class UserService {
       .set(data, { merge: true });
   };
 
-  deleteUser(data){
+  deleteUser(data) {
     return this.db.collection("user")
       .doc(data)
       .delete()
   }
+
+  register(data) {
+    return this.db.collection("user", ref => ref.where('username', '==', data.email).where('password', '==', data.password)).get().subscribe((result) => {
+      if (result.empty) {
+        this.db.collection("user").add(data);
+
+        this.emailService.sendEmail();
+
+        Swal.fire(
+          'Succesfully Registered!',
+          'You have been succesfully registered!',
+          'success'
+        );
+      } else {
+        Swal.fire(
+          'Error!',
+          'Your username is already taken!',
+          'error'
+        )
+      }
+    });
+  };
 
   login(data) {
     return this.db.collection("user", ref => ref.where('username', '==', data.username).where('password', '==', data.password)).get().subscribe((result) => {
@@ -89,29 +111,6 @@ export class UserService {
     })
   }
 
-  register(data) {
-    return this.db.collection("user", ref => ref.where('username', '==', data.email).where('password', '==', data.password)).get().subscribe((result) => {
-      if (result.empty) {
-        this.db.collection("user").add(data);
-
-        this.emailService.sendEmail();
-
-        Swal.fire(
-          'Succesfully Registered!',
-          'You have been succesfully registered!',
-          'success'
-        );
-      } else {
-        Swal.fire(
-          'Error!',
-          'Your username is already taken!',
-          'error'
-        )
-      }
-    });
-
-  };
-
   logOut() {
     this.currentUser = {
       id: null,
@@ -131,6 +130,23 @@ export class UserService {
     this.loggedEmitter.emit(this.logged);
     this.userEmitter.emit(this.currentUser);
     this.router.navigate(['/home']);
+  }
+
+  follow(id) {
+
+    this.currentUser.follows.push(id);
+
+    return this.db.collection("user")
+      .doc(this.currentUser.id)
+      .set({ follows: this.currentUser.follows }, { merge: true });
+  }
+
+  unfollow(id) {
+    this.currentUser.follows.splice(this.currentUser.follows.indexOf(id), 1);
+
+    return this.db.collection("user")
+      .doc(this.currentUser.id)
+      .set({ follows: this.currentUser.follows }, { merge: true });
   }
 
   getCurrentUser() {

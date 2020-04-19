@@ -4,8 +4,11 @@ import { UserService } from '../../../services/user.service';
 import { RouteService } from '../../../services/route.service';
 
 import { Route } from '../../../interfaces/Route';
+import { Filter } from '../../../interfaces/Filter';
 
 import Swal from 'sweetalert2'
+import { FormControl } from '@angular/forms';
+import { MatTableDataSource } from '@angular/material';
 
 @Component({
   selector: 'app-index',
@@ -14,8 +17,16 @@ import Swal from 'sweetalert2'
 })
 export class IndexRouteComponent implements OnInit {
 
-  public ratingVariable = [];
-  public routes = [];
+  ratingVariable = [];
+  routes: Route[];
+
+  displayedColumns: string[] = ['name', 'type'];
+  dataSource;
+
+  nameFilter = new FormControl();
+  typeFilter = new FormControl();
+
+  filteredValues = { name: '', type: '' };
 
   constructor(
     public userService: UserService,
@@ -43,7 +54,21 @@ export class IndexRouteComponent implements OnInit {
         this.routes.push(routeAux);
         this.ratingVariable.push(routeAux.ratingTotal / routeAux.votes);
 
-      })
+      });
+
+      this.dataSource = new MatTableDataSource(this.routes);
+      this.dataSource.filterPredicate = this.customFilterPredicate();
+
+    });
+
+    this.nameFilter.valueChanges.subscribe((nameFilterValue) => {
+      this.filteredValues['name'] = nameFilterValue;
+      this.dataSource.filter = JSON.stringify(this.filteredValues);
+    });
+
+    this.typeFilter.valueChanges.subscribe((weightFilterValue) => {
+      this.filteredValues['type'] = weightFilterValue;
+      this.dataSource.filter = JSON.stringify(this.filteredValues);
     });
   };
 
@@ -60,4 +85,20 @@ export class IndexRouteComponent implements OnInit {
       )
     });
   };
+
+  customFilterPredicate() {
+    const myFilterPredicate = function (data: Route, filter: string): boolean {
+      let searchString = JSON.parse(filter);
+
+      let nameFound = data.name.toString().trim().toLowerCase().indexOf(searchString.name.toLowerCase()) !== -1
+      let typeFound = data.type.toString().trim().toLowerCase().indexOf(searchString.type.toLowerCase()) !== -1
+
+      if (searchString.topFilter) {
+        return nameFound || typeFound
+      } else {
+        return nameFound && typeFound
+      }
+    }
+    return myFilterPredicate;
+  }
 }

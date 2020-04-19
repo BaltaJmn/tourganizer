@@ -14,7 +14,19 @@ import Swal from 'sweetalert2'
 })
 export class ShowUserComponent implements OnInit {
 
-  currentUser: User;
+  currentUser: User = {
+    id: null,
+    username: null,
+    password: null,
+    email: null,
+    confirmed: null,
+    rol: null,
+    followers: [],
+    follows: [],
+    createdRoutes: [],
+    savedRoutes: [],
+  };
+
   loaded = true;
 
   constructor(

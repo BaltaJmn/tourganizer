@@ -11,34 +11,43 @@
 
 <br>
 
-<ul>
-  <li *ngFor="let route of routes; let i = index">
+<mat-form-field>
+  <input matInput class="form-field" [formControl]="nameFilter" placeholder="Name">
+</mat-form-field>
+<br />
+<mat-form-field>
+  <mat-label>Type</mat-label>
+  <mat-select matNativeControl [formControl]="typeFilter">
+    <mat-option value="" selected>All</mat-option>
+    <mat-option value="0">Country</mat-option>
+    <mat-option value="1">City</mat-option>
+    <mat-option value="2">Region</mat-option>
+  </mat-select>
+</mat-form-field>
+<br />
 
-    <div class="row">
-      <div class="col text-left">
-        <pre>Name: <b>{{route.name}}</b></pre>
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
-        <ngb-rating [(rate)]="route.ratingTotal/route.votes"></ngb-rating>
+  <!-- Name Column -->
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Name
+    </th>
+    <td mat-cell *matCellDef="let route"> {{route.name}} </td>
+  </ng-container>
 
-        {{ route.ratingTotal/route.votes | number : '1.2-2'}}
+  <!-- Type Column -->
+  <ng-container matColumnDef="type">
+    <th mat-header-cell *matHeaderCellDef> Type
+    </th>
+    <td mat-cell *matCellDef="let route" [ngSwitch]="route.type">
+    <p *ngSwitchCase="0">Country</p>  
+    <p *ngSwitchCase="1">Region</p> 
+    <p *ngSwitchCase="2">City</p> 
+    </td>
+  </ng-container>
 
-        <button class="btn btn-sm btn-outline-success" (click)="updateRating(route, i)">
-          Vote
-        </button>
-      </div>
-
-      <div class="col text-right">
-        <button class="btn btn-info mr-1" [routerLink]="['/routes', route.id]">
-          <i class="fa fa-eye"></i>
-          See more
-        </button>
-      </div>
-
-    </div>
-
-    <hr>
-    <br>
-  </li>
-</ul>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
 
 <router-outlet></router-outlet>

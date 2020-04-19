@@ -11,6 +11,12 @@
           <a href="" data-target="#profile" data-toggle="tab" class="nav-link active">Profile</a>
         </li>
         <li class="nav-item">
+          <a href="" data-target="#followers" data-toggle="tab" class="nav-link">Followers</a>
+        </li>
+        <li class="nav-item">
+          <a href="" data-target="#follows" data-toggle="tab" class="nav-link">Follows</a>
+        </li>
+        <li class="nav-item">
           <a href="" data-target="#messages" data-toggle="tab" class="nav-link">Messages</a>
         </li>
       </ul>
@@ -48,6 +54,31 @@
           </div>
           <!--/row-->
         </div>
+
+        <div class="tab-pane" id="followers">
+          <table class="table table-sm table-hover table-striped">
+            <tbody *ngFor="let follower of this.currentUser.followers">
+              <tr>
+                <td>
+                  <strong>{{follower}}</strong>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="tab-pane" id="follows">
+          <table class="table table-sm table-hover table-striped">
+            <tbody *ngFor="let follow of this.currentUser.follows">
+              <tr>
+                <td>
+                  <strong>{{follow}}</strong>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
         <div class="tab-pane" id="messages">
           <div class="alert alert-info alert-dismissable">
             <a class="panel-close close" data-dismiss="alert">×</a> This is an <strong>.alert</strong>. Use this to show
