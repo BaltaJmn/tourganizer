@@ -49,19 +49,19 @@ export class EditUserComponent implements OnInit {
 
       this.loaded = false;
 
-      this.userService.getUser(this.id).subscribe((result) => {
+      this.userService.getUser(this.id).subscribe((result: any) => {
 
         this.currentUser = {
-          id: result.id,
-          username: result.data().username,
-          password: result.data().password,
-          email: result.data().email,
-          confirmed: result.data().confirmed,
-          rol: result.data().rol,
-          followers: result.data().followers,
-          follows: result.data().follows,
-          createdRoutes: result.data().createdRoutes,
-          savedRoutes: result.data().savedRoutes,
+          id: result.payload.id,
+          username: result.payload.data().username,
+          password: result.payload.data().password,
+          email: result.payload.data().email,
+          confirmed: result.payload.data().confirmed,
+          rol: result.payload.data().rol,
+          followers: result.payload.data().followers,
+          follows: result.payload.data().follows,
+          createdRoutes: result.payload.data().createdRoutes,
+          savedRoutes: result.payload.data().savedRoutes,
         }
 
         this.user.get("username").setValue(this.currentUser.username);

@@ -39,18 +39,18 @@ const routes: Routes = [
       },
       {
         path: 'add',
-        component: AddUserComponent,
+        component: AddUserComponent, canActivate: [AuthGuard]
       },
       {
         path: ':id',
         children: [
           {
             path: '',
-            component: ShowUserComponent,
+            component: ShowUserComponent, canActivate: [AuthGuard]
           },
           {
             path: 'edit',
-            component: EditUserComponent
+            component: EditUserComponent, canActivate: [AuthGuard]
           }
         ]
       }
@@ -65,18 +65,18 @@ const routes: Routes = [
       },
       {
         path: 'add',
-        component: AddRouteComponent,
+        component: AddRouteComponent, canActivate: [AuthGuard]
       },
       {
         path: ':id',
         children: [
           {
             path: '',
-            component: ShowRouteComponent,
+            component: ShowRouteComponent, canActivate: [AuthGuard]
           },
           {
             path: 'edit',
-            component: EditRouteComponent
+            component: EditRouteComponent, canActivate: [AuthGuard]
           }
         ]
       }
@@ -91,18 +91,18 @@ const routes: Routes = [
       },
       {
         path: 'add',
-        component: AddLocalizationComponent,
+        component: AddLocalizationComponent, canActivate: [AuthGuard]
       },
       {
         path: ':id',
         children: [
           {
             path: '',
-            component: ShowLocalizationComponent,
+            component: ShowLocalizationComponent, canActivate: [AuthGuard]
           },
           {
             path: 'edit',
-            component: EditLocalizationComponent
+            component: EditLocalizationComponent, canActivate: [AuthGuard]
           }
         ]
       }

@@ -30,6 +30,10 @@ export class UserService {
   }
 
   getUser(data) {
+    return this.db.collection('user').doc(data).snapshotChanges();
+  }
+
+  getNameByID(data) {
     return this.db.collection('user').doc(data).get();
   }
 
