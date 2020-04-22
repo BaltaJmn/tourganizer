@@ -34,7 +34,7 @@
     "express": "^4.17.1",
     "firebase": "^7.12.0",
     "hammerjs": "^2.0.8",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "leaflet": "^1.6.0",
     "leaflet-routing-machine": "^3.2.12",
     "mdbootstrap": "^4.15.0",

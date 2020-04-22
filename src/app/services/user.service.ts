@@ -1,6 +1,8 @@
 import { Injectable, Output } from '@angular/core';
 
 import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFireStorage } from '@angular/fire/storage';
+
 import { User } from '../interfaces/User';
 
 import Swal from 'sweetalert2'
@@ -22,6 +24,7 @@ export class UserService {
 
   constructor(
     private db: AngularFirestore,
+    private storage: AngularFireStorage,
     private emailService: EmailService,
     private router: Router) { }
 
@@ -81,6 +84,7 @@ export class UserService {
 
         this.currentUser = {
           id: result.docs[0].id,
+          profile: result.docs[0].data().profile,
           username: result.docs[0].data().username,
           password: result.docs[0].data().password,
           email: result.docs[0].data().email,
@@ -118,6 +122,7 @@ export class UserService {
   logOut() {
     this.currentUser = {
       id: null,
+      profile: null,
       username: null,
       password: null,
       email: null,
@@ -153,12 +158,22 @@ export class UserService {
       .set({ follows: this.currentUser.follows }, { merge: true });
   }
 
+  updateProfilePhoto(data){
+    return this.db.collection("user")
+      .doc(this.currentUser.id)
+      .set({ profile: data }, { merge: true });
+  }
+
   getCurrentUser() {
     return this.currentUser;
   }
 
   getCurrentUserId() {
     return this.currentUser.id;
+  }
+
+  getCurrentUserProfile() {
+    return this.currentUser.profile;
   }
 
   getCurrentUserName() {

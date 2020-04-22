@@ -31,6 +31,7 @@ export class IndexUserComponent implements OnInit {
 
         let userAux: User = {
           id: doc.payload.doc.id,
+          profile: doc.payload.doc.data().profile,
           username: doc.payload.doc.data().username,
           password: doc.payload.doc.data().password,
           email: doc.payload.doc.data().email,

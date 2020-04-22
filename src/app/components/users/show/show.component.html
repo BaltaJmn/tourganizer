@@ -155,14 +155,14 @@
     </div>
 
     <div class="col-lg-4 order-lg-1 text-center">
-      <img src="//placehold.it/150" class="mx-auto img-fluid img-circle d-block" alt="avatar">
+      <img src="{{currentUser.profile}}" class="mx-auto img-fluid img-circle d-block" alt="avatar" id="OpenImgUpload">
       <span class="badge badge-primary"><i class="fa fa-user"></i> {{currentUser.followers.length}} Followers</span>
       <span class="badge badge-primary"><i class="fa fa-user"></i> {{currentUser.follows.length}} Follows</span>
-      <h6 class="mt-2">Upload a different photo</h6>
+
       <label class="custom-file">
-        <input type="file" id="file" class="custom-file-input">
-        <span class="custom-file-control">Choose file</span>
+        <input type="file" id="imgupload" style="display:none" (change)="onFileSelected($event, currentUser.id)"/> 
       </label>
+
     </div>
 
   </div>

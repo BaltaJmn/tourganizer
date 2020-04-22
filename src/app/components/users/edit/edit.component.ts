@@ -21,6 +21,7 @@ export class EditUserComponent implements OnInit {
   id;
 
   user = new FormGroup({
+    profile: new FormControl('', [Validators.required]),
     username: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required]),
     email: new FormControl('', [Validators.required]),
@@ -53,6 +54,7 @@ export class EditUserComponent implements OnInit {
 
         this.currentUser = {
           id: result.payload.id,
+          profile: result.payload.data().profile,
           username: result.payload.data().username,
           password: result.payload.data().password,
           email: result.payload.data().email,
@@ -64,6 +66,7 @@ export class EditUserComponent implements OnInit {
           savedRoutes: result.payload.data().savedRoutes,
         }
 
+        this.user.get("profile").setValue(this.currentUser.profile);
         this.user.get("username").setValue(this.currentUser.username);
         this.user.get("password").setValue(this.currentUser.password);
         this.user.get("email").setValue(this.currentUser.email);
