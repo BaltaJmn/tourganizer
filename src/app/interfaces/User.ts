@@ -6,7 +6,11 @@ export interface User {
     password: string;
 
     email: string;
-    confirmed: boolean;
+    
+    config: {
+        confirmed: boolean,
+        language: string,
+    };
 
     rol: number;
 

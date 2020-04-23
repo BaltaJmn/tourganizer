@@ -1,0 +1,16 @@
+[debug] [2020-04-23T01:18:09.594Z] ----------------------------------------------------------------------
+[debug] [2020-04-23T01:18:09.596Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Balta\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js ext:install firestore-send-email --project=tourganizer-7fecf
+[debug] [2020-04-23T01:18:09.597Z] CLI Version:   8.1.1
+[debug] [2020-04-23T01:18:09.597Z] Platform:      win32
+[debug] [2020-04-23T01:18:09.597Z] Node Version:  v12.14.1
+[debug] [2020-04-23T01:18:09.598Z] Time:          Thu Apr 23 2020 03:18:09 GMT+0200 (GMT+02:00)
+[debug] [2020-04-23T01:18:09.598Z] ----------------------------------------------------------------------
+[debug] [2020-04-23T01:18:09.599Z] 
+[debug] [2020-04-23T01:18:09.613Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2020-04-23T01:18:09.758Z] Error: Could not load the default credentials. Browse to https://cloud.google.com/docs/authentication/getting-started for more information.
+    at GoogleAuth.getApplicationDefaultAsync (C:\Users\Balta\AppData\Roaming\npm\node_modules\firebase-tools\node_modules\google-auth-library\build\src\auth\googleauth.js:160:19)
+    at processTicksAndRejections (internal/process/task_queues.js:94:5)
+    at async GoogleAuth.getClient (C:\Users\Balta\AppData\Roaming\npm\node_modules\firebase-tools\node_modules\google-auth-library\build\src\auth\googleauth.js:502:17)
+    at async GoogleAuth.getAccessToken (C:\Users\Balta\AppData\Roaming\npm\node_modules\firebase-tools\node_modules\google-auth-library\build\src\auth\googleauth.js:524:24)
+[error] 
+[error] Error: An unexpected error has occurred.

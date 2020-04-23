@@ -61,7 +61,10 @@ export class UserService {
       if (result.empty) {
         this.db.collection("user").add(data);
 
-        this.emailService.sendEmail();
+        this.emailService.sendEmail("http://localhost:5000/", data).subscribe((data) => {
+          let res: any = data;
+          console.log(res);
+        });
 
         Swal.fire(
           'Succesfully Registered!',
@@ -88,7 +91,7 @@ export class UserService {
           username: result.docs[0].data().username,
           password: result.docs[0].data().password,
           email: result.docs[0].data().email,
-          confirmed: result.docs[0].data().confirmed,
+          config: result.docs[0].data().config,
           rol: result.docs[0].data().rol,
           followers: result.docs[0].data().followers,
           follows: result.docs[0].data().follows,
@@ -126,7 +129,7 @@ export class UserService {
       username: null,
       password: null,
       email: null,
-      confirmed: null,
+      config: null,
       rol: null,
       followers: null,
       follows: null,
@@ -158,7 +161,7 @@ export class UserService {
       .set({ follows: this.currentUser.follows }, { merge: true });
   }
 
-  updateProfilePhoto(data){
+  updateProfilePhoto(data) {
     return this.db.collection("user")
       .doc(this.currentUser.id)
       .set({ profile: data }, { merge: true });
@@ -188,8 +191,8 @@ export class UserService {
     return this.currentUser.email;
   }
 
-  getCurrentUserConfirmed() {
-    return this.currentUser.confirmed;
+  getCurrentUserConfig() {
+    return this.currentUser.config;
   }
 
   getCurrentUserRol() {

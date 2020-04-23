@@ -1,0 +1,6 @@
+{
+    "/api": {
+        "target": "https://enigmatic-hamlet-67391.herokuapp.com",
+        "secure": false
+    }
+}

@@ -26,7 +26,7 @@ export class EditUserComponent implements OnInit {
     password: new FormControl('', [Validators.required]),
     email: new FormControl('', [Validators.required]),
     rol: new FormControl(0, [Validators.required]),
-    confirmed: new FormControl(false, [Validators.required]),
+    config: new FormControl({}, [Validators.required]),
     followers: new FormControl([], [Validators.required]),
     follows: new FormControl([], [Validators.required]),
     createdRoutes: new FormControl([], [Validators.required]),
@@ -58,7 +58,7 @@ export class EditUserComponent implements OnInit {
           username: result.payload.data().username,
           password: result.payload.data().password,
           email: result.payload.data().email,
-          confirmed: result.payload.data().confirmed,
+          config: result.payload.data().config,
           rol: result.payload.data().rol,
           followers: result.payload.data().followers,
           follows: result.payload.data().follows,
@@ -70,7 +70,7 @@ export class EditUserComponent implements OnInit {
         this.user.get("username").setValue(this.currentUser.username);
         this.user.get("password").setValue(this.currentUser.password);
         this.user.get("email").setValue(this.currentUser.email);
-        this.user.get("confirmed").setValue(this.currentUser.confirmed);
+        this.user.get("config").setValue(this.currentUser.config);
         this.user.get("rol").setValue(this.currentUser.rol);
         this.user.get("followers").setValue(this.currentUser.followers);
         this.user.get("follows").setValue(this.currentUser.follows);
