@@ -48,4 +48,30 @@ export class LocalizationService {
       .doc(data)
       .delete()
   };
+
+  like(localizationId, userId) {
+    console.log("like");
+    this.getLocalization(localizationId).subscribe((localization) => {
+      let likesArray = localization.data().likes;
+
+      likesArray.push(userId);
+
+      return this.db.collection("localization")
+        .doc(localizationId)
+        .set({ likes: likesArray }, { merge: true });
+    });
+  };
+
+  dislike(localizationId, userId) {
+    console.log("dislike");
+    this.getLocalization(localizationId).subscribe((localization) => {
+      let likesArray = localization.data().likes;
+
+      likesArray.splice(likesArray.indexOf(userId), 1)
+
+      return this.db.collection("localization")
+        .doc(localizationId)
+        .set({ likes: likesArray }, { merge: true });
+    });
+  };
 }

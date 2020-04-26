@@ -21,7 +21,8 @@
 <br>
 
 <div class="row">
-  <div class="card" style="width: 18rem;" *ngFor="let localization of localizations | filter: {name: filter.name} : false">
+  <div class="card" style="width: 18rem;"
+    *ngFor="let localization of localizations | filter: {name: filter.name} : false">
     <img class="card-img-top" src="{{localization.images[0]}}" alt="{{localization.name}}">
     <div class="card-body">
       <h5 class="card-title">{{localization.name}}</h5>
@@ -29,11 +30,23 @@
         {{localization.description}}
       </p>
     </div>
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item">
-        <i class="fas fa-heart"></i>{{localization.likes}}
-      </li>
-    </ul>
+
+    <div *ngIf="localization.likes.includes(this.currentUser.id)">
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item" (click)="this.localizationService.dislike(localization.id, this.currentUser.id)">
+          <i class="fas fa-heart"></i>{{localization.likes.length}}
+        </li>
+      </ul>
+    </div>
+
+    <div *ngIf="!localization.likes.includes(this.currentUser.id)">
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item" (click)="this.localizationService.like(localization.id, this.currentUser.id)">
+          <i class="far fa-heart"></i>{{localization.likes.length}}
+        </li>
+      </ul>
+    </div>
+
     <div class="card-body">
       <a [routerLink]="['/localizations', localization.id]" class="card-link">
         <i class="fa fa-eye"></i>

@@ -36,7 +36,6 @@ export class IndexUserComponent implements OnInit {
           password: doc.payload.doc.data().password,
           email: doc.payload.doc.data().email,
           config: doc.payload.doc.data().config,
-          rol: doc.payload.doc.data().rol,
           followers: doc.payload.doc.data().followers,
           follows: doc.payload.doc.data().follows,
           createdRoutes: doc.payload.doc.data().createdRoutes,

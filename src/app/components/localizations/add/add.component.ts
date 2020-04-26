@@ -19,7 +19,7 @@ export class AddLocalizationComponent implements OnInit {
     userId: new FormControl('', [Validators.required]),
     name: new FormControl('', [Validators.required]),
     description: new FormControl('', [Validators.required]),
-    likes: new FormControl(0, [Validators.required]),
+    likes: new FormControl({}, [Validators.required]),
     latitude: new FormControl(0, [Validators.required]),
     longitude: new FormControl(0, [Validators.required]),
     url: new FormControl('', [Validators.required]),

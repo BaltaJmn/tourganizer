@@ -5,9 +5,9 @@ import { UserService } from '../../../services/user.service';
 
 import { Localization } from 'src/app/interfaces/Localization';
 import { Filter } from '../../../interfaces/Filter';
+import { User } from '../../../interfaces/User';
 
 import Swal from 'sweetalert2'
-
 
 @Component({
   selector: 'app-index',
@@ -15,6 +15,8 @@ import Swal from 'sweetalert2'
   styleUrls: ['./index.component.css']
 })
 export class IndexLocalizationComponent implements OnInit {
+
+  public currentUser: User;
 
   public filter: Filter = {
     name: ''
@@ -24,8 +26,10 @@ export class IndexLocalizationComponent implements OnInit {
 
   constructor(
     public userService: UserService,
-    private localizationService: LocalizationService
-  ) { }
+    public localizationService: LocalizationService
+  ) {
+    this.currentUser = this.userService.getCurrentUser();
+  }
 
   ngOnInit() {
     this.localizationService.getLocalizations().subscribe((localizationsSnapshot) => {

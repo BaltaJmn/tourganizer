@@ -59,7 +59,6 @@ export class EditUserComponent implements OnInit {
           password: result.payload.data().password,
           email: result.payload.data().email,
           config: result.payload.data().config,
-          rol: result.payload.data().rol,
           followers: result.payload.data().followers,
           follows: result.payload.data().follows,
           createdRoutes: result.payload.data().createdRoutes,
@@ -71,7 +70,6 @@ export class EditUserComponent implements OnInit {
         this.user.get("password").setValue(this.currentUser.password);
         this.user.get("email").setValue(this.currentUser.email);
         this.user.get("config").setValue(this.currentUser.config);
-        this.user.get("rol").setValue(this.currentUser.rol);
         this.user.get("followers").setValue(this.currentUser.followers);
         this.user.get("follows").setValue(this.currentUser.follows);
         this.user.get("createdRoutes").setValue(this.currentUser.createdRoutes);

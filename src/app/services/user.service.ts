@@ -57,11 +57,11 @@ export class UserService {
   }
 
   register(data) {
-    return this.db.collection("user", ref => ref.where('username', '==', data.email).where('password', '==', data.password)).get().subscribe((result) => {
+    return this.db.collection("user", ref => ref.where('username', '==', data.username).where('email', '==', data.email)).get().subscribe((result) => {
       if (result.empty) {
         this.db.collection("user").add(data);
 
-        this.emailService.sendEmail("http://localhost:5000/", data).subscribe((data) => {
+        this.emailService.sendEmail("https://enigmatic-hamlet-67391.herokuapp.com/email/register", data).subscribe((data) => {
           let res: any = data;
           console.log(res);
         });
@@ -92,7 +92,6 @@ export class UserService {
           password: result.docs[0].data().password,
           email: result.docs[0].data().email,
           config: result.docs[0].data().config,
-          rol: result.docs[0].data().rol,
           followers: result.docs[0].data().followers,
           follows: result.docs[0].data().follows,
           createdRoutes: result.docs[0].data().createdRoutes,
@@ -130,7 +129,6 @@ export class UserService {
       password: null,
       email: null,
       config: null,
-      rol: null,
       followers: null,
       follows: null,
       createdRoutes: null,
@@ -193,10 +191,6 @@ export class UserService {
 
   getCurrentUserConfig() {
     return this.currentUser.config;
-  }
-
-  getCurrentUserRol() {
-    return this.currentUser.rol;
   }
 
   getCurrentUserFollowers() {

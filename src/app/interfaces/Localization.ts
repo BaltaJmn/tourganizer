@@ -7,7 +7,8 @@ export interface Localization {
     latitude: string;
     longitude: string;
 
-    likes: number;
+    likes: Array<string>;
+    
     url: string;
 
     images: Array<string>;

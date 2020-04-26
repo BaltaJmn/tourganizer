@@ -1,6 +1,7 @@
 {
-    "/api": {
-        "target": "https://enigmatic-hamlet-67391.herokuapp.com",
-        "secure": false
-    }
+  "/email/*": {
+    "target": "https://enigmatic-hamlet-67391.herokuapp.com",
+    "secure": false,
+    "logLevel": "debug"
+  }
 }
