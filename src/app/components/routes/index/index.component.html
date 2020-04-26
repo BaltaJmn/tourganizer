@@ -14,7 +14,9 @@
 <mat-form-field>
   <input matInput class="form-field" [formControl]="nameFilter" placeholder="Name">
 </mat-form-field>
-<br />
+
+<br>
+
 <mat-form-field>
   <mat-label>Type</mat-label>
   <mat-select matNativeControl [formControl]="typeFilter">
@@ -24,7 +26,8 @@
     <mat-option value="2">City</mat-option>
   </mat-select>
 </mat-form-field>
-<br />
+
+<br>
 
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
@@ -40,9 +43,39 @@
     <th mat-header-cell *matHeaderCellDef> Type
     </th>
     <td mat-cell *matCellDef="let route" [ngSwitch]="route.type">
-    <p *ngSwitchCase="0">Country</p>  
-    <p *ngSwitchCase="1">Region</p> 
-    <p *ngSwitchCase="2">City</p> 
+      <p *ngSwitchCase="0">Country</p>
+      <p *ngSwitchCase="1">Region</p>
+      <p *ngSwitchCase="2">City</p>
+    </td>
+  </ng-container>
+
+  <!-- Rate Column -->
+  <ng-container matColumnDef="rate">
+    <th mat-header-cell *matHeaderCellDef> Rating
+    </th>
+    <td mat-cell *matCellDef="let route" [ngSwitch]="route.rating.votes.length">
+
+      <div *ngSwitchCase="0">
+        <p>No votes</p>
+        <ngb-rating [(rate)]="route.rating.show" (rateChange)="this.routeService.updateRouteRating(route, $event, this.userService.getCurrentUserId())"></ngb-rating>
+      </div>
+
+      <div *ngSwitchDefault>
+        <p>{{route.rating.show | number : '1.2-2'}}</p>
+        <ngb-rating [(rate)]="route.rating.show" (rateChange)="this.routeService.updateRouteRating(route, $event, this.userService.getCurrentUserId())"></ngb-rating>
+      </div>
+
+    </td>
+  </ng-container>
+
+  <!-- Actions Column -->
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef> Actions
+    </th>
+    <td mat-cell *matCellDef="let route">
+      <a [routerLink]="['/routes', route.id]" class="card-link">
+        <i class="fa fa-eye"></i>
+      </a>
     </td>
   </ng-container>
 

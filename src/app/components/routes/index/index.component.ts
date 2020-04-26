@@ -4,11 +4,11 @@ import { UserService } from '../../../services/user.service';
 import { RouteService } from '../../../services/route.service';
 
 import { Route } from '../../../interfaces/Route';
-import { Filter } from '../../../interfaces/Filter';
 
-import Swal from 'sweetalert2'
 import { FormControl } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material';
+
+import Swal from 'sweetalert2'
 
 @Component({
   selector: 'app-index',
@@ -17,10 +17,13 @@ import { MatTableDataSource } from '@angular/material';
 })
 export class IndexRouteComponent implements OnInit {
 
-  ratingVariable = [];
+  total = 10;
+  votos = 1;
+  show = 10;
+
   routes: Route[];
 
-  displayedColumns: string[] = ['name', 'type'];
+  displayedColumns: string[] = ['name', 'type', 'rate', 'actions'];
   dataSource;
 
   nameFilter = new FormControl();
@@ -30,7 +33,7 @@ export class IndexRouteComponent implements OnInit {
 
   constructor(
     public userService: UserService,
-    private routeService: RouteService
+    public routeService: RouteService
   ) { }
 
   ngOnInit() {
@@ -46,13 +49,11 @@ export class IndexRouteComponent implements OnInit {
           name: doc.payload.doc.data().name,
           type: doc.payload.doc.data().type,
           totalTime: doc.payload.doc.data().totalTime,
-          ratingTotal: doc.payload.doc.data().ratingTotal,
-          votes: doc.payload.doc.data().votes,
+          rating: doc.payload.doc.data().rating,
           localizations: doc.payload.doc.data().localizations,
         }
 
         this.routes.push(routeAux);
-        this.ratingVariable.push(routeAux.ratingTotal / routeAux.votes);
 
       });
 
@@ -72,20 +73,6 @@ export class IndexRouteComponent implements OnInit {
     });
   };
 
-  updateRating(route, index) {
-    route.votes++;
-    route.ratingTotal += this.ratingVariable[index];
-    this.ratingVariable[index] = route.ratingTotal / route.votes;
-
-    this.routeService.updateRouteRating(route).then(() => {
-      Swal.fire(
-        'Thank you!',
-        'Your vote was save succesfully!',
-        'success'
-      )
-    });
-  };
-
   customFilterPredicate() {
     const myFilterPredicate = function (data: Route, filter: string): boolean {
       let searchString = JSON.parse(filter);
@@ -100,5 +87,5 @@ export class IndexRouteComponent implements OnInit {
       }
     }
     return myFilterPredicate;
-  }
+  };
 }

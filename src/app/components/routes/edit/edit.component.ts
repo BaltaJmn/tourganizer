@@ -35,8 +35,7 @@ export class EditRouteComponent implements OnInit {
     name: new FormControl('', [Validators.required]),
     type: new FormControl(0, [Validators.required]),
     totalTime: new FormControl(0, [Validators.required]),
-    ratingTotal: new FormControl(0, [Validators.required]),
-    votes: new FormControl(0, [Validators.required]),
+    rating: new FormControl({ show: 0, total: 0, votes: [] }, [Validators.required]),
     localizations: new FormControl([], [Validators.required])
   });
 
@@ -66,8 +65,7 @@ export class EditRouteComponent implements OnInit {
           name: result.data().name,
           type: result.data().type,
           totalTime: result.data().totalTime,
-          ratingTotal: result.data().ratingTotal,
-          votes: result.data().votes,
+          rating: result.data().rating,
           localizations: result.data().localizations
         };
 
@@ -99,8 +97,7 @@ export class EditRouteComponent implements OnInit {
         this.route.get("name").setValue(this.currentRoute.name);
         this.route.get("type").setValue(this.currentRoute.type);
         this.route.get("totalTime").setValue(this.currentRoute.totalTime);
-        this.route.get("ratingTotal").setValue(this.currentRoute.ratingTotal);
-        this.route.get("votes").setValue(this.currentRoute.votes);
+        this.route.get("rating").setValue(this.currentRoute.rating);
         this.route.get("localizations").setValue(this.currentRoute.localizations);
 
         this.loaded = true;

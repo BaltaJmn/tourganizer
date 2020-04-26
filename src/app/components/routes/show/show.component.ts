@@ -34,8 +34,7 @@ export class ShowRouteComponent implements OnInit {
           name: result.data().name,
           type: result.data().type,
           totalTime: result.data().totalTime,
-          ratingTotal: result.data().ratingTotal,
-          votes: result.data().votes,
+          rating: result.data().rating,
           localizations: result.data().localizations
         };
 

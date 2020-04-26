@@ -4,4 +4,5 @@ export interface Notification {
     sender: string;
     receiver: string;
     seen?: boolean;
+    date?: Date;
 }

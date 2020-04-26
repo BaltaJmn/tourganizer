@@ -31,8 +31,7 @@ export class AddRouteComponent implements OnInit {
     name: new FormControl('', [Validators.required]),
     type: new FormControl(0, [Validators.required]),
     totalTime: new FormControl(0, [Validators.required]),
-    ratingTotal: new FormControl(0, [Validators.required]),
-    votes: new FormControl(0, [Validators.required]),
+    rating: new FormControl({ show: 0, total: 0, votes: [] }, [Validators.required]),
     localizations: new FormControl([], [Validators.required])
   });
 
@@ -63,13 +62,13 @@ export class AddRouteComponent implements OnInit {
           likes: doc.payload.doc.data().likes,
           url: doc.payload.doc.data().url
         }
-        
+
         this.localizations.push(localizationAux);
       })
       this.localizations = Object.values(this.localizations);
       this.loaded = true;
     });
-  }
+  };
 
   onSubmit(route: FormGroup) {
     this.route.get("userId").setValue(this.userService.getCurrentUserId());
@@ -86,16 +85,16 @@ export class AddRouteComponent implements OnInit {
           content: `${this.userService.getCurrentUserName()} a creado una nueva ruta llamada ${this.route.get("name").value}`,
           sender: sender,
           receiver: receiver,
-          seen: false
+          seen: false,
+          date: new Date
         };
 
         this.notificationService.createNotification(notification);
-      })
+      });
 
-      Swal.fire('Great!', 'Your route was updated succesfully!', 'success').then(() => {
+      Swal.fire('Great!', 'Your route was created succesfully!', 'success').then(() => {
         this.router.navigate(['/routes']);
       });
     });
-  }
-
+  };
 }

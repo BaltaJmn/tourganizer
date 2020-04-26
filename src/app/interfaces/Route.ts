@@ -6,8 +6,11 @@ export interface Route {
 
     totalTime: number;
     
-    ratingTotal: number;
-    votes: number;
+    rating: {
+        show: number;
+        total: number;
+        votes: Array<string>;
+    };
 
     localizations: Array<string>;
 }

@@ -14,5 +14,16 @@
 
   <input type="text" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="email" formControlName="email">
 
+  <mat-form-field>
+    <mat-label>Rol</mat-label>
+    <mat-select matNativeControl [(ngModel)]="rol" [ngModelOptions]="{standalone: true}">
+      <mat-option value="0">Admin</mat-option>
+      <mat-option value="1">Moderator</mat-option>
+      <mat-option value="2">User</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <br>
+
   <button mdbBtn color="info" block="true" class="my-4" type="submit">Add</button>
 </form>

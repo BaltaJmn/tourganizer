@@ -24,12 +24,14 @@ export class AddUserComponent implements OnInit {
   fileRef;
   downloadURL;
 
+  rol;
+
   user = new FormGroup({
     profile: new FormControl(null, [Validators.required]),
     username: new FormControl(null, [Validators.required]),
     password: new FormControl(null, [Validators.required]),
     email: new FormControl(null, [Validators.required]),
-    config: new FormControl({ confirmed: false, lang: "es", rol: 0 }),
+    config: new FormControl({}),
     followers: new FormControl([]),
     follows: new FormControl([]),
     createdRoutes: new FormControl([]),
@@ -55,6 +57,7 @@ export class AddUserComponent implements OnInit {
             this.storage = url;
 
             this.user.get("profile").setValue(this.storage);
+            this.user.get("config").setValue({ confirmed: false, lang: "es", rol: this.rol });
 
             this.userService.createUser(user.value).then(() => {
               Swal.fire('Great!', 'Your user was updated succesfully!', 'success').then(() => {
@@ -66,9 +69,7 @@ export class AddUserComponent implements OnInit {
         });
       })
     ).subscribe(url => {
-      if (url) {
-        console.log(`La url 2 ${url.downloadURL}`);
-      }
+      if (url) { }
     });
   };
 
