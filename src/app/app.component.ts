@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 
 import { UserService } from './services/user.service';
 
@@ -15,6 +16,7 @@ export class AppComponent {
   constructor(
     private translate: TranslateService,
     private route: ActivatedRoute,
+    private cookieService: CookieService,
     private userService: UserService
   ) {
     translate.setDefaultLang('es');
@@ -24,7 +26,15 @@ export class AppComponent {
 
       if (conf != null) {
         this.userService.confirmUser(conf);
-      }
+      };
     });
+
+    if (cookieService.check('login')) {
+      let username = cookieService.get('login');
+
+      this.userService.getUserByName(username).subscribe((user) => {
+        this.userService.login(user.docs[0].data());
+      })
+    }
   }
 }

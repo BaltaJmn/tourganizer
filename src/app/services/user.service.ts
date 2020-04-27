@@ -5,10 +5,12 @@ import { AngularFireStorage } from '@angular/fire/storage';
 
 import { User } from '../interfaces/User';
 
-import Swal from 'sweetalert2'
 import { Router } from '@angular/router';
 import { EventEmitter } from '@angular/core';
 import { EmailService } from './email.service';
+import { CookieService } from 'ngx-cookie-service';
+
+import Swal from 'sweetalert2'
 
 @Injectable({
   providedIn: 'root'
@@ -21,11 +23,13 @@ export class UserService {
 
   private currentUser: User;
   private logged: boolean = false;
+  private confirmed: boolean = false;
 
   constructor(
     private db: AngularFirestore,
     private storage: AngularFireStorage,
     private emailService: EmailService,
+    private cookieService: CookieService,
     private router: Router) { }
 
   getUsers() {
@@ -37,7 +41,7 @@ export class UserService {
   }
 
   getUserByName(data) {
-    return this.db.collection('user', ref => ref.where('username', '==', data)).snapshotChanges();
+    return this.db.collection('user', ref => ref.where('username', '==', data)).get();
   }
 
   createUser(data) {
@@ -62,9 +66,9 @@ export class UserService {
         this.db.collection("user").add(data).then(() => {
 
           this.getUserByName(data.username).subscribe((result: any) => {
-          
+
             console.log(result[0].payload.doc.data());
-          
+
             let userAux = {
               id: result[0].payload.doc.id,
               profile: result[0].payload.doc.data().profile,
@@ -95,7 +99,7 @@ export class UserService {
           'Error!',
           'Your username is already taken!',
           'error'
-        )
+        );
       }
     });
   };
@@ -118,10 +122,13 @@ export class UserService {
         }
 
         this.logged = true;
+        this.confirmed = this.currentUser.config.confirmed;
 
         this.loggedEmitter.emit(this.logged);
         this.userEmitter.emit(this.currentUser);
         this.notificationUSEmitter.emit("notification");
+
+        this.cookieService.set('login', this.currentUser.username);
 
         this.router.navigate(['/home']);
 
@@ -154,7 +161,10 @@ export class UserService {
       savedRoutes: null,
     };
 
+    this.cookieService.delete('login');
+
     this.logged = false;
+    this.confirmed = false;
 
     this.loggedEmitter.emit(this.logged);
     this.userEmitter.emit(this.currentUser);
@@ -241,5 +251,9 @@ export class UserService {
 
   getLogged() {
     return this.logged;
+  }
+
+  getConfirmed(){
+    return this.confirmed;
   }
 }

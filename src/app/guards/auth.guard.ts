@@ -3,6 +3,8 @@ import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Rout
 import { Observable } from 'rxjs';
 import { UserService } from '../services/user.service';
 
+import Swal from 'sweetalert2'
+
 @Injectable({
   providedIn: 'root'
 })
@@ -18,6 +20,13 @@ export class AuthGuard implements CanActivate {
       return true;
     } else {
       this.router.navigate(['/login']);
+
+      Swal.fire(
+        'Error!',
+        'Your user must be confirmed!',
+        'error'
+      );
+
       return false;
     }
   }
