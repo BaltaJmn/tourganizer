@@ -13,15 +13,15 @@ import Swal from 'sweetalert2'
 export class RegisterComponent implements OnInit {
 
   user = new FormGroup({
-    username: new FormControl('', [Validators.required]),
-    email: new FormControl('', [Validators.required]),
-    password: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(20)]),
-    confirmed: new FormControl(false),
-    createdRoutes: new FormControl([]),
-    savedRoutes: new FormControl([]),
+    profile: new FormControl(null),
+    username: new FormControl(null, [Validators.required]),
+    password: new FormControl(null, [Validators.required]),
+    email: new FormControl(null, [Validators.required]),
+    config: new FormControl({}),
     followers: new FormControl([]),
     follows: new FormControl([]),
-    rol: new FormControl(3),
+    createdRoutes: new FormControl([]),
+    savedRoutes: new FormControl([]),
   });
 
   constructor(
@@ -33,7 +33,7 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit(user: FormGroup) {
-    console.log(user.value);
+    this.user.get("config").setValue({ confirmed: false, lang: "es", rol: "2" });
     this.userService.register(user.value);
   }
 }

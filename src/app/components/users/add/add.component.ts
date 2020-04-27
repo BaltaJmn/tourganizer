@@ -27,7 +27,7 @@ export class AddUserComponent implements OnInit {
   rol;
 
   user = new FormGroup({
-    profile: new FormControl(null, [Validators.required]),
+    profile: new FormControl(null),
     username: new FormControl(null, [Validators.required]),
     password: new FormControl(null, [Validators.required]),
     email: new FormControl(null, [Validators.required]),

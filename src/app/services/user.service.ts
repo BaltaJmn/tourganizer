@@ -36,8 +36,8 @@ export class UserService {
     return this.db.collection('user').doc(data).snapshotChanges();
   }
 
-  getNameByID(data) {
-    return this.db.collection('user').doc(data).get();
+  getUserByName(data) {
+    return this.db.collection('user', ref => ref.where('username', '==', data)).snapshotChanges();
   }
 
   createUser(data) {
@@ -59,11 +59,30 @@ export class UserService {
   register(data) {
     return this.db.collection("user", ref => ref.where('username', '==', data.username).where('email', '==', data.email)).get().subscribe((result) => {
       if (result.empty) {
-        this.db.collection("user").add(data);
+        this.db.collection("user").add(data).then(() => {
 
-        this.emailService.sendEmail("https://enigmatic-hamlet-67391.herokuapp.com/email/register", data).subscribe((data) => {
-          let res: any = data;
-          console.log(res);
+          this.getUserByName(data.username).subscribe((result: any) => {
+          
+            console.log(result[0].payload.doc.data());
+          
+            let userAux = {
+              id: result[0].payload.doc.id,
+              profile: result[0].payload.doc.data().profile,
+              username: result[0].payload.doc.data().username,
+              password: result[0].payload.doc.data().password,
+              email: result[0].payload.doc.data().email,
+              config: result[0].payload.doc.data().config,
+              followers: result[0].payload.doc.data().followers,
+              follows: result[0].payload.doc.data().follows,
+              createdRoutes: result[0].payload.doc.data().createdRoutes,
+              savedRoutes: result[0].payload.doc.data().savedRoutes,
+            };
+
+            this.emailService.sendEmail("https://enigmatic-hamlet-67391.herokuapp.com/email/register", userAux).subscribe((res) => {
+              let resAux: any = res;
+              console.log(resAux);
+            });
+          })
         });
 
         Swal.fire(
@@ -157,6 +176,17 @@ export class UserService {
     return this.db.collection("user")
       .doc(this.currentUser.id)
       .set({ follows: this.currentUser.follows }, { merge: true });
+  }
+
+  confirmUser(id) {
+    this.getUser(id).subscribe((user: any) => {
+      let configAux = user.payload.data().config;
+      configAux.confirmed = true;
+
+      return this.db.collection("user")
+        .doc(id)
+        .set({ config: configAux }, { merge: true });
+    });
   }
 
   updateProfilePhoto(data) {
