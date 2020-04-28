@@ -2,6 +2,7 @@ import { Injectable, Output } from '@angular/core';
 
 import { AngularFirestore } from 'angularfire2/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
+import { TranslateService } from '@ngx-translate/core';
 
 import { User } from '../interfaces/User';
 
@@ -30,6 +31,7 @@ export class UserService {
     private storage: AngularFireStorage,
     private emailService: EmailService,
     private cookieService: CookieService,
+    private translate: TranslateService,
     private router: Router) { }
 
   getUsers() {
@@ -205,6 +207,19 @@ export class UserService {
       .set({ profile: data }, { merge: true });
   }
 
+  saveConfig(data) {
+
+    let configAux = this.currentUser.config;
+
+    configAux.lang = data.lang;
+
+    this.translate.setDefaultLang(data.lang);
+
+    return this.db.collection("user")
+      .doc(this.currentUser.id)
+      .set({ config: configAux }, { merge: true });
+  }
+
   getCurrentUser() {
     return this.currentUser;
   }
@@ -253,7 +268,7 @@ export class UserService {
     return this.logged;
   }
 
-  getConfirmed(){
+  getConfirmed() {
     return this.confirmed;
   }
 }

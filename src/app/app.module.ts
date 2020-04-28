@@ -85,6 +85,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import {MatBadgeModule} from '@angular/material'
 import { FilterPipe } from './pipes/filter.pipe';
 
 // import ngx-translate and the http loader
@@ -169,6 +170,7 @@ import { CookieService } from 'ngx-cookie-service';
     MatTableModule,
     MatSortModule,
     MatPaginatorModule,
+    MatBadgeModule,
 
     // ngx-translate and the loader module
     HttpClientModule,

@@ -19,6 +19,9 @@
         <li class="nav-item">
           <a href="" data-target="#messages" data-toggle="tab" class="nav-link">Messages</a>
         </li>
+        <li class="nav-item">
+          <a href="" data-target="#config" data-toggle="tab" class="nav-link">Config</a>
+        </li>
       </ul>
       <div class="tab-content py-4">
         <div class="tab-pane active" id="profile">
@@ -151,6 +154,29 @@
             </tbody>
           </table>
         </div>
+
+        <div class="tab-pane" id="config">
+          <mat-card>
+            <mat-card-content>
+              <h2 class="example-h2">User Config</h2>
+
+              <section class="example-section">
+                <label id="example-radio-group-label">Select your language</label><br>
+                <mat-radio-group name="languageList" fxLayout="column" [(ngModel)]="config.lang">
+                  <mat-radio-button *ngFor="let language of languages" [value]="language.id" name="languageList">
+                    {{language.name}}
+                  </mat-radio-button>
+                </mat-radio-group>
+              </section>
+              
+              <section class="example-section">
+                <button mdbBtn color="info" block="true" class="my-4"
+                  (click)="this.userService.saveConfig(config)">Save</button>
+              </section>
+            </mat-card-content>
+          </mat-card>
+        </div>
+
       </div>
     </div>
 
@@ -160,7 +186,7 @@
       <span class="badge badge-primary"><i class="fa fa-user"></i> {{currentUser.follows.length}} Follows</span>
 
       <label class="custom-file">
-        <input type="file" id="imgupload" style="display:none" (change)="onFileSelected($event)"/> 
+        <input type="file" id="imgupload" style="display:none" (change)="onFileSelected($event)" />
       </label>
 
     </div>

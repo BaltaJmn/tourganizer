@@ -34,6 +34,7 @@ export class AppComponent {
 
       this.userService.getUserByName(username).subscribe((user) => {
         this.userService.login(user.docs[0].data());
+        translate.setDefaultLang(user.docs[0].data().config.lang);
       })
     }
   }

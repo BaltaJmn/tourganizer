@@ -9,7 +9,7 @@ export interface User {
 
     config: {
         confirmed: boolean,
-        language: string,
+        lang: string,
         rol: number;
     };
 

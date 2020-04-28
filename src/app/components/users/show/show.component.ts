@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AngularFireStorage } from '@angular/fire/storage';
+import { FormControl, Validators } from '@angular/forms';
 import { finalize } from 'rxjs/operators';
 
 import { UserService } from '../../../services/user.service';
@@ -9,7 +10,6 @@ import { User } from '../../../interfaces/User';
 
 import * as $ from "jquery";
 import Swal from 'sweetalert2'
-
 
 @Component({
   selector: 'app-show',
@@ -24,6 +24,15 @@ export class ShowUserComponent implements OnInit {
   filePath;
   fileRef;
   downloadURL;
+
+  //Languages Config
+  languages = [
+    { id: "es", name: "spanish" },
+    { id: "en", name: "english" }
+  ]
+  config = {
+    lang: null
+  };
 
   currentUser: User = {
     id: null,
@@ -71,7 +80,9 @@ export class ShowUserComponent implements OnInit {
           follows: result.payload.data().follows,
           createdRoutes: result.payload.data().createdRoutes,
           savedRoutes: result.payload.data().savedRoutes,
-        }
+        };
+
+        this.config.lang = this.currentUser.config.lang;
 
         this.currentUser.followers.forEach((followerID) => {
           this.userService.getUser(followerID).subscribe((result: any) => {
@@ -165,14 +176,14 @@ export class ShowUserComponent implements OnInit {
             this.downloadURL.subscribe(url => {
               if (url) {
                 this.storage = url;
-                
+
                 console.log(this.storage);
 
                 this.userService.updateProfilePhoto(this.storage);
               }
             });
           })
-          
+
         ).subscribe(url => {
           if (url) { }
         });

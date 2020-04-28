@@ -18,6 +18,7 @@ export class HeaderComponent implements OnInit {
   public currentUser: User;
 
   public notifications = [];
+  public notificationsNumber = this.notifications.length;
 
   constructor(
     public userService: UserService,

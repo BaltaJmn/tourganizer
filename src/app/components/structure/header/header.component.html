@@ -34,8 +34,7 @@
             <div *ngIf="notifications.length; else noNotifications">
               <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-bell"></i>
-                <span class="badge badge-light">{{notifications.length}}</span>
+                <mat-icon [matBadge]="notifications.length" matBadgeColor="warn">notifications</mat-icon>
               </button>
 
               <div class="dropdown-menu" *ngFor="let notification of notifications; let i = index">
@@ -91,7 +90,7 @@
     <ng-template #noNotifications>
       <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
         aria-expanded="false">
-        <i class="far fa-bell"></i>
+        <mat-icon matBadgeColor="warn">notifications_none</mat-icon>
       </button>
       <div class="dropdown-menu">
         <p>There is no notifications</p>
