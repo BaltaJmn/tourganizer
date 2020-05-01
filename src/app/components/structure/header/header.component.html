@@ -1,101 +1,49 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<mat-toolbar color="primary">
+  <mat-nav-list>
+    <mat-list-item>
+      <mat-icon matListIcon>home</mat-icon>
+      <h3 matLine> (Main icon) </h3>
+    </mat-list-item>
 
-  <a class="navbar-brand" routerLink="home">Tourganizer</a>
+    <mat-list-item routerLink="home">
+      <mat-icon matListIcon>home</mat-icon>
+      <h3 matLine> {{ 'header.home' | translate}} </h3>
+    </mat-list-item>
 
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
-    aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+    <mat-list-item routerLink="routes">
+      <mat-icon matListIcon>explore</mat-icon>
+      <h3 matLine> {{ 'header.routes' | translate}} </h3>
+    </mat-list-item>
 
-  <div class="navbar-collapse collapse justify-content-between" id="navbarNav">
-    <ul class="navbar-nav">
-      <li class="nav-item active">
-        <a class="nav-link" routerLink="home">{{ 'header.home' | translate}}</a>
-      </li>
+    <mat-list-item routerLink="localizations">
+      <mat-icon matListIcon>location_on</mat-icon>
+      <h3 matLine> {{ 'header.localizations' | translate}} </h3>
+    </mat-list-item>
 
-      <li class="nav-item">
-        <a class="nav-link" routerLink="routes">{{ 'header.routes' | translate}}</a>
-      </li>
+    <mat-list-item routerLink="users">
+      <mat-icon matListIcon>person</mat-icon>
+      <h3 matLine> {{ 'header.users' | translate}} </h3>
+    </mat-list-item>
 
-      <li class="nav-item">
-        <a class="nav-link" routerLink="localizations">{{ 'header.localizations' | translate}}</a>
-      </li>
+    <mat-list-item routerLink="users" *ngIf="notifications.length; else noNotifications">
+      <mat-icon matListIcon [matBadge]="notifications.length" matBadgeColor="warn">notifications</mat-icon>
+      <h3 matLine> {{ 'header.notifications' | translate}} </h3>
+    </mat-list-item>
 
-      <li class="nav-item">
-        <a class="nav-link" routerLink="users">{{ 'header.users' | translate}}</a>
-      </li>
-    </ul>
+    <mat-list-item routerLink="/users/{{currentUser.id}}">
+      <mat-icon matListIcon>person</mat-icon>
+      <h3 matLine> {{ 'header.profile' | translate}} </h3>
+    </mat-list-item>
 
-    <div *ngIf="logged; else notLogged">
-      <div class="row">
+    <mat-list-item (click)="userService.logOut()">
+      <mat-icon matListIcon>exit_to_app</mat-icon>
+      <h3 matLine> {{ 'header.logout' | translate}} </h3>
+    </mat-list-item>
 
-        <div class="col text-left">
-          <div class="btn-group dropdown">
-            <div *ngIf="notifications.length; else noNotifications">
-              <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-                <mat-icon [matBadge]="notifications.length" matBadgeColor="warn">notifications</mat-icon>
-              </button>
+  </mat-nav-list>
+</mat-toolbar>
 
-              <div class="dropdown-menu" *ngFor="let notification of notifications; let i = index">
-                <div class="row">
-                  <div class="col text-left">
-                    {{notification.content}}
-                  </div>
-                  <div class="col text-right">
-                    <button (click)="markAsRead(notification.id, i)"><i class="fas fa-eye-slash"></i></button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <div class="col text-left">
-          <div class="btn-group dropleft">
-            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-              aria-expanded="false">
-              {{currentUser.username}}
-            </button>
-            <div class="dropdown-menu">
-              <ul class="navbar-nav">
-                <li class="nav-item">
-                  <a class="nav-link" routerLink="/users/{{currentUser.id}}">Profile</a>
-                </li>
-              </ul>
-              <ul class="navbar-nav">
-                <li class="nav-item">
-                  <a class="nav-link" (click)="logOut()">Log Out</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <ng-template #notLogged>
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" routerLink="login">Log In</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="register">Register</a>
-        </li>
-      </ul>
-    </ng-template>
-
-    <ng-template #noNotifications>
-      <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-        aria-expanded="false">
-        <mat-icon matBadgeColor="warn">notifications_none</mat-icon>
-      </button>
-      <div class="dropdown-menu">
-        <p>There is no notifications</p>
-      </div>
-    </ng-template>
-
-  </div>
-</nav>
+<ng-template #noNotifications>
+  <mat-icon matListIcon>notifications_none</mat-icon>
+  <h3 matLine> {{ 'header.users' | translate}} </h3>
+</ng-template>

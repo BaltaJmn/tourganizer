@@ -28,14 +28,14 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
-  { path: "", component: HomeComponent, pathMatch: 'full' },
+  { path: "", component: LoginComponent, pathMatch: 'full' },
   { path: "home", component: HomeComponent },
   {
     path: "users",
     children: [
       {
         path: '',
-        component: IndexUserComponent,
+        component: IndexUserComponent, canActivate: [AuthGuard]
       },
       {
         path: 'add',
@@ -61,7 +61,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        component: IndexRouteComponent,
+        component: IndexRouteComponent, canActivate: [AuthGuard]
       },
       {
         path: 'add',
@@ -87,7 +87,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        component: IndexLocalizationComponent,
+        component: IndexLocalizationComponent, canActivate: [AuthGuard]
       },
       {
         path: 'add',
@@ -111,7 +111,7 @@ const routes: Routes = [
   { path: "login", component: LoginComponent },
   { path: "register", component: RegisterComponent },
   { path: "profile", component: ProfileComponent, canActivate: [AuthGuard] },
-  { path: "**", component: HomeComponent }
+  { path: "**", component: LoginComponent }
 ];
 
 @NgModule({

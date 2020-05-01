@@ -3,6 +3,10 @@
     "home": "Home",
     "routes": "Rutas",
     "localizations": "Localizaciones",
-    "users": "Usuarios"
+    "users": "Usuarios",
+    "profile": "Perfil",
+    "notifications": "Notificaciones",
+    "login": "Inicio de Sesión",
+    "logout": "Cerrar Sesión"
   }
 }

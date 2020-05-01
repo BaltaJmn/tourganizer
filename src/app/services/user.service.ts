@@ -9,6 +9,7 @@ import { User } from '../interfaces/User';
 import { Router } from '@angular/router';
 import { EventEmitter } from '@angular/core';
 import { EmailService } from './email.service';
+import { ActivityService } from './activity.service';
 import { CookieService } from 'ngx-cookie-service';
 
 import Swal from 'sweetalert2'
@@ -22,7 +23,23 @@ export class UserService {
   @Output() userEmitter: EventEmitter<any> = new EventEmitter();
   @Output() notificationUSEmitter: EventEmitter<any> = new EventEmitter();
 
-  private currentUser: User;
+  private currentUser: User = {
+    id: "",
+    profile: "",
+    username: "",
+    password: "",
+    email: "",
+    config: {
+      lang: "",
+      confirmed: false,
+      rol: 3
+    },
+    followers: [],
+    follows: [],
+    createdRoutes: [],
+    savedRoutes: [],
+  };
+
   private logged: boolean = false;
   private confirmed: boolean = false;
 
@@ -30,6 +47,7 @@ export class UserService {
     private db: AngularFirestore,
     private storage: AngularFireStorage,
     private emailService: EmailService,
+    private activityService: ActivityService,
     private cookieService: CookieService,
     private translate: TranslateService,
     private router: Router) { }
@@ -134,11 +152,6 @@ export class UserService {
 
         this.router.navigate(['/home']);
 
-        Swal.fire(
-          'Succesfully Logged!',
-          'You have been succesfully logged!',
-          'success'
-        )
       } else {
         Swal.fire(
           'Error!',
@@ -170,21 +183,26 @@ export class UserService {
 
     this.loggedEmitter.emit(this.logged);
     this.userEmitter.emit(this.currentUser);
-    this.router.navigate(['/home']);
+
+    this.router.navigate(['/']);
   }
 
-  follow(id) {
+  follow(data) {
 
-    this.currentUser.follows.push(id);
+    this.currentUser.follows.push(data.id);
+
+    this.activityService.createActivityFollow(1, this.currentUser, data);
 
     return this.db.collection("user")
       .doc(this.currentUser.id)
       .set({ follows: this.currentUser.follows }, { merge: true });
   }
 
-  unfollow(id) {
-    this.currentUser.follows.splice(this.currentUser.follows.indexOf(id), 1);
+  unfollow(data) {
+    this.currentUser.follows.splice(this.currentUser.follows.indexOf(data.id), 1);
 
+    this.activityService.createActivityFollow(2, this.currentUser, data);
+    
     return this.db.collection("user")
       .doc(this.currentUser.id)
       .set({ follows: this.currentUser.follows }, { merge: true });

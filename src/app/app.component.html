@@ -1,7 +1,10 @@
-<!-- <mat-sidenav-container class="example-container">
-  <mat-sidenav opened mode="side"><app-header></app-header></mat-sidenav>
+<mat-sidenav-container class="example-container" *ngIf="logged; else notLogged">
+  <mat-sidenav opened mode="side">
+    <app-header></app-header>
+  </mat-sidenav>
   <router-outlet></router-outlet>
-</mat-sidenav-container> -->
+</mat-sidenav-container>
 
-<app-header></app-header>
-<router-outlet></router-outlet>
+<ng-template #notLogged>
+  <router-outlet></router-outlet>
+</ng-template>

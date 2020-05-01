@@ -7,9 +7,11 @@ import { finalize } from 'rxjs/operators';
 import { UserService } from '../../../services/user.service';
 
 import { User } from '../../../interfaces/User';
+import { Activity } from '../../../interfaces/activity';
 
 import * as $ from "jquery";
 import Swal from 'sweetalert2'
+import { ActivityService } from '../../../services/activity.service';
 
 @Component({
   selector: 'app-show',
@@ -49,12 +51,14 @@ export class ShowUserComponent implements OnInit {
 
   followers: User[];
   follows: User[];
+  activity: Activity[];
 
   loaded = true;
 
   constructor(
     private router: Router,
     public userService: UserService,
+    private activityService: ActivityService,
     private activatedRoute: ActivatedRoute,
     private storage: AngularFireStorage
   ) { }
@@ -68,6 +72,7 @@ export class ShowUserComponent implements OnInit {
 
         this.followers = [];
         this.follows = [];
+        this.activity = [];
 
         this.currentUser = {
           id: result.payload.id,
@@ -119,6 +124,21 @@ export class ShowUserComponent implements OnInit {
             this.follows.push(followAux)
           });
         });
+
+        this.activityService.getActivity(this.currentUser.id).subscribe((result: any) => {
+          result.forEach(element => {
+
+            let activityAux: Activity = {
+              userId: element.payload.doc.data().profile,
+              type: element.payload.doc.data().type,
+              date: element.payload.doc.data().date,
+              content: element.payload.doc.data().content
+            };
+
+            this.activity.push(activityAux)
+          });
+        })
+
         this.loaded = true;
       });
     });

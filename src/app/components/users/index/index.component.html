@@ -35,14 +35,14 @@
 
       <div *ngIf="userService.getLogged()">
         <div *ngIf="userService.getCurrentUserFollows().includes(user.id)">
-          <button class="btn btn-danger mr-1" (click)="this.userService.unfollow(user.id)">
+          <button class="btn btn-danger mr-1" (click)="this.userService.unfollow(user)">
             <i class="far fa-times-circle"></i>
             Unfollow
           </button>
         </div>
 
         <div *ngIf="!userService.getCurrentUserFollows().includes(user.id)">
-          <button class="btn btn-success mr-1" (click)="this.userService.follow(user.id)">
+          <button class="btn btn-success mr-1" (click)="this.userService.follow(user)">
             <i class="fa fa-plus"></i>
             Follow
           </button>

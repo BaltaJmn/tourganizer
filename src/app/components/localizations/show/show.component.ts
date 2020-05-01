@@ -7,12 +7,22 @@ import { Localization } from '../../../interfaces/Localization';
 
 import Swal from 'sweetalert2'
 
+import 'leaflet';
+import "leaflet/dist/leaflet.css";
+import "leaflet-routing-machine";
+import "leaflet/dist/leaflet.ajax.min.js"
+
+declare let L;
+
 @Component({
   selector: 'app-show',
   templateUrl: './show.component.html',
   styleUrls: ['./show.component.css']
 })
 export class ShowLocalizationComponent implements OnInit {
+
+  // Map
+  private map;
 
   currentLocalization: Localization;
   loaded = true;
@@ -42,6 +52,23 @@ export class ShowLocalizationComponent implements OnInit {
         };
 
         this.imageSrc = this.currentLocalization.images[0];
+
+        this.map = L.map('mapid', {
+          center: [this.currentLocalization.latitude, this.currentLocalization.longitude],
+          zoom: 10
+        });
+
+        const tiles1 = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 15,
+          attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(this.map);
+
+        var icon = new L.icon({
+          iconUrl: 'http://cdn.leafletjs.com/leaflet-0.6.4/images/marker-icon.png',
+          iconAnchor: [0, 0]
+        });
+
+        const marker = L.marker([this.currentLocalization.latitude, this.currentLocalization.longitude], { icon: icon }).bindPopup('This is Littleton, CO.').addTo(this.map);
 
         this.loaded = true;
       });

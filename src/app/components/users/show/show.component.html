@@ -40,15 +40,10 @@
             <div class="col-md-12">
               <h5 class="mt-2"><span class="fa fa-clock-o ion-clock float-right"></span> Recent Activity</h5>
               <table class="table table-sm table-hover table-striped">
-                <tbody>
+                <tbody *ngFor="let act of activity">
                   <tr>
                     <td>
-                      <strong>Abby</strong> joined ACME Project Team in <strong>`Collaboration`</strong>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <strong>Gary</strong> deleted My Board1 in <strong>`Discussions`</strong>
+                      {{act.content}}
                     </td>
                   </tr>
                 </tbody>
@@ -68,14 +63,14 @@
 
                 <td>
                   <div *ngIf="this.currentUser.follows.includes(follower.id)">
-                    <button class="btn btn-danger mr-1" (click)="this.userService.unfollow(follower.id)">
+                    <button class="btn btn-danger mr-1" (click)="this.userService.unfollow(follower)">
                       <i class="far fa-times-circle"></i>
                       Unfollow
                     </button>
                   </div>
 
                   <div *ngIf="!this.currentUser.follows.includes(follower.id)">
-                    <button class="btn btn-success mr-1" (click)="this.userService.follow(follower.id)">
+                    <button class="btn btn-success mr-1" (click)="this.userService.follow(follower)">
                       <i class="fa fa-plus"></i>
                       Follow
                     </button>
@@ -103,7 +98,7 @@
                   </div>
 
                   <div *ngIf="!this.currentUser.follows.includes(follow.id)">
-                    <button class="btn btn-success mr-1" (click)="this.userService.follow(follow.id)">
+                    <button class="btn btn-success mr-1" (click)="this.userService.follow(follow)">
                       <i class="fa fa-plus"></i>
                       Follow
                     </button>
@@ -168,7 +163,7 @@
                   </mat-radio-button>
                 </mat-radio-group>
               </section>
-              
+
               <section class="example-section">
                 <button mdbBtn color="info" block="true" class="my-4"
                   (click)="this.userService.saveConfig(config)">Save</button>

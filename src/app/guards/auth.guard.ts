@@ -20,13 +20,6 @@ export class AuthGuard implements CanActivate {
       return true;
     } else {
       this.router.navigate(['/login']);
-
-      Swal.fire(
-        'Error!',
-        'Your user must be confirmed!',
-        'error'
-      );
-
       return false;
     }
   }
