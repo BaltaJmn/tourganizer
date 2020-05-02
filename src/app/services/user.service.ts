@@ -87,8 +87,6 @@ export class UserService {
 
           this.getUserByName(data.username).subscribe((result: any) => {
 
-            console.log(result[0].payload.doc.data());
-
             let userAux = {
               id: result[0].payload.doc.id,
               profile: result[0].payload.doc.data().profile,
@@ -104,7 +102,6 @@ export class UserService {
 
             this.emailService.sendEmail("https://enigmatic-hamlet-67391.herokuapp.com/email/register", userAux).subscribe((res) => {
               let resAux: any = res;
-              console.log(resAux);
             });
           })
         });
@@ -202,7 +199,7 @@ export class UserService {
     this.currentUser.follows.splice(this.currentUser.follows.indexOf(data.id), 1);
 
     this.activityService.createActivityFollow(2, this.currentUser, data);
-    
+
     return this.db.collection("user")
       .doc(this.currentUser.id)
       .set({ follows: this.currentUser.follows }, { merge: true });

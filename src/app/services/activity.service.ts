@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { AngularFirestore } from 'angularfire2/firestore';
-import { Activity } from '../interfaces/activity';
+import { Activity } from '../interfaces/Activity';
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +10,12 @@ export class ActivityService {
 
   constructor(private db: AngularFirestore) { }
 
+  getActivities() {
+    return this.db.collection('activity', ref => ref.orderBy('date', 'asc')).snapshotChanges();
+  };
+
   getActivity(data) {
-    return this.db.collection('activity', ref => ref.where('userId', '==', data).orderBy('date', 'desc')).snapshotChanges();
+    return this.db.collection('activity', ref => ref.where('userId', '==', data).orderBy('date', 'asc')).snapshotChanges();
   };
 
   createActivityFollow(type, first, second) {

@@ -11,8 +11,28 @@ import 'leaflet';
 import "leaflet/dist/leaflet.css";
 import "leaflet-routing-machine";
 import "leaflet/dist/leaflet.ajax.min.js"
+import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 
 declare let L;
+
+const provider = new OpenStreetMapProvider();
+
+const searchControl = new GeoSearchControl({
+  provider: provider,
+  showMarker: true,
+  showPopup: false,
+  marker: {
+    icon: new L.Icon.Default(),
+    draggable: false,
+  },
+  popupFormat: ({ query, result }) => result.label,
+  maxMarkers: 1,
+  retainZoomLevel: false,
+  animateZoom: true,
+  autoClose: false,
+  searchLabel: 'Enter address',
+  keepResult: false
+});
 
 @Component({
   selector: 'app-show',
@@ -58,17 +78,14 @@ export class ShowLocalizationComponent implements OnInit {
           zoom: 10
         });
 
+        this.map.addControl(searchControl);
+
         const tiles1 = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
           maxZoom: 15,
           attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(this.map);
 
-        var icon = new L.icon({
-          iconUrl: 'http://cdn.leafletjs.com/leaflet-0.6.4/images/marker-icon.png',
-          iconAnchor: [0, 0]
-        });
-
-        const marker = L.marker([this.currentLocalization.latitude, this.currentLocalization.longitude], { icon: icon }).bindPopup('This is Littleton, CO.').addTo(this.map);
+        const marker = L.marker([this.currentLocalization.latitude, this.currentLocalization.longitude]).bindPopup('This is Littleton, CO.').addTo(this.map);
 
         this.loaded = true;
       });

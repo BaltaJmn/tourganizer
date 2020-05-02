@@ -96,6 +96,9 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 // Cookie Service
 import { CookieService } from 'ngx-cookie-service';
 
+// Jquery
+import * as $ from 'jquery';
+
 @NgModule({
   declarations: [
     AppComponent,

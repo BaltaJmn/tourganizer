@@ -7,7 +7,7 @@ import { finalize } from 'rxjs/operators';
 import { UserService } from '../../../services/user.service';
 
 import { User } from '../../../interfaces/User';
-import { Activity } from '../../../interfaces/activity';
+import { Activity } from '../../../interfaces/Activity';
 
 import * as $ from "jquery";
 import Swal from 'sweetalert2'
@@ -196,8 +196,6 @@ export class ShowUserComponent implements OnInit {
             this.downloadURL.subscribe(url => {
               if (url) {
                 this.storage = url;
-
-                console.log(this.storage);
 
                 this.userService.updateProfilePhoto(this.storage);
               }

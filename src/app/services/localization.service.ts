@@ -50,7 +50,6 @@ export class LocalizationService {
   };
 
   like(localizationId, userId) {
-    console.log("like");
     this.getLocalization(localizationId).subscribe((localization) => {
       let likesArray = localization.data().likes;
 
@@ -63,7 +62,6 @@ export class LocalizationService {
   };
 
   dislike(localizationId, userId) {
-    console.log("dislike");
     this.getLocalization(localizationId).subscribe((localization) => {
       let likesArray = localization.data().likes;
 
