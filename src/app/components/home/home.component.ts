@@ -5,6 +5,7 @@ import { ActivityService } from '../../services/activity.service';
 import { UserService } from '../../services/user.service';
 import { Activity } from '../../interfaces/Activity';
 import { User } from '../../interfaces/User';
+import { Localization } from '../../interfaces/Localization';
 
 
 @Component({
@@ -17,12 +18,29 @@ export class HomeComponent implements OnInit {
 
 	public first = true;
 
-	public currentUser: User;
+	public currentUser: User = {
+		id: "",
+		profile: "",
+		username: "",
+		password: "",
+		email: "",
+		config: {
+			lang: "",
+			confirmed: false,
+			rol: 3
+		},
+		followers: [],
+		follows: [],
+		createdRoutes: [],
+		savedRoutes: [],
+	};
+
 	public activities = [];
 
 	constructor(
 		private activityService: ActivityService,
-		private userService: UserService
+		private userService: UserService,
+		private localizationService: LocalizationService
 	) {
 		this.userService.userEmitter.subscribe((response) => {
 			this.currentUser = response;

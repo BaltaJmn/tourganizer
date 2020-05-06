@@ -13,6 +13,24 @@ import 'leaflet';
 import "leaflet/dist/leaflet.css";
 import "leaflet-routing-machine";
 import "leaflet/dist/leaflet.ajax.min.js"
+import "leaflet/dist/leaflet.ajax.min.js"
+import { icon, Marker } from 'leaflet';
+import { User } from '../../../interfaces/User';
+import { UserService } from '../../../services/user.service';
+const iconRetinaUrl = 'assets/marker-icon-2x.png';
+const iconUrl = 'assets/marker-icon.png';
+const shadowUrl = 'assets/marker-shadow.png';
+const iconDefault = icon({
+  iconRetinaUrl,
+  iconUrl,
+  shadowUrl,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  tooltipAnchor: [16, -28],
+  shadowSize: [41, 41]
+});
+Marker.prototype.options.icon = iconDefault;
 
 declare let L;
 
@@ -26,7 +44,19 @@ export class ShowRouteComponent implements OnInit {
 
   map;
 
-  currentRoute: Route;
+  currentRoute: Route = {
+    userId: null,
+    profile: null,
+    confirmed: null,
+    center: null,
+    name: null,
+    type: null,
+    totalTime: null,
+    rating: null,
+    localizations: null
+  };
+  
+  currentUser: User;
 
   localizations = [];
 
@@ -35,27 +65,23 @@ export class ShowRouteComponent implements OnInit {
   constructor(
     private router: Router,
     private routeService: RouteService,
+    public userSerivce: UserService,
     private localizationService: LocalizationService,
     private activatedRoute: ActivatedRoute
   ) { }
 
   ngOnInit() {
-    this.map = L.map('mapid', {
-      center: ["40.4636688", "-3.7492199"],
-      zoom: 10
-    });
-
-    const tiles1 = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 15,
-      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(this.map);
-
     this.activatedRoute.params.subscribe(params => {
+
+      this.currentUser = this.userSerivce.getCurrentUser();
+
       this.routeService.getRoute(params.id).subscribe((result) => {
 
         this.currentRoute = {
-          id: result.id,
           userId: result.data().userId,
+          profile: result.data().profile,
+          confirmed: result.data().confirmed,
+          center: result.data().center,
           name: result.data().name,
           type: result.data().type,
           totalTime: result.data().totalTime,
@@ -84,6 +110,17 @@ export class ShowRouteComponent implements OnInit {
 
           });
         });
+
+        this.map = L.map('mapid', {
+          center: [this.currentRoute.center.latitude, this.currentRoute.center.longitude],
+          zoom: 10
+        });
+
+        const tiles1 = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 15,
+          attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(this.map);
+
         this.loaded = true;
       });
     });

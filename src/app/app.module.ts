@@ -52,6 +52,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 
 //Imageviewer
 import { ImageViewerModule } from '@hallysonh/ngx-imageviewer';
+import { NgImageSliderModule } from 'ng-image-slider';
 
 // Angular Material
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -85,7 +86,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import {MatBadgeModule} from '@angular/material'
+import { MatBadgeModule } from '@angular/material'
 import { FilterPipe } from './pipes/filter.pipe';
 
 // import ngx-translate and the http loader
@@ -140,6 +141,9 @@ import * as $ from 'jquery';
     LeafletModule.forRoot(),
     NgbModule,
     NgSelectModule,
+
+    //Images
+    NgImageSliderModule,
     ImageViewerModule,
 
     //Material

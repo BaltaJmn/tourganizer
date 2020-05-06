@@ -1,9 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { NgImageSliderComponent } from 'ng-image-slider';
+import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 
 import { LocalizationService } from '../../../services/localization.service';
+import { ImageService } from '../../../services/image.service';
 
 import { Localization } from '../../../interfaces/Localization';
+import { Image } from '../../../interfaces/Image';
 
 import Swal from 'sweetalert2'
 
@@ -11,7 +15,21 @@ import 'leaflet';
 import "leaflet/dist/leaflet.css";
 import "leaflet-routing-machine";
 import "leaflet/dist/leaflet.ajax.min.js"
-import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
+import { icon, Marker } from 'leaflet';
+const iconRetinaUrl = 'assets/marker-icon-2x.png';
+const iconUrl = 'assets/marker-icon.png';
+const shadowUrl = 'assets/marker-shadow.png';
+const iconDefault = icon({
+  iconRetinaUrl,
+  iconUrl,
+  shadowUrl,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  tooltipAnchor: [16, -28],
+  shadowSize: [41, 41]
+});
+Marker.prototype.options.icon = iconDefault;
 
 declare let L;
 
@@ -22,16 +40,16 @@ const searchControl = new GeoSearchControl({
   showMarker: true,
   showPopup: false,
   marker: {
-    icon: new L.Icon.Default(),
+    icon: iconDefault,
     draggable: false,
   },
   popupFormat: ({ query, result }) => result.label,
   maxMarkers: 1,
   retainZoomLevel: false,
   animateZoom: true,
-  autoClose: false,
+  autoClose: true,
   searchLabel: 'Enter address',
-  keepResult: false
+  keepResult: true
 });
 
 @Component({
@@ -47,11 +65,14 @@ export class ShowLocalizationComponent implements OnInit {
   currentLocalization: Localization;
   loaded = true;
 
-  imageSrc;
+  // Images
+  @ViewChild('nav', { static: false }) slider: NgImageSliderComponent;
+  images: Array<Image> = [];
 
   constructor(
     private router: Router,
     private localizationService: LocalizationService,
+    private imageService: ImageService,
     private activatedRoute: ActivatedRoute
   ) { }
 
@@ -71,8 +92,6 @@ export class ShowLocalizationComponent implements OnInit {
           url: result.data().url
         };
 
-        this.imageSrc = this.currentLocalization.images[0];
-
         this.map = L.map('mapid', {
           center: [this.currentLocalization.latitude, this.currentLocalization.longitude],
           zoom: 10
@@ -85,11 +104,25 @@ export class ShowLocalizationComponent implements OnInit {
           attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(this.map);
 
-        const marker = L.marker([this.currentLocalization.latitude, this.currentLocalization.longitude]).bindPopup('This is Littleton, CO.').addTo(this.map);
+        const marker = L.marker([this.currentLocalization.latitude, this.currentLocalization.longitude]).bindPopup(this.currentLocalization.name).addTo(this.map);
 
-        this.loaded = true;
+        this.currentLocalization.images.forEach((image) => {
+          this.imageService.getImage(image).subscribe((imageSnapshot) => {
+
+            let imageAux: Image = {
+              title: imageSnapshot.data().title,
+              image: imageSnapshot.data().image,
+              thumbImage: imageSnapshot.data().thumbImage,
+              alt: imageSnapshot.data().alt
+            }
+
+            this.images.push(imageAux);
+
+          });
+        });
       });
     });
+    this.loaded = true;
   };
 
   deleteLocalization(id) {
@@ -116,5 +149,4 @@ export class ShowLocalizationComponent implements OnInit {
       }
     })
   };
-
 }

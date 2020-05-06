@@ -9,7 +9,7 @@ export class RouteService {
   constructor(private db: AngularFirestore) { }
 
   getRoutes() {
-    return this.db.collection('route', ref => ref.orderBy('rating.show', 'desc')).snapshotChanges();
+    return this.db.collection('route', ref => ref.orderBy('rating.show', 'desc').where("confirmed", "==", true)).snapshotChanges();
   };
 
   getRoute(data) {

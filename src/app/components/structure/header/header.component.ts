@@ -38,31 +38,11 @@ export class HeaderComponent implements OnInit {
     public notificationService: NotificationService
   ) {
     this.userService.userEmitter.subscribe(response => this.currentUser = response);
-    this.userService.notificationUSEmitter.subscribe(() => this.refreshNotification())
+    this.userService.notificationUSEmitter.subscribe((notifications) => this.notifications = notifications)
   }
 
   ngOnInit() {
-    this.refreshNotification();
   }
-
-  refreshNotification() {
-    if (this.userService.getLogged()) {
-      this.notificationService.getNotificationsById(this.currentUser.id).subscribe((notificationSnapshot) => {
-        this.notifications = [];
-
-        notificationSnapshot.forEach((doc: any) => {
-          let notificationAux: Notification = {
-            id: doc.payload.doc.id,
-            content: doc.payload.doc.data().content,
-            sender: doc.payload.doc.data().sender,
-            receiver: doc.payload.doc.data().receiver
-          };
-
-          this.notifications.push(notificationAux);
-        });
-      });
-    }
-  };
 
   markAsRead(id, index) {
     this.notificationService.updateNotificationSeen(id);

@@ -46,8 +46,11 @@ export class IndexRouteComponent implements OnInit {
         let routeAux: Route = {
           id: doc.payload.doc.id,
           userId: doc.payload.doc.data().userId,
+          profile: doc.payload.doc.data().profile,
           name: doc.payload.doc.data().name,
           type: doc.payload.doc.data().type,
+          confirmed: doc.payload.doc.data().confirmed,
+          center: doc.payload.doc.data().center,
           totalTime: doc.payload.doc.data().totalTime,
           rating: doc.payload.doc.data().rating,
           localizations: doc.payload.doc.data().localizations,

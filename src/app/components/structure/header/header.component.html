@@ -25,8 +25,9 @@
       <h3 matLine> {{ 'header.users' | translate}} </h3>
     </mat-list-item>
 
-    <mat-list-item routerLink="users" *ngIf="notifications.length; else noNotifications">
-      <mat-icon matListIcon [matBadge]="notifications.length" matBadgeColor="warn">notifications</mat-icon>
+    <mat-list-item routerLink="users">
+      <mat-icon matListIcon [matBadge]="notifications.length" matBadgeColor="warn" *ngIf="notifications.length != 0">notifications</mat-icon>
+      <mat-icon matListIcon *ngIf="notifications.length == 0">notifications_none</mat-icon>
       <h3 matLine> {{ 'header.notifications' | translate}} </h3>
     </mat-list-item>
 
@@ -42,8 +43,3 @@
 
   </mat-nav-list>
 </mat-toolbar>
-
-<ng-template #noNotifications>
-  <mat-icon matListIcon>notifications_none</mat-icon>
-  <h3 matLine> {{ 'header.users' | translate}} </h3>
-</ng-template>

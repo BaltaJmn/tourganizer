@@ -23,7 +23,7 @@
 <div class="row">
   <div class="card" style="width: 18rem;"
     *ngFor="let localization of localizations | filter: {name: filter.name} : false">
-    <img class="card-img-top" src="{{localization.images[0]}}" alt="{{localization.name}}">
+    <img class="card-img-top" src="{{localization.profile}}" alt="{{localization.name}}">
     <div class="card-body">
       <h5 class="card-title">{{localization.name}}</h5>
       <p class="card-text">

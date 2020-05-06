@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { AngularFireStorage } from '@angular/fire/storage';
+import { finalize } from 'rxjs/operators';
+import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 
 import { UserService } from '../../../services/user.service';
 import { RouteService } from '../../../services/route.service';
@@ -9,10 +12,51 @@ import { NotificationService } from '../../../services/notification.service';
 
 import { Route } from '../../../interfaces/Route';
 import { Localization } from '../../../interfaces/Localization';
-
-import Swal from 'sweetalert2';
 import { Notification } from '../../../interfaces/Notification';
 
+import Swal from 'sweetalert2';
+
+import 'leaflet';
+import "leaflet/dist/leaflet.css";
+import "leaflet-routing-machine";
+import "leaflet/dist/leaflet.ajax.min.js"
+import "leaflet/dist/leaflet.ajax.min.js"
+import { icon, Marker } from 'leaflet';
+const iconRetinaUrl = 'assets/marker-icon-2x.png';
+const iconUrl = 'assets/marker-icon.png';
+const shadowUrl = 'assets/marker-shadow.png';
+const iconDefault = icon({
+  iconRetinaUrl,
+  iconUrl,
+  shadowUrl,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  tooltipAnchor: [16, -28],
+  shadowSize: [41, 41]
+});
+Marker.prototype.options.icon = iconDefault;
+
+declare let L;
+
+const provider = new OpenStreetMapProvider();
+
+const searchControl = new GeoSearchControl({
+  provider: provider,
+  showMarker: true,
+  showPopup: false,
+  marker: {
+    icon: iconDefault,
+    draggable: false,
+  },
+  popupFormat: ({ query, result }) => result.label,
+  maxMarkers: 1,
+  retainZoomLevel: false,
+  animateZoom: true,
+  autoClose: true,
+  searchLabel: 'Enter address',
+  keepResult: true
+});
 
 @Component({
   selector: 'app-add',
@@ -21,18 +65,31 @@ import { Notification } from '../../../interfaces/Notification';
 })
 export class AddRouteComponent implements OnInit {
 
+  // Map
+  private map;
+
+  //Profile Variables
+  n = Date.now();
+  file;
+  filePath;
+  fileRef;
+  downloadURL;
+
   loaded = true;
 
   localizations = [];
   currentLocalizations = [];
 
   route = new FormGroup({
-    userId: new FormControl('', [Validators.required]),
+    userId: new FormControl(''),
+    profile: new FormControl(''),
     name: new FormControl('', [Validators.required]),
     type: new FormControl(0, [Validators.required]),
-    totalTime: new FormControl(0, [Validators.required]),
-    rating: new FormControl({ show: 0, total: 0, votes: [] }, [Validators.required]),
-    localizations: new FormControl([], [Validators.required])
+    confirmed: new FormControl(false),
+    center: new FormControl(null),
+    totalTime: new FormControl(0),
+    rating: new FormControl({ show: 0, total: 0, votes: [] }),
+    localizations: new FormControl([])
   });
 
   constructor(
@@ -40,7 +97,8 @@ export class AddRouteComponent implements OnInit {
     private userService: UserService,
     private routeService: RouteService,
     private localizationService: LocalizationService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private storage: AngularFireStorage
   ) { }
 
   ngOnInit() {
@@ -64,37 +122,85 @@ export class AddRouteComponent implements OnInit {
         }
 
         this.localizations.push(localizationAux);
-      })
+      });
+
       this.localizations = Object.values(this.localizations);
+
       this.loaded = true;
     });
+
+    this.map = L.map('mapid', {
+      center: [0, 0],
+      zoom: 4
+    });
+
+    this.map.addControl(searchControl);
+
+    this.map.on('geosearch/showlocation', function (e) {
+      localStorage.setItem('lat', e.location.y);
+      localStorage.setItem('lon', e.location.x);
+    });
+
+    const tiles1 = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 15,
+      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(this.map);
+
   };
 
   onSubmit(route: FormGroup) {
-    this.route.get("userId").setValue(this.userService.getCurrentUserId());
-    this.route.get("localizations").setValue(this.currentLocalizations);
 
-    this.routeService.createRoute(route.value).then(() => {
+    const task = this.storage.upload(`images/${this.n}`, this.file);
 
-      let receivers = this.userService.getCurrentUserFollowers();
-      let sender = this.userService.getCurrentUserId();
+    task.snapshotChanges().pipe(
+      finalize(() => {
+        this.downloadURL = this.fileRef.getDownloadURL();
+        this.downloadURL.subscribe(url => {
+          if (url) {
+            this.storage = url;
 
-      receivers.forEach((receiver) => {
+            this.route.get("profile").setValue(this.storage);
+            this.route.get("userId").setValue(this.userService.getCurrentUserId());
+            this.route.get("center").setValue({ latitude: localStorage.getItem("lat"), longitude: localStorage.getItem("lon") });
+            this.route.get("localizations").setValue(this.currentLocalizations);
 
-        let notification: Notification = {
-          content: `${this.userService.getCurrentUserName()} a creado una nueva ruta llamada ${this.route.get("name").value}`,
-          sender: sender,
-          receiver: receiver,
-          seen: false,
-          date: new Date
-        };
+            this.routeService.createRoute(route.value).then(() => {
 
-        this.notificationService.createNotification(notification);
-      });
+              let receivers = this.userService.getCurrentUserFollowers();
+              let sender = this.userService.getCurrentUserId();
 
-      Swal.fire('Great!', 'Your route was created succesfully!', 'success').then(() => {
-        this.router.navigate(['/routes']);
-      });
+              receivers.forEach((receiver) => {
+
+                let notification: Notification = {
+                  content: `${this.userService.getCurrentUserName()} a creado una nueva ruta llamada ${this.route.get("name").value}`,
+                  sender: sender,
+                  receiver: receiver,
+                  seen: false,
+                  date: new Date
+                };
+
+                this.notificationService.createNotification(notification);
+              });
+
+              localStorage.clear();
+
+              Swal.fire('Great!', 'Your route was created succesfully!', 'success').then(() => {
+                this.router.navigate(['/routes']);
+              });
+            });
+          }
+        });
+      })
+    ).subscribe(url => {
+      if (url) { }
     });
   };
+
+  onFileSelected(event) {
+    this.n = Date.now();
+    this.file = event.target.files[0];
+    this.filePath = `images/${this.n}`;
+    this.fileRef = this.storage.ref(this.filePath);
+  };
+
 }

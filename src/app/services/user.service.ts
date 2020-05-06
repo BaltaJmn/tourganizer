@@ -5,11 +5,13 @@ import { AngularFireStorage } from '@angular/fire/storage';
 import { TranslateService } from '@ngx-translate/core';
 
 import { User } from '../interfaces/User';
+import { Notification } from '../interfaces/Notification';
 
 import { Router } from '@angular/router';
 import { EventEmitter } from '@angular/core';
 import { EmailService } from './email.service';
 import { ActivityService } from './activity.service';
+import { NotificationService } from './notification.service';
 import { CookieService } from 'ngx-cookie-service';
 
 import Swal from 'sweetalert2'
@@ -47,6 +49,7 @@ export class UserService {
     private db: AngularFirestore,
     private storage: AngularFireStorage,
     private emailService: EmailService,
+    private notificationService: NotificationService,
     private activityService: ActivityService,
     private cookieService: CookieService,
     private translate: TranslateService,
@@ -85,19 +88,19 @@ export class UserService {
       if (result.empty) {
         this.db.collection("user").add(data).then(() => {
 
-          this.getUserByName(data.username).subscribe((result: any) => {
+          this.getUserByName(data.username).subscribe((result) => {
 
             let userAux = {
-              id: result[0].payload.doc.id,
-              profile: result[0].payload.doc.data().profile,
-              username: result[0].payload.doc.data().username,
-              password: result[0].payload.doc.data().password,
-              email: result[0].payload.doc.data().email,
-              config: result[0].payload.doc.data().config,
-              followers: result[0].payload.doc.data().followers,
-              follows: result[0].payload.doc.data().follows,
-              createdRoutes: result[0].payload.doc.data().createdRoutes,
-              savedRoutes: result[0].payload.doc.data().savedRoutes,
+              id: result.docs[0].id,
+              profile: result.docs[0].data().profile,
+              username: result.docs[0].data().username,
+              password: result.docs[0].data().password,
+              email: result.docs[0].data().email,
+              config: result.docs[0].data().config,
+              followers: result.docs[0].data().followers,
+              follows: result.docs[0].data().follows,
+              createdRoutes: result.docs[0].data().createdRoutes,
+              savedRoutes: result.docs[0].data().savedRoutes,
             };
 
             this.emailService.sendEmail("https://enigmatic-hamlet-67391.herokuapp.com/email/register", userAux).subscribe((res) => {
@@ -143,11 +146,31 @@ export class UserService {
 
         this.loggedEmitter.emit(this.logged);
         this.userEmitter.emit(this.currentUser);
-        this.notificationUSEmitter.emit("notification");
 
-        this.cookieService.set('login', this.currentUser.username);
+        this.notificationService.getNotificationsById(this.currentUser.id).subscribe((notificationSnapshot) => {
 
-        this.router.navigate(['/home']);
+          let arrayNotifications = [];
+
+          notificationSnapshot.forEach((doc: any) => {
+
+            let notificationAux: Notification = {
+              id: doc.payload.doc.id,
+              content: doc.payload.doc.data().content,
+              sender: doc.payload.doc.data().sender,
+              receiver: doc.payload.doc.data().receiver
+            };
+
+            arrayNotifications.push(notificationAux);
+
+          });
+
+          this.notificationUSEmitter.emit(arrayNotifications);
+
+          this.cookieService.set('login', this.currentUser.username);
+
+          this.router.navigate(['/home']);
+
+        });
 
       } else {
         Swal.fire(
