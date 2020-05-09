@@ -27,13 +27,16 @@ export class AppComponent {
 
     translate.setDefaultLang('es');
 
-    // URL de confirmación
+    // Params de URL
     this.route.queryParamMap.subscribe(queryParams => {
-      let conf = queryParams.get("conf");
 
-      if (conf != null) {
-        this.userService.confirmUser(conf);
-      };
+      if(queryParams.get("conf")){
+        this.userService.confirmUser(queryParams.get("conf"));
+      } else if (queryParams.get("reset")){
+        this.userService.resetPassword(queryParams.get("reset"));
+      }
+
+
     });
 
     // Comprobación de cookie

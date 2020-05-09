@@ -5,16 +5,24 @@
 
 <div class="col text-right">
   <button class="btn btn-info mr-1" [routerLink]="['edit']">
-      <i class="fa fa-pen"></i>
-    </button>
+    <i class="fa fa-pen"></i>
+  </button>
 
-    <button class="btn btn-danger mr-1" (click)="deleteRoute(currentRoute.id)">
-      <i class="fa fa-trash"></i>
-    </button>
+  <button class="btn btn-danger mr-1" (click)="deleteRoute(currentRoute.id)">
+    <i class="fa fa-trash"></i>
+  </button>
 </div>
 
 <p>{{currentRoute.name}}</p>
 <div id="mapid"></div>
+
+<div aria-labelledby="myModalLabel" class="modal right fade" id="emptymodal" role="dialog" tabindex="-1">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content"></div>
+  </div>
+</div>
+
+<button mat-button id="modal" class="display:none" (click)="openModal()"></button>
 
 <!-- <div *ngIf="this.currentUser.follows.includes(this.currentRoute.userId)">
   <button class="btn btn-danger mr-1" (click)="this.userService.unfollow(follow.id)">

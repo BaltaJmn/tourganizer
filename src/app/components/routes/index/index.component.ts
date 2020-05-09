@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../../services/user.service';
 import { RouteService } from '../../../services/route.service';
 
+import { User } from '../../../interfaces/User';
 import { Route } from '../../../interfaces/Route';
 
 import { FormControl } from '@angular/forms';
@@ -17,13 +18,27 @@ import Swal from 'sweetalert2'
 })
 export class IndexRouteComponent implements OnInit {
 
-  total = 10;
-  votos = 1;
-  show = 10;
+  public currentUser: User = {
+    id: "",
+    profile: "",
+    username: "",
+    password: "",
+    email: "",
+    config: {
+      lang: "",
+      confirmed: false,
+      rol: 3
+    },
+    followers: [],
+    follows: [],
+    createdRoutes: [],
+    savedRoutes: [],
+  };
 
   routes: Route[];
+  usernames = [];
 
-  displayedColumns: string[] = ['name', 'type', 'rate', 'actions'];
+  displayedColumns: string[] = ['name', 'type', 'rate', 'user', 'actions'];
   dataSource;
 
   nameFilter = new FormControl();
@@ -37,6 +52,9 @@ export class IndexRouteComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+
+    this.currentUser = this.userService.getCurrentUser();
+
     this.routeService.getRoutes().subscribe((routesSnapshot) => {
 
       this.routes = [];
@@ -56,8 +74,29 @@ export class IndexRouteComponent implements OnInit {
           localizations: doc.payload.doc.data().localizations,
         }
 
-        this.routes.push(routeAux);
+        this.userService.getNameById(routeAux.userId).subscribe((user) => {
 
+          let userAux: User = {
+            id: user.id,
+            profile: user.data().profile,
+            username: user.data().username,
+            password: user.data().password,
+            email: user.data().email,
+            config: user.data().config,
+            followers: user.data().followers,
+            follows: user.data().follows,
+            createdRoutes: user.data().createdRoutes,
+            savedRoutes: user.data().savedRoutes,
+          }
+
+          let aux = {
+            route: routeAux.id,
+            user: userAux
+          }
+          this.usernames.push(aux);
+        })
+
+        this.routes.push(routeAux);
       });
 
       this.dataSource = new MatTableDataSource(this.routes);
@@ -91,4 +130,18 @@ export class IndexRouteComponent implements OnInit {
     }
     return myFilterPredicate;
   };
+
+  searchName(id) {
+    if (this.usernames.length > 0) {
+      let aux = this.usernames.find(element => element.route == id);
+      return aux.user.username;
+    }
+  }
+
+  searchUser(id){
+    if (this.usernames.length > 0) {
+      let aux = this.usernames.find(element => element.route == id);
+      return aux.user;
+    }
+  }
 }

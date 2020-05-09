@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { RouteService } from '../../../services/route.service';
@@ -6,6 +6,8 @@ import { LocalizationService } from '../../../services/localization.service';
 
 import { Route } from '../../../interfaces/Route';
 import { Localization } from '../../../interfaces/Localization';
+
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import Swal from 'sweetalert2'
 
@@ -17,6 +19,7 @@ import "leaflet/dist/leaflet.ajax.min.js"
 import { icon, Marker } from 'leaflet';
 import { User } from '../../../interfaces/User';
 import { UserService } from '../../../services/user.service';
+import { MarkerinfoComponent } from './markerinfo/markerinfo.component';
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
 const iconUrl = 'assets/marker-icon.png';
 const shadowUrl = 'assets/marker-shadow.png';
@@ -55,7 +58,7 @@ export class ShowRouteComponent implements OnInit {
     rating: null,
     localizations: null
   };
-  
+
   currentUser: User;
 
   localizations = [];
@@ -67,7 +70,8 @@ export class ShowRouteComponent implements OnInit {
     private routeService: RouteService,
     public userSerivce: UserService,
     private localizationService: LocalizationService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -104,7 +108,10 @@ export class ShowRouteComponent implements OnInit {
               url: localizationSnapshot.data().url
             };
 
-            const marker = L.marker([localizationAux.latitude, localizationAux.longitude]).bindPopup(localizationAux.name).addTo(this.map);
+            const marker = L.marker([localizationAux.latitude, localizationAux.longitude], { localization: localizationAux })
+              .bindPopup(localizationAux.name)
+              .on('click', this.selectLocalization)
+              .addTo(this.map);
 
             this.localizations.push(localizationAux);
 
@@ -125,6 +132,20 @@ export class ShowRouteComponent implements OnInit {
       });
     });
   };
+
+  selectLocalization(event) {
+    localStorage.setItem("localization", JSON.stringify(event.target.options.localization));
+    $('#modal').trigger("click");
+  }
+
+  openModal() {
+    let localization: Localization = JSON.parse(localStorage.getItem("localization"));
+
+    const dialogRef = this.dialog.open(MarkerinfoComponent, {
+      width: '400px',
+      data: localization
+    });
+  }
 
   deleteRoute(id) {
     Swal.fire({
@@ -150,5 +171,4 @@ export class ShowRouteComponent implements OnInit {
       }
     })
   };
-
 }

@@ -43,9 +43,9 @@
     <th mat-header-cell *matHeaderCellDef> Type
     </th>
     <td mat-cell *matCellDef="let route" [ngSwitch]="route.type">
-      <p *ngSwitchCase="0">Country</p>
-      <p *ngSwitchCase="1">Region</p>
-      <p *ngSwitchCase="2">City</p>
+      <div *ngSwitchCase="0">Country</div>
+      <div *ngSwitchCase="1">Region</div>
+      <div *ngSwitchCase="2">City</div>
     </td>
   </ng-container>
 
@@ -56,15 +56,48 @@
     <td mat-cell *matCellDef="let route" [ngSwitch]="route.rating.votes.length">
 
       <div *ngSwitchCase="0">
-        <p>No votes</p>
-        <ngb-rating [(rate)]="route.rating.show" (rateChange)="this.routeService.updateRouteRating(route, $event, this.userService.getCurrentUserId())"></ngb-rating>
+        <div>No votes</div>
+        <ngb-rating [(rate)]="route.rating.show"
+          (rateChange)="this.routeService.updateRouteRating(route, $event, this.userService.getCurrentUserId())">
+        </ngb-rating>
       </div>
 
       <div *ngSwitchDefault>
-        <p>{{route.rating.show | number : '1.2-2'}}</p>
-        <ngb-rating [(rate)]="route.rating.show" (rateChange)="this.routeService.updateRouteRating(route, $event, this.userService.getCurrentUserId())"></ngb-rating>
+        <div>{{route.rating.show | number : '1.1-2'}}</div>
+
+        <ngb-rating *ngIf="route.rating.votes.includes(this.currentUser.id)" [(rate)]="route.rating.show"
+          [readonly]="true"
+          (rateChange)="this.routeService.updateRouteRating(route, $event, this.userService.getCurrentUserId())">
+        </ngb-rating>
+
+        <ngb-rating *ngIf="!route.rating.votes.includes(this.currentUser.id)" [(rate)]="route.rating.show"
+          (rateChange)="this.routeService.updateRouteRating(route, $event, this.userService.getCurrentUserId())">
+        </ngb-rating>
       </div>
 
+    </td>
+  </ng-container>
+
+  <!-- User Column -->
+  <ng-container matColumnDef="user">
+    <th mat-header-cell *matHeaderCellDef> User
+    </th>
+    <td mat-cell *matCellDef="let route">
+      <a [routerLink]="['/users', route.userId]" class="card-link">
+        {{searchName(route.id)}}
+      </a>
+
+      <div *ngIf="this.currentUser.follows.includes(route.userId) && this.currentUser.id != route.userId">
+        <button class="btn btn-danger mr-1" (click)="this.userService.unfollow(searchUser(route.id))">
+          <i class="far fa-times-circle"></i>
+        </button>
+      </div>
+
+      <div *ngIf="!this.currentUser.follows.includes(route.userId) && this.currentUser.id != route.userId">
+        <button class="btn btn-success mr-1" (click)="this.userService.follow(searchUser(route.id))">
+          <i class="fa fa-plus"></i>
+        </button>
+      </div>
     </td>
   </ng-container>
 

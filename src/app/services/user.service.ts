@@ -63,8 +63,16 @@ export class UserService {
     return this.db.collection('user').doc(data).snapshotChanges();
   }
 
+  getUserGET(data){
+    return this.db.collection('user').doc(data).get();
+  }
+
   getUserByName(data) {
     return this.db.collection('user', ref => ref.where('username', '==', data)).get();
+  }
+
+  getNameById(data) {
+    return this.db.collection('user').doc(data).get();
   }
 
   createUser(data) {
@@ -236,6 +244,56 @@ export class UserService {
       return this.db.collection("user")
         .doc(id)
         .set({ config: configAux }, { merge: true });
+    });
+  }
+
+  searchUser(email) {
+    return this.db.collection("user", ref => ref.where('email', '==', email)).get().subscribe((user: any) => {
+
+      let userAux: User = {
+        id: user.docs[0].id,
+        profile: user.docs[0].data().profile,
+        username: user.docs[0].data().username,
+        password: user.docs[0].data().password,
+        email: user.docs[0].data().email,
+        config: user.docs[0].data().config,
+        followers: user.docs[0].data().followers,
+        follows: user.docs[0].data().follows,
+        createdRoutes: user.docs[0].data().createdRoutes,
+        savedRoutes: user.docs[0].data().savedRoutes,
+      };
+
+      console.log(userAux);
+
+      this.emailService.sendEmail("https://enigmatic-hamlet-67391.herokuapp.com/email/reset", userAux).subscribe((res) => {
+
+      });
+
+    })
+  }
+
+  resetPassword(id) {
+    this.getUserGET(id).subscribe((user) => {
+      let newPassword = Math.random().toString(36).slice(-8);
+
+      let userAux = {
+        id: user.id,
+        profile: user.data().profile,
+        username: user.data().username,
+        password: newPassword,
+        email: user.data().email,
+        config: user.data().config,
+        followers: user.data().followers,
+        follows: user.data().follows,
+        createdRoutes: user.data().createdRoutes,
+        savedRoutes: user.data().savedRoutes,
+      };
+
+      this.db.collection("user")
+        .doc(id)
+        .set({ password: newPassword }, { merge: true });
+
+      this.emailService.sendEmail("https://enigmatic-hamlet-67391.herokuapp.com/email/password", userAux).subscribe(() => { });
     });
   }
 

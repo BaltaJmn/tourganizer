@@ -15,7 +15,7 @@ import { environment } from '../environments/environment';
 // Components
 import { HeaderComponent } from './components/structure/header/header.component';
 import { HomeComponent } from './components/home/home.component';
-import { LoginComponent } from './components/login/login.component';
+import { LoginComponent, ResetPasswordForm } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { SidebarComponent } from './components/structure/sidebar/sidebar.component';
@@ -31,6 +31,7 @@ import { IndexRouteComponent } from './components/routes/index/index.component';
 import { ShowRouteComponent } from './components/routes/show/show.component';
 import { AddRouteComponent } from './components/routes/add/add.component';
 import { EditRouteComponent } from './components/routes/edit/edit.component';
+import { MarkerinfoComponent } from './components/routes/show/markerinfo/markerinfo.component';
 
 //Localizations Components
 import { IndexLocalizationComponent } from './components/localizations/index/index.component';
@@ -80,7 +81,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
@@ -110,6 +111,7 @@ import * as $ from 'jquery';
     ShowRouteComponent,
     AddRouteComponent,
     EditRouteComponent,
+    MarkerinfoComponent,
 
     IndexLocalizationComponent,
     ShowLocalizationComponent,
@@ -126,6 +128,7 @@ import * as $ from 'jquery';
     ProfileComponent,
     SidebarComponent,
     FilterPipe,
+    ResetPasswordForm
   ],
   imports: [
     BrowserModule,
@@ -189,8 +192,14 @@ import * as $ from 'jquery';
       }
     })
   ],
-  providers: [CookieService],
-  bootstrap: [AppComponent]
+  providers: [CookieService,
+    { provide: MAT_DIALOG_DATA, useValue: {} },
+    { provide: MatDialogRef, useValue: {} }],
+  bootstrap: [AppComponent],
+  entryComponents: [
+    MarkerinfoComponent,
+    ResetPasswordForm
+  ],
 })
 export class AppModule { }
 
