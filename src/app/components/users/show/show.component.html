@@ -17,7 +17,7 @@
           <a href="" data-target="#follows" data-toggle="tab" class="nav-link">Follows</a>
         </li>
         <li class="nav-item">
-          <a href="" data-target="#messages" data-toggle="tab" class="nav-link">Messages</a>
+          <a href="" data-target="#activity" data-toggle="tab" class="nav-link">Activity</a>
         </li>
         <li class="nav-item">
           <a href="" data-target="#config" data-toggle="tab" class="nav-link">Config</a>
@@ -39,11 +39,22 @@
             </div>
             <div class="col-md-12">
               <h5 class="mt-2"><span class="fa fa-clock-o ion-clock float-right"></span> Recent Activity</h5>
-              <table class="table table-sm table-hover table-striped">
-                <tbody *ngFor="let act of activity">
+
+              <table class="table table-sm table-hover table-striped" *ngIf="recentActivities.length > 0">
+                <tbody *ngFor="let act of recentActivities">
                   <tr>
                     <td>
                       {{act.content}}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <table class="table table-sm table-hover table-striped" *ngIf="recentActivities.length == 0">
+                <tbody>
+                  <tr>
+                    <td>
+                      No recent activities
                     </td>
                   </tr>
                 </tbody>
@@ -109,41 +120,25 @@
           </table>
         </div>
 
-        <div class="tab-pane" id="messages">
-          <div class="alert alert-info alert-dismissable">
-            <a class="panel-close close" data-dismiss="alert">×</a> This is an <strong>.alert</strong>. Use this to show
-            important messages to the user.
-          </div>
-          <table class="table table-hover table-striped">
+        <div class="tab-pane" id="activity">
+
+          <table class="table table-hover table-striped" *ngIf="activities.length == 0">
             <tbody>
               <tr>
                 <td>
-                  <span class="float-right font-weight-bold">3 hrs ago</span> Here is your a link to the latest summary
-                  report from the..
+                  <span class="float-right font-weight-bold"></span>
+                  There is no activities
                 </td>
               </tr>
+            </tbody>
+          </table>
+
+          <table class="table table-hover table-striped" *ngIf="activities.length > 0">
+            <tbody *ngFor="let activity of activities; let i = index">
               <tr>
                 <td>
-                  <span class="float-right font-weight-bold">Yesterday</span> There has been a request on your account
-                  since that was..
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <span class="float-right font-weight-bold">9/10</span> Porttitor vitae ultrices quis, dapibus id
-                  dolor. Morbi venenatis lacinia rhoncus.
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <span class="float-right font-weight-bold">9/4</span> Vestibulum tincidunt ullamcorper eros eget
-                  luctus.
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <span class="float-right font-weight-bold">9/4</span> Maxamillion ais the fix for tibulum tincidunt
-                  ullamcorper eros.
+                  <span class="float-right font-weight-bold" (click)="removeActivity(i, activity)"><i class="fas fa-times"></i></span>
+                  {{activity.content}}
                 </td>
               </tr>
             </tbody>

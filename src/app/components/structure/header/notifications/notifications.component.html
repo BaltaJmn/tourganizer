@@ -1,0 +1,16 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <span>Notifications</span>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-list>
+  <mat-list-item *ngFor="let not of notifications; let i = index">
+    <mat-icon matListIcon (click)="markAsRead(i, not.id)">done</mat-icon>
+    <h3 matLine> {{not.content}} </h3>
+  </mat-list-item>
+
+  <mat-list-item *ngIf="notifications.length == 0">
+    <h3 matLine> There is no notifications </h3>
+  </mat-list-item>
+</mat-list>

@@ -40,6 +40,7 @@ export class IndexLocalizationComponent implements OnInit {
 
         let localizationAux: Localization = {
           id: doc.payload.doc.id,
+          profile: doc.payload.doc.data().profile,
           userId: doc.payload.doc.data().userId,
           name: doc.payload.doc.data().name,
           description: doc.payload.doc.data().description,

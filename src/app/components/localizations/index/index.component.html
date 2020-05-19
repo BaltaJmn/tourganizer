@@ -1,6 +1,6 @@
 <br>
 
-<div class="row">
+<div class="row rowWidth">
   <div class="col text-right" *ngIf="userService.getLogged()">
     <button class="btn btn-success mr-1" [routerLink]="['/localizations/add']">
       <i class="fa fa-plus"></i>
@@ -11,47 +11,56 @@
 
 <br>
 
-<form class="example-form">
-  <mat-form-field class="example-full-width">
-    <mat-label>Name</mat-label>
-    <input matInput name="name" [(ngModel)]="filter.name">
-  </mat-form-field>
-</form>
+<div class="row rowWidth">
+  <div class="col text-left">
+    <form class="example-form">
+      <mat-form-field class="example-full-width">
+        <mat-label>Name</mat-label>
+        <input matInput name="name" [(ngModel)]="filter.name">
+      </mat-form-field>
+    </form>
+  </div>
+</div>
 
 <br>
 
-<div class="row">
-  <div class="card" style="width: 18rem;"
-    *ngFor="let localization of localizations | filter: {name: filter.name} : false">
-    <img class="card-img-top" src="{{localization.profile}}" alt="{{localization.name}}">
-    <div class="card-body">
-      <h5 class="card-title">{{localization.name}}</h5>
-      <p class="card-text">
-        {{localization.description}}
-      </p>
-    </div>
+<div class="row rowWidth">
+  <div class="col-md-4" *ngFor="let localization of localizations | filter: {name: filter.name} : false">
 
-    <div *ngIf="localization.likes.includes(this.currentUser.id)">
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item" (click)="this.localizationService.dislike(localization.id, this.currentUser.id)">
-          <i class="fas fa-heart"></i>{{localization.likes.length}}
-        </li>
-      </ul>
-    </div>
+    <div class="card" style="width: 18rem;">
 
-    <div *ngIf="!localization.likes.includes(this.currentUser.id)">
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item" (click)="this.localizationService.like(localization.id, this.currentUser.id)">
-          <i class="far fa-heart"></i>{{localization.likes.length}}
-        </li>
-      </ul>
-    </div>
+      <img class="card-img-top" src="{{localization.profile}}" alt="{{localization.name}}">
 
-    <div class="card-body">
-      <a [routerLink]="['/localizations', localization.id]" class="card-link">
-        <i class="fa fa-eye"></i>
-        See more
-      </a>
+      <div class="card-body">
+        <h5 class="card-title">{{localization.name}}</h5>
+        <p class="card-text">
+          {{ (localization.description.length>150)? (localization.description | slice:0:150)+'...':(localization.description) }}
+        </p>
+      </div>
+
+      <div *ngIf="localization.likes.includes(this.currentUser.id)">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item" (click)="this.localizationService.dislike(localization.id, this.currentUser.id)">
+            <i class="fas fa-heart"></i>{{localization.likes.length}}
+          </li>
+        </ul>
+      </div>
+
+      <div *ngIf="!localization.likes.includes(this.currentUser.id)">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item" (click)="this.localizationService.like(localization.id, this.currentUser.id)">
+            <i class="far fa-heart"></i>{{localization.likes.length}}
+          </li>
+        </ul>
+      </div>
+
+      <div class="card-body">
+        <a [routerLink]="['/localizations', localization.id]" class="card-link">
+          <i class="fa fa-eye"></i>
+          See more
+        </a>
+      </div>
+
     </div>
   </div>
 </div>

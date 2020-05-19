@@ -5,6 +5,8 @@ import { NotificationService } from '../../../services/notification.service';
 
 import { User } from '../../../interfaces/User';
 import { Notification } from 'src/app/interfaces/Notification';
+import { MatDialog } from '@angular/material/dialog';
+import { NotificationsComponent } from './notifications/notifications.component';
 
 @Component({
   selector: 'app-header',
@@ -35,7 +37,8 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     public userService: UserService,
-    public notificationService: NotificationService
+    public notificationService: NotificationService,
+    public dialog: MatDialog
   ) {
     this.userService.userEmitter.subscribe(response => this.currentUser = response);
     this.userService.notificationUSEmitter.subscribe((notifications) => this.notifications = notifications)
@@ -44,8 +47,11 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
   }
 
-  markAsRead(id, index) {
-    this.notificationService.updateNotificationSeen(id);
-    this.notifications.splice(index, 1);
+  openModal() {
+    const dialogRef = this.dialog.open(NotificationsComponent, {
+      width: '600px',
+      height: '400px',
+      data: this.notifications
+    });
   }
 }

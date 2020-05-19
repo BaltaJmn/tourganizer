@@ -17,7 +17,6 @@ import { HeaderComponent } from './components/structure/header/header.component'
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent, ResetPasswordForm } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
-import { ProfileComponent } from './components/profile/profile.component';
 import { SidebarComponent } from './components/structure/sidebar/sidebar.component';
 
 // Users Components
@@ -100,6 +99,7 @@ import { CookieService } from 'ngx-cookie-service';
 
 // Jquery
 import * as $ from 'jquery';
+import { NotificationsComponent } from './components/structure/header/notifications/notifications.component';
 
 @NgModule({
   declarations: [
@@ -125,10 +125,10 @@ import * as $ from 'jquery';
 
     LoginComponent,
     RegisterComponent,
-    ProfileComponent,
     SidebarComponent,
     FilterPipe,
-    ResetPasswordForm
+    ResetPasswordForm,
+    NotificationsComponent
   ],
   imports: [
     BrowserModule,
@@ -198,6 +198,7 @@ import * as $ from 'jquery';
   bootstrap: [AppComponent],
   entryComponents: [
     MarkerinfoComponent,
+    NotificationsComponent,
     ResetPasswordForm
   ],
 })

@@ -83,6 +83,7 @@ export class ShowLocalizationComponent implements OnInit {
         this.currentLocalization = {
           id: result.id,
           userId: result.data().userId,
+          profile: result.data().profile,
           name: result.data().name,
           description: result.data().description,
           images: result.data().images,

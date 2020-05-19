@@ -3,10 +3,10 @@ import { Component, OnInit } from "@angular/core";
 import { LocalizationService } from '../../services/localization.service';
 import { ActivityService } from '../../services/activity.service';
 import { UserService } from '../../services/user.service';
+
+import { Localization } from '../../interfaces/Localization';
 import { Activity } from '../../interfaces/Activity';
 import { User } from '../../interfaces/User';
-import { Localization } from '../../interfaces/Localization';
-
 
 @Component({
 	selector: "app-home",
@@ -60,19 +60,24 @@ export class HomeComponent implements OnInit {
 		this.currentUser.follows.forEach((user) => {
 
 			this.activityService.getActivity(user).subscribe((activitySnapshot) => {
+
 				this.activities = [];
 
 				activitySnapshot.forEach((doc: any) => {
 
 					let activityAux: Activity = {
-						id: doc.payload.doc.id,
-						userId: doc.payload.doc.data().userId,
-						date: doc.payload.doc.data().date,
-						type: doc.payload.doc.data().type,
-						content: doc.payload.doc.data().content
+						id: doc.id,
+						userId: doc.data().userId,
+						date: doc.data().date,
+						type: doc.data().type,
+						content: doc.data().content,
+						new: doc.data().new,
+						profile: doc.data().profile
 					}
 
 					this.activities.push(activityAux);
+
+					this.activityService.updateNewActivity(activityAux);
 				});
 			});
 		});

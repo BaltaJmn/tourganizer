@@ -1,6 +1,7 @@
 export interface Localization {
     id?: string;
     userId: string;
+    profile: string;
     name: string;
     description: string;
 

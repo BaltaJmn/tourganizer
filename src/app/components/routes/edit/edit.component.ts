@@ -149,7 +149,6 @@ export class EditRouteComponent implements OnInit {
         this.map.addControl(searchControl);
 
         this.map.on('geosearch/showlocation', function (e) {
-          console.log(e.location);
           localStorage.setItem('lat', e.location.x);
           localStorage.setItem('lon', e.location.y);
         });
@@ -166,6 +165,7 @@ export class EditRouteComponent implements OnInit {
             let localizationAux: Localization = {
               id: doc.payload.doc.id,
               userId: doc.payload.doc.data().userId,
+              profile: doc.payload.doc.data().profile,
               name: doc.payload.doc.data().name,
               description: doc.payload.doc.data().description,
               images: doc.payload.doc.data().images,
@@ -209,8 +209,11 @@ export class EditRouteComponent implements OnInit {
 
               this.route.get("profile").setValue(this.storage);
               this.route.get("userId").setValue(this.userService.getCurrentUserId());
-              this.route.get("center").setValue({ latitude: localStorage.getItem("lat"), longitude: localStorage.getItem("lon") });
               this.route.get("localizations").setValue(this.currentLocalizations);
+
+              if (localStorage.getItem("lat") != null && localStorage.getItem("lon") != null) {
+                this.route.get("center").setValue({ latitude: localStorage.getItem("lat"), longitude: localStorage.getItem("lon") });
+              }
 
               this.routeService.updateRoute(this.id, route.value).then(() => {
                 Swal.fire('Great!', 'Your route was updated succesfully!', 'success').then(() => {

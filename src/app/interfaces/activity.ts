@@ -4,4 +4,6 @@ export interface Activity {
     date: string,
     type: number,
     content: string,
+    new: boolean,
+    profile: boolean
 }

@@ -10,7 +10,6 @@ import { RouteService } from '../../../services/route.service';
 import { LocalizationService } from '../../../services/localization.service';
 import { NotificationService } from '../../../services/notification.service';
 
-import { Route } from '../../../interfaces/Route';
 import { Localization } from '../../../interfaces/Localization';
 import { Notification } from '../../../interfaces/Notification';
 
@@ -65,6 +64,8 @@ const searchControl = new GeoSearchControl({
 })
 export class AddRouteComponent implements OnInit {
 
+  loaded = true;
+
   // Map
   private map;
 
@@ -74,8 +75,6 @@ export class AddRouteComponent implements OnInit {
   filePath;
   fileRef;
   downloadURL;
-
-  loaded = true;
 
   localizations = [];
   currentLocalizations = [];
@@ -112,6 +111,7 @@ export class AddRouteComponent implements OnInit {
         let localizationAux: Localization = {
           id: doc.payload.doc.id,
           userId: doc.payload.doc.data().userId,
+          profile: doc.payload.doc.data().profile,
           name: doc.payload.doc.data().name,
           description: doc.payload.doc.data().description,
           images: doc.payload.doc.data().images,

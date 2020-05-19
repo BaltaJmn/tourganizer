@@ -98,6 +98,7 @@ export class ShowRouteComponent implements OnInit {
 
             let localizationAux: Localization = {
               id: localizationSnapshot.id,
+              profile: localizationSnapshot.data().profile,
               name: localizationSnapshot.data().name,
               description: localizationSnapshot.data().description,
               likes: localizationSnapshot.data().likes,

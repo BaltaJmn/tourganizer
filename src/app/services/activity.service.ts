@@ -15,7 +15,27 @@ export class ActivityService {
   };
 
   getActivity(data) {
-    return this.db.collection('activity', ref => ref.where('userId', '==', data).orderBy('date', 'asc')).snapshotChanges();
+    return this.db.collection('activity', ref => ref.where('userId', '==', data).where('new', '==', true).orderBy('date', 'asc')).get();
+  };
+
+  getActivityProfile(data) {
+    return this.db.collection('activity', ref => ref.where('userId', '==', data).where('profile', '==', true).orderBy('date', 'asc')).snapshotChanges();
+  };
+
+  getActivityRecent(data) {
+    return this.db.collection('activity', ref => ref.where('userId', '==', data).orderBy('date', 'asc').limit(5)).get();
+  };
+
+  updateNewActivity(data) {
+    return this.db.collection("activity")
+      .doc(data.id)
+      .set({ new: false }, { merge: true });
+  };
+
+  updateProfileActivity(data) {
+    return this.db.collection("activity")
+      .doc(data.id)
+      .set({ profile: false }, { merge: true });
   };
 
   createActivityFollow(type, first, second) {
@@ -24,7 +44,9 @@ export class ActivityService {
       type: type,
       userId: first.id,
       date: Date(),
-      content: ""
+      content: "",
+      new: true,
+      profile: true
     };
 
     switch (type) {

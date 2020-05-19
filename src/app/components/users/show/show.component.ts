@@ -51,14 +51,15 @@ export class ShowUserComponent implements OnInit {
 
   followers: User[];
   follows: User[];
-  activity: Activity[];
+  recentActivities: Activity[] = [];
+  activities: Activity[] = [];
 
   loaded = true;
 
   constructor(
     private router: Router,
     public userService: UserService,
-    private activityService: ActivityService,
+    public activityService: ActivityService,
     private activatedRoute: ActivatedRoute,
     private storage: AngularFireStorage
   ) { }
@@ -72,7 +73,7 @@ export class ShowUserComponent implements OnInit {
 
         this.followers = [];
         this.follows = [];
-        this.activity = [];
+        this.activities = [];
 
         this.currentUser = {
           id: result.payload.id,
@@ -123,21 +124,41 @@ export class ShowUserComponent implements OnInit {
             };
             this.follows.push(followAux)
           });
+
+          this.activityService.getActivityProfile(followID).subscribe((result: any) => {
+            result.forEach(element => {
+              let activityAux: Activity = {
+                id: element.payload.doc.id,
+                userId: element.payload.doc.data().profile,
+                type: element.payload.doc.data().type,
+                date: element.payload.doc.data().date,
+                content: element.payload.doc.data().content,
+                profile: element.payload.doc.data().profile,
+                new: element.payload.doc.data().new
+              };
+
+              this.activities.push(activityAux)
+            });
+          });
+
         });
 
-        this.activityService.getActivity(this.currentUser.id).subscribe((result: any) => {
+        this.activityService.getActivityRecent(this.currentUser.id).subscribe((result: any) => {
           result.forEach(element => {
 
             let activityAux: Activity = {
+              id: element.payload.doc.id,
               userId: element.payload.doc.data().profile,
               type: element.payload.doc.data().type,
               date: element.payload.doc.data().date,
-              content: element.payload.doc.data().content
+              content: element.payload.doc.data().content,
+              profile: element.payload.doc.data().profile,
+              new: element.payload.doc.data().new
             };
 
-            this.activity.push(activityAux)
+            this.recentActivities.push(activityAux)
           });
-        })
+        });
 
         this.loaded = true;
       });
@@ -166,6 +187,11 @@ export class ShowUserComponent implements OnInit {
         });
       }
     })
+  };
+
+  removeActivity(index, activity) {
+    this.activities.splice(index, 1);
+    this.activityService.updateProfileActivity(activity);
   };
 
   onFileSelected(event) {

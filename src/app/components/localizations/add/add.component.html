@@ -1,21 +1,35 @@
-<form class="text-center border border-light p-5" [formGroup]="localization" (ngSubmit)="onSubmit(localization)">
+<div class="center" *ngIf="!loaded">
+  <mat-progress-spinner diameter=50 mode="indeterminate" color="accent">
+  </mat-progress-spinner>
+</div>
+
+<div class="text-center border border-light p-5">
 
   <p class="h4 mb-4">Add localization</p>
 
-  <input type="text" id="defaultLoginFormName" class="form-control mb-4" placeholder="name" formControlName="name">
+  <form [formGroup]="localization" (ngSubmit)="onSubmit(localization)">
 
-  <input type="text" id="defaultLoginFormDescription" class="form-control mb-4" placeholder="description"
-    formControlName="description">
+    <label for="file">Profile</label>
+    <div class="form-group col-12">
+      <input type="file" id="file" #userPhoto (change)="onFileSelected($event)" name="image" autocomplete="off" />
+    </div>
 
-  <input type="number" id="defaultLoginFormLatitude" class="form-control mb-4" placeholder="latitude"
-    formControlName="latitude">
+    <ngx-imageviewer *ngIf="file" [src]="file" width="800" height="600"></ngx-imageviewer>
 
-  <input type="number" id="defaultLoginFormLongitude" class="form-control mb-4" placeholder="longitude"
-    formControlName="longitude">
+    <label for="defaultLoginFormName">Name</label>
+    <input type="text" id="defaultLoginFormName" class="form-control mb-4" placeholder="name" formControlName="name">
 
-  <input type="text" id="defaultLoginFormUrl" class="form-control mb-4" placeholder="url" formControlName="url">
+    <label for="defaultLoginFormDescription">Description</label>
+    <input type="text" id="defaultLoginFormDescription" class="form-control mb-4" placeholder="description"
+      formControlName="description">
 
-  <!-- images -->
+    <label for="mapid">Localization</label>
+    <div id="mapid" class="text-center"></div> <br>
 
-  <button mdbBtn color="info" block="true" class="my-4" type="submit">Update</button>
-</form>
+    <label for="defaultLoginFormUrl">URL de la localización</label>
+    <input type="text" id="defaultLoginFormUrl" class="form-control mb-4" placeholder="url" formControlName="url">
+
+    <button mdbBtn color="info" block="true" class="my-4" type="submit" [disabled]="!localization.valid">Add</button>
+  
+  </form>
+</div>

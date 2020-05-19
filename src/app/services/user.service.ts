@@ -263,8 +263,6 @@ export class UserService {
         savedRoutes: user.docs[0].data().savedRoutes,
       };
 
-      console.log(userAux);
-
       this.emailService.sendEmail("https://enigmatic-hamlet-67391.herokuapp.com/email/reset", userAux).subscribe((res) => {
 
       });
