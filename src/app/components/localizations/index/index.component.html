@@ -6,6 +6,11 @@
       <i class="fa fa-plus"></i>
       Add Localization
     </button>
+
+    <button class="btn btn-info mr-1" (click)="openModal()">
+      <i class="fas fa-check"></i>
+      Check Unconfirmed Localizations ({{this.localizationsUnconfirmed.length}})
+    </button>
   </div>
 </div>
 
@@ -27,7 +32,7 @@
 <div class="row rowWidth">
   <div class="col-md-4" *ngFor="let localization of localizations | filter: {name: filter.name} : false">
 
-    <div class="card" style="width: 18rem;">
+    <div class="card mx-auto" style="width: 18rem;">
 
       <img class="card-img-top" src="{{localization.profile}}" alt="{{localization.name}}">
 

@@ -18,6 +18,7 @@ import { HomeComponent } from './components/home/home.component';
 import { LoginComponent, ResetPasswordForm } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { SidebarComponent } from './components/structure/sidebar/sidebar.component';
+import { NotificationsComponent } from './components/structure/header/notifications/notifications.component';
 
 // Users Components
 import { IndexUserComponent } from './components/users/index/index.component';
@@ -31,12 +32,14 @@ import { ShowRouteComponent } from './components/routes/show/show.component';
 import { AddRouteComponent } from './components/routes/add/add.component';
 import { EditRouteComponent } from './components/routes/edit/edit.component';
 import { MarkerinfoComponent } from './components/routes/show/markerinfo/markerinfo.component';
+import { RoutesUnconfirmedComponent } from './components/routes/index/unconfirmed/unconfirmed.component';
 
 //Localizations Components
 import { IndexLocalizationComponent } from './components/localizations/index/index.component';
 import { ShowLocalizationComponent } from './components/localizations/show/show.component';
 import { EditLocalizationComponent } from './components/localizations/edit/edit.component';
 import { AddLocalizationComponent } from './components/localizations/add/add.component';
+import { LocalizationsUnconfirmedComponent } from './components/localizations/index/unconfirmed/unconfirmed.component';
 
 // Login & Register
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -99,7 +102,6 @@ import { CookieService } from 'ngx-cookie-service';
 
 // Jquery
 import * as $ from 'jquery';
-import { NotificationsComponent } from './components/structure/header/notifications/notifications.component';
 
 @NgModule({
   declarations: [
@@ -128,7 +130,9 @@ import { NotificationsComponent } from './components/structure/header/notificati
     SidebarComponent,
     FilterPipe,
     ResetPasswordForm,
-    NotificationsComponent
+    NotificationsComponent,
+    RoutesUnconfirmedComponent,
+    LocalizationsUnconfirmedComponent
   ],
   imports: [
     BrowserModule,
@@ -197,6 +201,8 @@ import { NotificationsComponent } from './components/structure/header/notificati
     { provide: MatDialogRef, useValue: {} }],
   bootstrap: [AppComponent],
   entryComponents: [
+    LocalizationsUnconfirmedComponent,
+    RoutesUnconfirmedComponent,
     MarkerinfoComponent,
     NotificationsComponent,
     ResetPasswordForm

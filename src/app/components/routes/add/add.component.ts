@@ -114,6 +114,7 @@ export class AddRouteComponent implements OnInit {
           profile: doc.payload.doc.data().profile,
           name: doc.payload.doc.data().name,
           description: doc.payload.doc.data().description,
+          confirmed: doc.payload.doc.data().confirmed,
           images: doc.payload.doc.data().images,
           latitude: doc.payload.doc.data().latitude,
           longitude: doc.payload.doc.data().longitude,

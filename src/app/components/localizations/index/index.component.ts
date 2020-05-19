@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+
+import { LocalizationsUnconfirmedComponent } from './unconfirmed/unconfirmed.component';
 
 import { LocalizationService } from '../../../services/localization.service';
 import { UserService } from '../../../services/user.service';
@@ -23,10 +26,12 @@ export class IndexLocalizationComponent implements OnInit {
   };
 
   public localizations = [];
+  public localizationsUnconfirmed = [];
 
   constructor(
     public userService: UserService,
-    public localizationService: LocalizationService
+    public localizationService: LocalizationService,
+    public dialog: MatDialog
   ) {
     this.currentUser = this.userService.getCurrentUser();
   }
@@ -44,6 +49,7 @@ export class IndexLocalizationComponent implements OnInit {
           userId: doc.payload.doc.data().userId,
           name: doc.payload.doc.data().name,
           description: doc.payload.doc.data().description,
+          confirmed: doc.payload.doc.data().confirmed,
           images: doc.payload.doc.data().images,
           latitude: doc.payload.doc.data().latitude,
           longitude: doc.payload.doc.data().longitude,
@@ -54,5 +60,37 @@ export class IndexLocalizationComponent implements OnInit {
         this.localizations.push(localizationAux);
       })
     });
+
+    this.localizationService.getLocalizationsUnconfirmed().subscribe((localizationsSnapshot) => {
+
+      this.localizationsUnconfirmed = [];
+
+      localizationsSnapshot.forEach((doc: any) => {
+
+        let localizationAux: Localization = {
+          id: doc.payload.doc.id,
+          profile: doc.payload.doc.data().profile,
+          userId: doc.payload.doc.data().userId,
+          name: doc.payload.doc.data().name,
+          description: doc.payload.doc.data().description,
+          confirmed: doc.payload.doc.data().confirmed,
+          images: doc.payload.doc.data().images,
+          latitude: doc.payload.doc.data().latitude,
+          longitude: doc.payload.doc.data().longitude,
+          likes: doc.payload.doc.data().likes,
+          url: doc.payload.doc.data().url
+        }
+
+        this.localizationsUnconfirmed.push(localizationAux);
+      })
+    });
   };
+
+  openModal() {
+    const dialogRef = this.dialog.open(LocalizationsUnconfirmedComponent, {
+      width: '600px',
+      height: '400px',
+      data: this.localizationsUnconfirmed
+    });
+  }
 }

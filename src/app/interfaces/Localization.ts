@@ -5,6 +5,8 @@ export interface Localization {
     name: string;
     description: string;
 
+    confirmed: boolean;
+
     latitude: string;
     longitude: string;
 

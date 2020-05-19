@@ -12,7 +12,11 @@ export class LocalizationService {
   constructor(private db: AngularFirestore) { }
 
   getLocalizations() {
-    return this.db.collection('localization', ref => ref.orderBy('likes', 'desc')).snapshotChanges();
+    return this.db.collection('localization', ref => ref.orderBy('likes', 'desc').where('confirmed', '==', true)).snapshotChanges();
+  };
+
+  getLocalizationsUnconfirmed() {
+    return this.db.collection('localization', ref => ref.orderBy('likes', 'desc').where('confirmed', '==', false)).snapshotChanges();
   };
 
   getLocalization(data) {
@@ -41,6 +45,12 @@ export class LocalizationService {
     return this.db.collection("localization")
       .doc(id)
       .set(data, { merge: true });
+  };
+
+  updateConfirmed(data) {
+    return this.db.collection("localization")
+      .doc(data.id)
+      .set({ confirmed: true }, { merge: true });
   };
 
   deleteLocalization(data) {

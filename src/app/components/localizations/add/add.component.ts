@@ -80,6 +80,7 @@ export class AddLocalizationComponent implements OnInit {
     profile: new FormControl(''),
     name: new FormControl('', [Validators.required]),
     description: new FormControl('', [Validators.required]),
+    confirmed: new FormControl(false),
     likes: new FormControl([]),
     latitude: new FormControl(0),
     longitude: new FormControl(0),

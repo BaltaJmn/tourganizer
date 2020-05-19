@@ -86,6 +86,7 @@ export class ShowLocalizationComponent implements OnInit {
           profile: result.data().profile,
           name: result.data().name,
           description: result.data().description,
+          confirmed: result.data().confirmed,
           images: result.data().images,
           latitude: result.data().latitude,
           longitude: result.data().longitude,

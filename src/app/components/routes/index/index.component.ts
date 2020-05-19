@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+
+import { RoutesUnconfirmedComponent } from './unconfirmed/unconfirmed.component';
 
 import { UserService } from '../../../services/user.service';
 import { RouteService } from '../../../services/route.service';
@@ -35,7 +38,8 @@ export class IndexRouteComponent implements OnInit {
     savedRoutes: [],
   };
 
-  routes: Route[];
+  routes: Route[] = [];
+  routesUnconfirmed: Route[] = [];
   usernames = [];
 
   displayedColumns: string[] = ['name', 'type', 'rate', 'user', 'actions'];
@@ -48,7 +52,8 @@ export class IndexRouteComponent implements OnInit {
 
   constructor(
     public userService: UserService,
-    public routeService: RouteService
+    public routeService: RouteService,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -104,6 +109,29 @@ export class IndexRouteComponent implements OnInit {
 
     });
 
+    this.routeService.getRoutesUnconfirmed().subscribe((routesSnapshot) => {
+
+      this.routesUnconfirmed = [];
+
+      routesSnapshot.forEach((doc: any) => {
+
+        let routeAux: Route = {
+          id: doc.payload.doc.id,
+          userId: doc.payload.doc.data().userId,
+          profile: doc.payload.doc.data().profile,
+          name: doc.payload.doc.data().name,
+          type: doc.payload.doc.data().type,
+          confirmed: doc.payload.doc.data().confirmed,
+          center: doc.payload.doc.data().center,
+          totalTime: doc.payload.doc.data().totalTime,
+          rating: doc.payload.doc.data().rating,
+          localizations: doc.payload.doc.data().localizations,
+        }
+
+        this.routesUnconfirmed.push(routeAux);
+      });
+    });
+
     this.nameFilter.valueChanges.subscribe((nameFilterValue) => {
       this.filteredValues['name'] = nameFilterValue;
       this.dataSource.filter = JSON.stringify(this.filteredValues);
@@ -136,12 +164,20 @@ export class IndexRouteComponent implements OnInit {
       let aux = this.usernames.find(element => element.route == id);
       return aux.user.username;
     }
-  }
+  };
 
-  searchUser(id){
+  searchUser(id) {
     if (this.usernames.length > 0) {
       let aux = this.usernames.find(element => element.route == id);
       return aux.user;
     }
+  };
+
+  openModal() {
+    const dialogRef = this.dialog.open(RoutesUnconfirmedComponent, {
+      width: '600px',
+      height: '400px',
+      data: this.routesUnconfirmed
+    });
   }
 }

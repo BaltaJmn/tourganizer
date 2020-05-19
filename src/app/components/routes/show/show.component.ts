@@ -101,6 +101,7 @@ export class ShowRouteComponent implements OnInit {
               profile: localizationSnapshot.data().profile,
               name: localizationSnapshot.data().name,
               description: localizationSnapshot.data().description,
+              confirmed: localizationSnapshot.data().confirmed,
               likes: localizationSnapshot.data().likes,
               userId: localizationSnapshot.data().userId,
               latitude: localizationSnapshot.data().latitude,
@@ -111,6 +112,12 @@ export class ShowRouteComponent implements OnInit {
 
             const marker = L.marker([localizationAux.latitude, localizationAux.longitude], { localization: localizationAux })
               .bindPopup(localizationAux.name)
+              .on('mouseover', function (e) {
+                this.openPopup();
+              })
+              .on('mouseout', function (e) {
+                this.closePopup();
+              })
               .on('click', this.selectLocalization)
               .addTo(this.map);
 

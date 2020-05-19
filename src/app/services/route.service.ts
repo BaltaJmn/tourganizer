@@ -12,6 +12,10 @@ export class RouteService {
     return this.db.collection('route', ref => ref.orderBy('rating.show', 'desc').where("confirmed", "==", true)).snapshotChanges();
   };
 
+  getRoutesUnconfirmed() {
+    return this.db.collection('route', ref => ref.orderBy('rating.show', 'desc').where("confirmed", "==", false)).snapshotChanges();
+  };
+
   getRoute(data) {
     return this.db.collection("route").doc(data).get();
   };
@@ -25,6 +29,12 @@ export class RouteService {
       .doc(id)
       .set(data, { merge: true });
   };
+
+  updateConfirmed(data) {
+    return this.db.collection("route")
+      .doc(data.id)
+      .set({ confirmed: true }, { merge: true });
+  }
 
   updateRouteRating(data, value, userId) {
     data.rating.total += value;

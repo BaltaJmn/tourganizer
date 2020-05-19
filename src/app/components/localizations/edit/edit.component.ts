@@ -119,6 +119,7 @@ export class EditLocalizationComponent implements OnInit {
           profile: result.data().profile,
           name: result.data().name,
           description: result.data().description,
+          confirmed: result.data().confirmed,
           likes: result.data().likes,
           latitude: result.data().latitude,
           longitude: result.data().longitude,
@@ -130,6 +131,7 @@ export class EditLocalizationComponent implements OnInit {
         this.localization.get("profile").setValue(this.currentLocalization.profile);
         this.localization.get("name").setValue(this.currentLocalization.name);
         this.localization.get("description").setValue(this.currentLocalization.description);
+        this.localization.get("confirmed").setValue(this.currentLocalization.confirmed);
         this.localization.get("latitude").setValue(this.currentLocalization.latitude);
         this.localization.get("longitude").setValue(this.currentLocalization.longitude);
         this.localization.get("likes").setValue(this.currentLocalization.likes);

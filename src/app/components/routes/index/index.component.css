@@ -14,3 +14,19 @@ table {
 .mat-column-name {
   max-width: 100px;
 }
+
+.rowWidth {
+  margin: 0;
+}
+
+.col-md-12 {
+  padding: 0;
+}
+
+.rowSpace {
+  margin-left: 15px;
+}
+
+.mat-form-field{
+  width: 80%;
+}
