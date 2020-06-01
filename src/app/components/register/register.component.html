@@ -1,14 +1,27 @@
-<form class="text-center border border-light p-5" [formGroup]="user" (ngSubmit)="onSubmit(user)">
+<div class="row bg-color">
+  <div class="col-md-6 center">
+    <form class="text-center border border-light p-5" [formGroup]="user" (ngSubmit)="onSubmit(user)">
 
-    <p class="h4 mb-4">Register</p>
-  
-    <input type="username" id="defaultRegisterFormUsername" class="form-control mb-4" placeholder="Username" formControlName="username">
+      <p class="h4 mb-4">Register</p>
 
-    <input type="email" id="defaultRegisterFormEmail" class="form-control mb-4" placeholder="Email" formControlName="email">
+      <input type="username" id="defaultRegisterFormUsername" class="form-control mb-4" placeholder="Username"
+        formControlName="username">
 
-    <input type="password" id="defaultRegisterFormPassword" class="form-control mb-4" placeholder="Password" formControlName="password">
-  
-    <button mdbBtn color="info" block="true" class="my-4" type="submit">Register</button>
-  
-  </form>
-  
+      <input type="email" id="defaultRegisterFormEmail" class="form-control mb-4" placeholder="Email"
+        formControlName="email">
+
+      <input type="password" id="defaultRegisterFormPassword" class="form-control mb-4" placeholder="Password"
+        formControlName="password">
+
+      <div class="d-flex justify-content-around">
+        <div>
+          <!-- Login -->
+          <a routerLink="/login">Go to Login Page</a>
+        </div>
+      </div>
+
+      <button mdbBtn color="info" block="true" class="my-4" type="submit">Register</button>
+
+    </form>
+  </div>
+</div>

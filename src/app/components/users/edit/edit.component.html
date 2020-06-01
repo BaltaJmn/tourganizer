@@ -1,6 +1,8 @@
-<div class="center">
-  <mat-progress-spinner *ngIf="!loaded" diameter=50 mode="indeterminate" color="accent">
-  </mat-progress-spinner>
+<div class="overlay" *ngIf="!loaded">
+  <div class="center">
+    <mat-progress-spinner diameter=50 mode="indeterminate" color="accent">
+    </mat-progress-spinner>
+  </div>
 </div>
 
 <form class="text-center border border-light p-5" [formGroup]="user" (ngSubmit)="onSubmit(user)">

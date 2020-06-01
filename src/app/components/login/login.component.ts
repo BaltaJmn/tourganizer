@@ -13,8 +13,8 @@ import { UserService } from '../../services/user.service';
 export class LoginComponent implements OnInit {
 
   user = new FormGroup({
-    username: new FormControl('admin', [Validators.required]),
-    password: new FormControl('admin', [Validators.required])
+    username: new FormControl('', [Validators.required]),
+    password: new FormControl('', [Validators.required])
   });
 
   email = '';
@@ -40,7 +40,6 @@ export class LoginComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       this.email = result;
-      console.log(result);
       this.userService.searchUser(this.email);
     });
   }

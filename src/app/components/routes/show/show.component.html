@@ -1,41 +1,93 @@
-<div class="center">
-  <mat-progress-spinner *ngIf="!loaded" diameter=50 mode="indeterminate" color="accent">
-  </mat-progress-spinner>
+<div class="overlay" *ngIf="!loaded">
+  <div class="center">
+    <mat-progress-spinner diameter=50 mode="indeterminate" color="accent">
+    </mat-progress-spinner>
+  </div>
 </div>
 
-<div class="col text-right">
-  <button class="btn btn-info mr-1" [routerLink]="['edit']">
-    <i class="fa fa-pen"></i>
-  </button>
+<br>
 
-  <button class="btn btn-danger mr-1" (click)="deleteRoute(currentRoute.id)">
-    <i class="fa fa-trash"></i>
-  </button>
+<div class="row rowWitdh" *ngIf="this.currentUser.config.rol == 0 || this.currentUser.config.rol == 1">
+  <div class="col text-right">
+    <button class="btn btn-info mr-1" [routerLink]="['edit']">
+      <i class="fa fa-pen"></i>
+    </button>
+
+    <button class="btn btn-danger mr-1" (click)="deleteRoute(currentRoute.id)">
+      <i class="fa fa-trash"></i>
+    </button>
+  </div>
 </div>
 
-<p>{{currentRoute.name}}</p>
-<div id="mapid"></div>
+<div class="text-center border border-light p-5">
+  <p class="h4 mb-4">{{currentRoute.name}}</p>
 
-<div aria-labelledby="myModalLabel" class="modal right fade" id="emptymodal" role="dialog" tabindex="-1">
+  <div class="row rowHeight">
+    <div class="col-6">
+      <img src="{{currentRoute.profile}}" style="width: 250px; height: 250px;"> <br>
+    </div>
+
+    <div class="col-6">
+      <label for="creator"><strong>Creador</strong></label> <br>
+      <a id="creator" [routerLink]="['/users', currentRoute.userId]" class="card-link">
+        {{creator.username}}
+      </a>
+
+      <div *ngIf="this.currentUser.follows.includes(currentRoute.userId) && this.currentUser.id != currentRoute.userId">
+        <button class="btn btn-danger mr-1" (click)="this.userService.unfollow(creator)">
+          Unfollow
+          <i class="far fa-times-circle"></i>
+        </button>
+      </div>
+
+      <div
+        *ngIf="!this.currentUser.follows.includes(currentRoute.userId) && this.currentUser.id != currentRoute.userId">
+        <button class="btn btn-success mr-1" (click)="this.userService.follow(creator)">
+          Follow
+          <i class="fa fa-plus"></i>
+        </button>
+      </div>
+
+      <br><br>
+
+      <label for="creator"><strong>Rating</strong></label> <br>
+      <div [ngSwitch]="currentRoute.rating.votes.length">
+        <div *ngSwitchCase="0">
+          <div>No votes</div>
+          <ngb-rating [(rate)]="currentRoute.rating.show"
+            (rateChange)="this.routeService.updateRouteRating(currentRoute, $event, this.userService.getCurrentUserId())">
+          </ngb-rating>
+        </div>
+
+        <div *ngSwitchDefault>
+          <div>{{currentRoute.rating.show | number : '1.1-2'}}</div>
+
+          <ngb-rating *ngIf="currentRoute.rating.votes.includes(this.currentUser.id) || this.currentUser.id == currentRoute.id"
+            [(rate)]="currentRoute.rating.show" [readonly]="true"
+            (rateChange)="this.routeService.updateRouteRating(currentRoute, $event, this.userService.getCurrentUserId())">
+          </ngb-rating>
+
+          <ngb-rating *ngIf="!currentRoute.rating.votes.includes(this.currentUser.id)"
+            [(rate)]="currentRoute.rating.show"
+            (rateChange)="this.routeService.updateRouteRating(currentRoute, $event, this.userService.getCurrentUserId())">
+          </ngb-rating>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <br><br>
+
+  <label for="mapid"><strong>Localizations</strong></label>
+  <div id="mapid" class="text-center"></div>
+
+  <div aria-labelledby="myModalLabel" class="modal right fade" id="emptymodal" role="dialog" tabindex="-1">
   <div class="modal-dialog" role="document">
     <div class="modal-content"></div>
   </div>
 </div>
 
 <button mat-button id="modal" class="display:none" (click)="openModal()"></button>
-
-<!-- <div *ngIf="this.currentUser.follows.includes(this.currentRoute.userId)">
-  <button class="btn btn-danger mr-1" (click)="this.userService.unfollow(follow.id)">
-    <i class="far fa-times-circle"></i>
-    Unfollow
-  </button>
 </div>
-
-<div *ngIf="!this.currentUser.follows.includes(this.currentRoute.userId)">
-  <button class="btn btn-success mr-1" (click)="this.userService.follow(follow)">
-    <i class="fa fa-plus"></i>
-    Follow
-  </button>
-</div> -->
 
 <router-outlet></router-outlet>

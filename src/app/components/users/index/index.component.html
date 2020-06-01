@@ -1,6 +1,6 @@
 <br>
 
-<div class="row">
+<div class="row rowWidth">
   <div class="col text-right" *ngIf="userService.getLogged()">
     <button class="btn btn-success mr-1" [routerLink]="['/users/add']">
       <i class="fa fa-plus"></i>
@@ -11,44 +11,72 @@
 
 <br>
 
-<form class="example-form">
-  <mat-form-field class="example-full-width">
-    <mat-label>Name</mat-label>
-    <input matInput name="name" [(ngModel)]="filter.name">
-  </mat-form-field>
-</form>
+<div class="row rowWidth">
+  <div class="col text-left">
+    <form class="example-form">
+      <mat-form-field class="example-full-width">
+        <mat-label>Name</mat-label>
+        <input matInput name="name" [formControl]="nameFilter">
+      </mat-form-field>
+    </form>
+  </div>
+</div>
 
 <br>
 
-<div class="row">
-  <div class="card" style="width: 18rem;" *ngFor="let user of users | filter: {username: filter.name} : false">
+<div class="row rowWidth">
+  <div class="col-md-12">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
-    <div class="card-body">
-      <h5 class="card-title">{{user.username}}</h5>
-    </div>
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Name </th>
+        <td mat-cell *matCellDef="let user"> {{user.username}} </td>
+      </ng-container>
 
-    <div class="card-body">
-      <a [routerLink]="['/users', user.id]" class="card-link">
-        <i class="fa fa-eye"></i>
-        See more
-      </a>
+      <!-- Follow Column -->
+      <ng-container matColumnDef="follow">
+        <th mat-header-cell *matHeaderCellDef> Follow </th>
+        <td mat-cell *matCellDef="let user">
+          <div *ngIf="userService.getLogged()">
+            <div *ngIf="userService.getCurrentUserFollows().includes(user.id) && this.currentUser.id != user.id">
+              <button class="btn btn-danger mr-1" (click)="this.userService.unfollow(user)">
+                <i class="far fa-times-circle"></i>
+                Unfollow
+              </button>
+            </div>
 
-      <div *ngIf="userService.getLogged()">
-        <div *ngIf="userService.getCurrentUserFollows().includes(user.id)">
-          <button class="btn btn-danger mr-1" (click)="this.userService.unfollow(user)">
-            <i class="far fa-times-circle"></i>
-            Unfollow
-          </button>
-        </div>
+            <div *ngIf="!userService.getCurrentUserFollows().includes(user.id) && this.currentUser.id != user.id">
+              <button class="btn btn-success mr-1" (click)="this.userService.follow(user)">
+                <i class="fa fa-plus"></i>
+                Follow
+              </button>
+            </div>
+          </div>
+        </td>
+      </ng-container>
 
-        <div *ngIf="!userService.getCurrentUserFollows().includes(user.id)">
-          <button class="btn btn-success mr-1" (click)="this.userService.follow(user)">
-            <i class="fa fa-plus"></i>
-            Follow
-          </button>
-        </div>
-      </div>
+      <!-- See Column -->
+      <ng-container matColumnDef="see">
+        <th mat-header-cell *matHeaderCellDef> See </th>
+        <td mat-cell *matCellDef="let user">
+          <a [routerLink]="['/users', user.id]" class="card-link">
+            <i class="fa fa-eye"></i>
+            See more
+          </a>
+        </td>
+      </ng-container>
 
-    </div>
+      <!-- Delete Column -->
+      <ng-container matColumnDef="delete">
+        <th mat-header-cell *matHeaderCellDef> Delete </th>
+        <td mat-cell *matCellDef="let user">
+          <i class="fas fa-trash" (click)="confirmDelete(user)"></i>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
   </div>
 </div>

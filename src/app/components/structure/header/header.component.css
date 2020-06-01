@@ -6,6 +6,15 @@ mat-icon {
   color: white;
 }
 
+a.mat-list-item {
+  color: white;
+}
+
+a.active-list-item {
+  border-radius: 25px;
+  background-color: #003E80 !important;
+}
+
 h3 {
   color: white;
 }

@@ -1,6 +1,8 @@
-<div class="center" *ngIf="!loaded">
-  <mat-progress-spinner diameter=50 mode="indeterminate" color="accent">
-  </mat-progress-spinner>
+<div class="overlay" *ngIf="!loaded">
+  <div class="center">
+    <mat-progress-spinner diameter=50 mode="indeterminate" color="accent">
+    </mat-progress-spinner>
+  </div>
 </div>
 
 <div class="text-center border border-light p-5">
@@ -9,27 +11,65 @@
 
   <form [formGroup]="localization" (ngSubmit)="onSubmit(localization)">
 
-    <label for="file">Profile</label>
-    <div class="form-group col-12">
-      <input type="file" id="file" #userPhoto (change)="onFileSelected($event)" name="image" autocomplete="off" />
+    <div class="row rowHeight">
+
+      <div class="col-6">
+        <label for="file">Profile</label>
+        <div class="form-group col-12">
+          <input type="file" id="file" #userPhoto (change)="onFileSelected($event)" name="image" autocomplete="off" />
+        </div>
+
+        <ngx-imageviewer *ngIf="file" [src]="file" width="250" height="250"></ngx-imageviewer>
+      </div>
+
+      <div class="col-6">
+        <label for="defaultLoginFormName">Name</label>
+        <input type="text" id="defaultLoginFormName" class="form-control mb-4" placeholder="name"
+          formControlName="name">
+
+        <label for="defaultLoginFormDescription">Description</label>
+        <input type="text" id="defaultLoginFormDescription" class="form-control mb-4" placeholder="description"
+          formControlName="description">
+
+        <label for="defaultLoginFormUrl">URL de la localización</label>
+        <input type="text" id="defaultLoginFormUrl" class="form-control mb-4" placeholder="url" formControlName="url">
+      </div>
+
     </div>
 
-    <ngx-imageviewer *ngIf="file" [src]="file" width="800" height="600"></ngx-imageviewer>
+    <!-- <div class="col text-center">
+      <label for="fileImages">Images</label>
+      <div class="form-group col-12">
+        <input type="file" id="fileImages" #userPhoto (change)="onFileSelectedImages($event)" name="image"
+          autocomplete="off" />
+      </div>
+    </div>
 
-    <label for="defaultLoginFormName">Name</label>
-    <input type="text" id="defaultLoginFormName" class="form-control mb-4" placeholder="name" formControlName="name">
+    <ng-image-slider [images]="images" #nav></ng-image-slider> <br>
 
-    <label for="defaultLoginFormDescription">Description</label>
-    <input type="text" id="defaultLoginFormDescription" class="form-control mb-4" placeholder="description"
-      formControlName="description">
+    <div class="col text-left">
+      <label for="fileImages">Images availables</label>
+      <div class="form-group col-12" *ngIf="images.length == 0">
+        <p>There is no images</p>
+      </div>
+      <div class="form-group col-12" *ngFor="let image of images;">
+        <div class="row">
+          <div class="col-6">
+            <p>{{image.title}}</p>
+          </div>
+          <div class="col-6" (click)="deletePhoto(image)">
+            <i class="fa fa-trash"></i>
+          </div>
+        </div>
+      </div>
+    </div> -->
+
+    <br>
 
     <label for="mapid">Localization</label>
     <div id="mapid" class="text-center"></div> <br>
 
-    <label for="defaultLoginFormUrl">URL de la localización</label>
-    <input type="text" id="defaultLoginFormUrl" class="form-control mb-4" placeholder="url" formControlName="url">
-
     <button mdbBtn color="info" block="true" class="my-4" type="submit" [disabled]="!localization.valid">Add</button>
-  
+
   </form>
 </div>

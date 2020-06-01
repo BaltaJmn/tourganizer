@@ -4,6 +4,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { finalize } from 'rxjs/operators';
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
+import { environment } from '../../../../environments/environment';
 
 import { UserService } from '../../../services/user.service';
 import { RouteService } from '../../../services/route.service';
@@ -56,10 +57,6 @@ const searchControl = new GeoSearchControl({
   keepResult: true
 });
 
-export interface Aux {
-  name: string;
-}
-
 @Component({
   selector: 'app-edit',
   templateUrl: './edit.component.html',
@@ -97,7 +94,7 @@ export class EditRouteComponent implements OnInit {
 
   route = new FormGroup({
     userId: new FormControl(''),
-    profile: new FormControl(''),
+    profile: new FormControl(environment.urlDefaultItem),
     name: new FormControl('', [Validators.required]),
     type: new FormControl(0, [Validators.required]),
     confirmed: new FormControl(false),
@@ -149,8 +146,8 @@ export class EditRouteComponent implements OnInit {
         this.map.addControl(searchControl);
 
         this.map.on('geosearch/showlocation', function (e) {
-          localStorage.setItem('lat', e.location.x);
-          localStorage.setItem('lon', e.location.y);
+          localStorage.setItem('lat', e.location.y);
+          localStorage.setItem('lon', e.location.x);
         });
 
         const tiles1 = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -188,6 +185,7 @@ export class EditRouteComponent implements OnInit {
         this.route.get("confirmed").setValue(this.currentRoute.confirmed);
         this.route.get("name").setValue(this.currentRoute.name);
         this.route.get("type").setValue(this.currentRoute.type);
+        this.route.get("rating").setValue(this.currentRoute.rating);
         this.route.get("localizations").setValue(this.currentRoute.localizations);
 
         this.loaded = true;
@@ -196,6 +194,14 @@ export class EditRouteComponent implements OnInit {
   }
 
   onSubmit(route: FormGroup) {
+
+    if (localStorage.getItem("lat") != null && localStorage.getItem("lon") != null) {
+      route.get("center").setValue({ latitude: localStorage.getItem("lat"), longitude: localStorage.getItem("lon") });
+    } else {
+      route.get("center").setValue(this.currentRoute.center)
+    }
+
+    route.get("localizations").setValue(this.currentLocalizations);
 
     if (this.file != null) {
 
@@ -208,15 +214,12 @@ export class EditRouteComponent implements OnInit {
             if (url) {
               this.storage = url;
 
-              this.route.get("profile").setValue(this.storage);
-              this.route.get("userId").setValue(this.userService.getCurrentUserId());
-              this.route.get("localizations").setValue(this.currentLocalizations);
+              route.get("profile").setValue(this.storage);
 
-              if (localStorage.getItem("lat") != null && localStorage.getItem("lon") != null) {
-                this.route.get("center").setValue({ latitude: localStorage.getItem("lat"), longitude: localStorage.getItem("lon") });
-              }
+              console.log(route.value);
 
               this.routeService.updateRoute(this.id, route.value).then(() => {
+                localStorage.clear();
                 Swal.fire('Great!', 'Your route was updated succesfully!', 'success').then(() => {
                   this.router.navigate(['/routes']);
                 });
@@ -229,14 +232,9 @@ export class EditRouteComponent implements OnInit {
       });
 
     } else {
-
-      if (localStorage.getItem("lat") != null && localStorage.getItem("lon") != null) {
-        this.route.get("center").setValue({ latitude: localStorage.getItem("lat"), longitude: localStorage.getItem("lon") });
-      }
-
-      this.route.get("localizations").setValue(this.currentLocalizations);
-
+      route.get("profile").setValue(this.currentRoute.profile);
       this.routeService.updateRoute(this.id, route.value).then(() => {
+        localStorage.clear();
         Swal.fire('Great!', 'Your route was updated succesfully!', 'success').then(() => {
           this.router.navigate(['/routes']);
         });

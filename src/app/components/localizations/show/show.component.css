@@ -17,7 +17,11 @@
   position: fixed;
 }
 
+.row {
+  margin: 0;
+}
+
 #mapid {
-  height: 200px;
-  width: 200px;
+  height: 350px;
+  width: 100%;
 }

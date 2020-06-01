@@ -21,6 +21,7 @@ import "leaflet-routing-machine";
 import "leaflet/dist/leaflet.ajax.min.js"
 import "leaflet/dist/leaflet.ajax.min.js"
 import { icon, Marker } from 'leaflet';
+import { environment } from '../../../../environments/environment';
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
 const iconUrl = 'assets/marker-icon.png';
 const shadowUrl = 'assets/marker-shadow.png';
@@ -80,12 +81,12 @@ export class AddRouteComponent implements OnInit {
   currentLocalizations = [];
 
   route = new FormGroup({
-    userId: new FormControl(''),
-    profile: new FormControl(''),
+    userId: new FormControl(this.userService.getCurrentUserId()),
+    profile: new FormControl(environment.urlDefaultItem),
     name: new FormControl('', [Validators.required]),
     type: new FormControl(0, [Validators.required]),
     confirmed: new FormControl(false),
-    center: new FormControl(null),
+    center: new FormControl({ latitude: 0, longitude: 0 }),
     totalTime: new FormControl(0),
     rating: new FormControl({ show: 0, total: 0, votes: [] }),
     localizations: new FormControl([])
@@ -132,7 +133,7 @@ export class AddRouteComponent implements OnInit {
 
     this.map = L.map('mapid', {
       center: [0, 0],
-      zoom: 4
+      zoom: 3
     });
 
     this.map.addControl(searchControl);
@@ -151,50 +152,83 @@ export class AddRouteComponent implements OnInit {
 
   onSubmit(route: FormGroup) {
 
-    const task = this.storage.upload(`images/${this.n}`, this.file);
+    if (localStorage.getItem("lat") != null && localStorage.getItem("lon") != null) {
+      route.get("center").setValue({ latitude: localStorage.getItem("lat"), longitude: localStorage.getItem("lon") });
+    }
 
-    task.snapshotChanges().pipe(
-      finalize(() => {
-        this.downloadURL = this.fileRef.getDownloadURL();
-        this.downloadURL.subscribe(url => {
-          if (url) {
-            this.storage = url;
+    route.get("localizations").setValue(this.currentLocalizations);
 
-            this.route.get("profile").setValue(this.storage);
-            this.route.get("userId").setValue(this.userService.getCurrentUserId());
-            this.route.get("center").setValue({ latitude: localStorage.getItem("lat"), longitude: localStorage.getItem("lon") });
-            this.route.get("localizations").setValue(this.currentLocalizations);
+    if (this.file != null) {
+      const task = this.storage.upload(`images/${this.n}`, this.file);
 
-            this.routeService.createRoute(route.value).then(() => {
+      task.snapshotChanges().pipe(
+        finalize(() => {
+          this.downloadURL = this.fileRef.getDownloadURL();
+          this.downloadURL.subscribe(url => {
+            if (url) {
+              this.storage = url;
 
-              let receivers = this.userService.getCurrentUserFollowers();
-              let sender = this.userService.getCurrentUserId();
+              route.get("profile").setValue(this.storage);
 
-              receivers.forEach((receiver) => {
+              this.routeService.createRoute(route.value).then(() => {
 
-                let notification: Notification = {
-                  content: `${this.userService.getCurrentUserName()} a creado una nueva ruta llamada ${this.route.get("name").value}`,
-                  sender: sender,
-                  receiver: receiver,
-                  seen: false,
-                  date: new Date
-                };
+                let receivers = this.userService.getCurrentUserFollowers();
+                let sender = this.userService.getCurrentUserId();
 
-                this.notificationService.createNotification(notification);
+                receivers.forEach((receiver) => {
+
+                  let notification: Notification = {
+                    content: `${this.userService.getCurrentUserName()} a creado una nueva ruta llamada ${this.route.get("name").value}`,
+                    sender: sender,
+                    receiver: receiver,
+                    seen: false,
+                    date: new Date
+                  };
+
+                  this.notificationService.createNotification(notification);
+                });
+
+                localStorage.clear();
+
+                Swal.fire('Great!', 'Your route was created succesfully!', 'success').then(() => {
+                  this.router.navigate(['/routes']);
+                });
               });
+            }
+          });
+        })
+      ).subscribe(url => {
+        if (url) { }
+      });
 
-              localStorage.clear();
+    } else {
 
-              Swal.fire('Great!', 'Your route was created succesfully!', 'success').then(() => {
-                this.router.navigate(['/routes']);
-              });
-            });
-          }
+      this.routeService.createRoute(route.value).then(() => {
+
+        let receivers = this.userService.getCurrentUserFollowers();
+        let sender = this.userService.getCurrentUserId();
+
+        receivers.forEach((receiver) => {
+
+          let notification: Notification = {
+            content: `${this.userService.getCurrentUserName()} a creado una nueva ruta llamada ${this.route.get("name").value}`,
+            sender: sender,
+            receiver: receiver,
+            seen: false,
+            date: new Date
+          };
+
+          this.notificationService.createNotification(notification);
         });
-      })
-    ).subscribe(url => {
-      if (url) { }
-    });
+
+        localStorage.clear();
+
+        Swal.fire('Great!', 'Your route was created succesfully!', 'success').then(() => {
+          this.router.navigate(['/routes']);
+        });
+      });
+    }
+
   };
 
   onFileSelected(event) {

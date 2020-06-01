@@ -3,15 +3,20 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { FormControl, Validators } from '@angular/forms';
 import { finalize } from 'rxjs/operators';
+import { IndexUserComponent } from '../index/index.component';
+
+import { MatDialog } from '@angular/material/dialog';
 
 import { UserService } from '../../../services/user.service';
+import { RouteService } from '../../../services/route.service';
+import { ActivityService } from '../../../services/activity.service';
 
 import { User } from '../../../interfaces/User';
+import { Route } from '../../../interfaces/Route';
 import { Activity } from '../../../interfaces/Activity';
 
 import * as $ from "jquery";
 import Swal from 'sweetalert2'
-import { ActivityService } from '../../../services/activity.service';
 
 @Component({
   selector: 'app-show',
@@ -42,7 +47,11 @@ export class ShowUserComponent implements OnInit {
     username: null,
     password: null,
     email: null,
-    config: null,
+    config: {
+      confirmed: null,
+      lang: null,
+      rol: null
+    },
     followers: [],
     follows: [],
     createdRoutes: [],
@@ -51,6 +60,7 @@ export class ShowUserComponent implements OnInit {
 
   followers: User[];
   follows: User[];
+  createdRoutes: Route[];
   recentActivities: Activity[] = [];
   activities: Activity[] = [];
 
@@ -59,9 +69,11 @@ export class ShowUserComponent implements OnInit {
   constructor(
     private router: Router,
     public userService: UserService,
+    public routeService: RouteService,
     public activityService: ActivityService,
     private activatedRoute: ActivatedRoute,
-    private storage: AngularFireStorage
+    private storage: AngularFireStorage,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -73,6 +85,7 @@ export class ShowUserComponent implements OnInit {
 
         this.followers = [];
         this.follows = [];
+        this.createdRoutes = [];
         this.activities = [];
 
         this.currentUser = {
@@ -143,7 +156,29 @@ export class ShowUserComponent implements OnInit {
 
         });
 
+        this.currentUser.createdRoutes.forEach((route) => {
+          this.routeService.getRoute(route).subscribe((result) => {
+            let routeAux: Route = {
+              id: result.id,
+              userId: result.data().userId,
+              profile: result.data().profile,
+              name: result.data().name,
+              type: result.data().usetyperId,
+              confirmed: result.data().confirmed,
+              center: result.data().center,
+              totalTime: result.data().totalTime,
+              rating: result.data().rating,
+              localizations: result.data().localizations,
+            };
+            console.log(routeAux);
+            this.createdRoutes.push(routeAux);
+          });
+        });
+
         this.activityService.getActivityRecent(this.currentUser.id).subscribe((result: any) => {
+
+          this.recentActivities = [];
+
           result.forEach(element => {
 
             let activityAux: Activity = {
@@ -159,7 +194,6 @@ export class ShowUserComponent implements OnInit {
             this.recentActivities.push(activityAux)
           });
         });
-
         this.loaded = true;
       });
     });
@@ -234,4 +268,11 @@ export class ShowUserComponent implements OnInit {
       }
     })
   };
+
+  openModal() {
+    const dialogRef = this.dialog.open(IndexUserComponent, {
+      width: '800px',
+      height: '600px'
+    });
+  }
 }

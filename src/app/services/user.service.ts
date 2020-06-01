@@ -34,7 +34,7 @@ export class UserService {
     config: {
       lang: "",
       confirmed: false,
-      rol: 3
+      rol: 2
     },
     followers: [],
     follows: [],
@@ -43,6 +43,8 @@ export class UserService {
   };
 
   private logged: boolean = false;
+  private admin: boolean = false;
+  private moderator: boolean = false;
   private confirmed: boolean = false;
 
   constructor(
@@ -63,7 +65,7 @@ export class UserService {
     return this.db.collection('user').doc(data).snapshotChanges();
   }
 
-  getUserGET(data){
+  getUserGET(data) {
     return this.db.collection('user').doc(data).get();
   }
 
@@ -89,7 +91,7 @@ export class UserService {
     return this.db.collection("user")
       .doc(data)
       .delete()
-  }
+  };
 
   register(data) {
     return this.db.collection("user", ref => ref.where('username', '==', data.username).where('email', '==', data.email)).get().subscribe((result) => {
@@ -152,8 +154,21 @@ export class UserService {
         this.logged = true;
         this.confirmed = this.currentUser.config.confirmed;
 
+        if (this.currentUser.config.rol == 0) {
+          this.admin = true;
+        }
+
+        if (this.currentUser.config.rol == 1) {
+          this.moderator = true;
+        }
+
         this.loggedEmitter.emit(this.logged);
-        this.userEmitter.emit(this.currentUser);
+        this.userEmitter.emit(true);
+
+        if (this.cookieService.get('login') != null) {
+          this.cookieService.delete('login');
+          this.cookieService.set('login', this.currentUser.username);
+        }
 
         this.notificationService.getNotificationsById(this.currentUser.id).subscribe((notificationSnapshot) => {
 
@@ -174,10 +189,7 @@ export class UserService {
 
           this.notificationUSEmitter.emit(arrayNotifications);
 
-          this.cookieService.set('login', this.currentUser.username);
-
           this.router.navigate(['/home']);
-
         });
 
       } else {
@@ -360,6 +372,14 @@ export class UserService {
 
   getLogged() {
     return this.logged;
+  }
+
+  getAdmin() {
+    return this.admin;
+  }
+
+  getModerator() {
+    return this.moderator;
   }
 
   getConfirmed() {

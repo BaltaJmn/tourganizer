@@ -53,6 +53,12 @@ export class LocalizationService {
       .set({ confirmed: true }, { merge: true });
   };
 
+  updateImages(data) {
+    return this.db.collection("localization")
+      .doc(data.id)
+      .set({ images: data.images }, { merge: true });
+  };
+
   deleteLocalization(data) {
     return this.db.collection("localization")
       .doc(data)

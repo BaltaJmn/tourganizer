@@ -15,18 +15,23 @@ table {
   max-width: 100px;
 }
 
-.rowWidth {
+.row {
   margin: 0;
+}
+
+.rowStyle {
+  background-color: #e3e3e3;
+  border-radius: 10px;
 }
 
 .col-md-12 {
   padding: 0;
 }
 
-.rowSpace {
-  margin-left: 15px;
+.mat-form-field {
+  width: 80%;
 }
 
-.mat-form-field{
-  width: 80%;
+.mat-header-cell {
+  width: 20%;
 }

@@ -27,7 +27,7 @@ export class HomeComponent implements OnInit {
 		config: {
 			lang: "",
 			confirmed: false,
-			rol: 3
+			rol: 2
 		},
 		followers: [],
 		follows: [],

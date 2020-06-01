@@ -23,7 +23,7 @@ export class ActivityService {
   };
 
   getActivityRecent(data) {
-    return this.db.collection('activity', ref => ref.where('userId', '==', data).orderBy('date', 'asc').limit(5)).get();
+    return this.db.collection('activity', ref => ref.where('userId', '==', data).orderBy('date', 'asc').limit(5)).snapshotChanges();
   };
 
   updateNewActivity(data) {

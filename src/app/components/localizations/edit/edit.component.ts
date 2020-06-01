@@ -1,11 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
+import { NgImageSliderComponent } from 'ng-image-slider';
 
 import { LocalizationService } from '../../../services/localization.service';
 
 import { Localization } from '../../../interfaces/Localization';
+import { Image } from '../../../interfaces/Image';
 
 import Swal from 'sweetalert2';
 
@@ -20,6 +22,9 @@ import { UserService } from '../../../services/user.service';
 import { NotificationService } from '../../../services/notification.service';
 import { Notification } from '../../../interfaces/Notification';
 import { AngularFireStorage } from '@angular/fire/storage';
+import { User } from '../../../interfaces/User';
+import { ImageService } from '../../../services/image.service';
+
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
 const iconUrl = 'assets/marker-icon.png';
 const shadowUrl = 'assets/marker-shadow.png';
@@ -73,15 +78,21 @@ export class EditLocalizationComponent implements OnInit {
   //Profile Variables
   n = Date.now();
   file;
+  fileImages;
   filePath;
   fileRef;
   downloadURL;
+
+  // Images
+  @ViewChild('nav', { static: false }) slider: NgImageSliderComponent;
+  images: Array<Image> = [];
 
   localization = new FormGroup({
     userId: new FormControl(''),
     profile: new FormControl(''),
     name: new FormControl('', [Validators.required]),
     description: new FormControl('', [Validators.required]),
+    confirmed: new FormControl(false, [Validators.required]),
     likes: new FormControl([]),
     latitude: new FormControl(0),
     longitude: new FormControl(0),
@@ -89,7 +100,21 @@ export class EditLocalizationComponent implements OnInit {
     images: new FormControl([]),
   });
 
-  currentLocalization: Localization;
+  currentLocalization: Localization = {
+    id: "",
+    profile: "",
+    userId: "",
+    name: "",
+    description: "",
+    confirmed: false,
+    images: [],
+    latitude: "",
+    longitude: "",
+    likes: [],
+    url: ""
+  };
+
+  currentUser: User;
 
   constructor(
     private router: Router,
@@ -97,6 +122,7 @@ export class EditLocalizationComponent implements OnInit {
     private localizationService: LocalizationService,
     private notificationService: NotificationService,
     private activatedRoute: ActivatedRoute,
+    private imageService: ImageService,
     private storage: AngularFireStorage
   ) {
     router.events.subscribe(event => {
@@ -104,6 +130,8 @@ export class EditLocalizationComponent implements OnInit {
         this.id = event.url.split('/')[2]
       };
     });
+
+    this.currentUser = userService.getCurrentUser();
   }
 
   ngOnInit() {
@@ -156,6 +184,21 @@ export class EditLocalizationComponent implements OnInit {
           maxZoom: 15,
           attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(this.map);
+
+        this.currentLocalization.images.forEach((image) => {
+          this.imageService.getImage(image).subscribe((imageSnapshot) => {
+
+            let imageAux: Image = {
+              title: imageSnapshot.data().title,
+              image: imageSnapshot.data().image,
+              thumbImage: imageSnapshot.data().thumbImage,
+              alt: imageSnapshot.data().alt
+            }
+
+            this.images.push(imageAux);
+
+          });
+        });
 
         this.loaded = true;
       });
@@ -231,6 +274,50 @@ export class EditLocalizationComponent implements OnInit {
     this.file = event.target.files[0];
     this.filePath = `images/${this.n}`;
     this.fileRef = this.storage.ref(this.filePath);
+  };
+
+  onFileSelectedImages(event) {
+    this.n = Date.now();
+    this.fileImages = event.target.files[0];
+    this.filePath = `images/${this.n}`;
+    this.fileRef = this.storage.ref(this.filePath);
+
+    const task = this.storage.upload(`images/${this.n}`, this.fileImages);
+
+    task.snapshotChanges().pipe(
+      finalize(() => {
+        this.downloadURL = this.fileRef.getDownloadURL();
+        this.downloadURL.subscribe(url => {
+          if (url) {
+            this.storage = url;
+
+            let imageAux: Image = {
+              title: this.fileImages.name.split(".")[0],
+              image: String(this.storage),
+              thumbImage: String(this.storage),
+              alt: this.fileImages.name.split(".")[0]
+            }
+
+            this.imageService.createImage(imageAux).then((event: any) => {
+              let id = event.im.path.segments[1];
+
+              this.currentLocalization.images.push(id);
+
+              this.localizationService.updateImages(this.currentLocalization);
+
+              this.router.navigate([`localizations/${this.currentLocalization.id}`]);
+            });
+          }
+        });
+      })
+    ).subscribe(url => {
+      if (url) { }
+    });
+  };
+
+  deletePhoto(image) {
+    this.images.splice(this.images.findIndex(v => v.title == image.title), 1);
+    this.router.navigate([`localizations/${this.currentLocalization.id}`]);
   };
 
 }

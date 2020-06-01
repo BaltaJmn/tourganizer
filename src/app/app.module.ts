@@ -19,6 +19,7 @@ import { LoginComponent, ResetPasswordForm } from './components/login/login.comp
 import { RegisterComponent } from './components/register/register.component';
 import { SidebarComponent } from './components/structure/sidebar/sidebar.component';
 import { NotificationsComponent } from './components/structure/header/notifications/notifications.component';
+import { ConfirmedComponent } from './guards/confirmed/confirmed.component';
 
 // Users Components
 import { IndexUserComponent } from './components/users/index/index.component';
@@ -132,7 +133,8 @@ import * as $ from 'jquery';
     ResetPasswordForm,
     NotificationsComponent,
     RoutesUnconfirmedComponent,
-    LocalizationsUnconfirmedComponent
+    LocalizationsUnconfirmedComponent,
+    ConfirmedComponent
   ],
   imports: [
     BrowserModule,

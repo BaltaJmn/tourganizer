@@ -8,7 +8,11 @@ export class ImageService {
 
   constructor(private db: AngularFirestore) { }
 
-  getImage(data){
+  createImage(data) {
+    return this.db.collection('images').add(data);
+  }
+
+  getImage(data) {
     return this.db.collection('images').doc(data).get();
   }
 }

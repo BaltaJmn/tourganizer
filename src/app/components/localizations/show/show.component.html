@@ -1,9 +1,12 @@
-<div class="center">
-  <mat-progress-spinner *ngIf="!loaded" diameter=50 mode="indeterminate" color="accent">
-  </mat-progress-spinner>
+<div class="overlay" *ngIf="!loaded">
+  <div class="center">
+    <mat-progress-spinner diameter=50 mode="indeterminate" color="accent">
+    </mat-progress-spinner>
+  </div>
 </div>
 
-<div class="col text-right">
+<div class="col text-right"
+  *ngIf="this.currentUser.config.rol == 0 || this.currentUser.config.rol == 1 || this.currentLocalization.userId == this.currentUser.id">
   <button class="btn btn-info mr-1" [routerLink]="['edit']">
     <i class="fa fa-pen"></i>
   </button>
@@ -11,10 +14,53 @@
   <button class="btn btn-danger mr-1" (click)="deleteLocalization(currentLocalization.id)">
     <i class="fa fa-trash"></i>
   </button>
+</div>
+
+<div class="text-center border border-light p-5">
+  <p class="h3 m-4">{{currentLocalization.name}}</p>
+
+  <div class="row rowHeight">
+    <div class="col-6">
+      <img src="{{currentLocalization.profile}}" style="width: 250px; height: 250px;"> <br>
+    </div>
+
+    <div class="col-6">
+      <label for="creator"><strong class="h4 m-4">Creador</strong></label> <br>
+      <a id="creator" [routerLink]="['/users', currentLocalization.userId]" class="card-link">
+        {{creator.username}}
+      </a>
+
+      <div
+        *ngIf="this.currentUser.follows.includes(currentLocalization.userId) && this.currentUser.id != currentLocalization.userId">
+        <button class="btn btn-danger mr-1" (click)="this.userService.unfollow(creator)">
+          Unfollow
+          <i class="far fa-times-circle"></i>
+        </button>
+      </div>
+
+      <div
+        *ngIf="!this.currentUser.follows.includes(currentLocalization.userId) && this.currentUser.id != currentLocalization.userId">
+        <button class="btn btn-success mr-1" (click)="this.userService.follow(creator)">
+          Follow
+          <i class="fa fa-plus"></i>
+        </button>
+      </div>
+
+      <br><br>
+
+      <label for="url"><strong class="h4 m-4">Url</strong></label> <br>
+      <a id="url" href="{{currentLocalization.url}}" class="card-link">
+        Go to website
+      </a>
+    </div>
+  </div>
+
+  <br><br>
 
   <ng-image-slider [images]="images" #nav></ng-image-slider> <br>
 
-  <div id="mapid"></div>
+  <label for="mapid"><strong class="h4 m-4">Localizations</strong></label>
+  <div id="mapid" class="text-center"></div>
 </div>
 
 <router-outlet></router-outlet>

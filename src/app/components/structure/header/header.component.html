@@ -1,49 +1,39 @@
 <mat-toolbar color="primary">
   <mat-nav-list>
-    <mat-list-item>
-      <mat-icon matListIcon>home</mat-icon>
-      <h3 matLine> (Main icon) </h3>
-    </mat-list-item>
 
-    <mat-list-item routerLink="home">
+    <a mat-list-item routerLink="home" routerLinkActive="active-list-item">
       <mat-icon matListIcon>home</mat-icon>
-      <h3 matLine> {{ 'header.home' | translate}} </h3>
-    </mat-list-item>
+      Home
+    </a>
 
-    <mat-list-item routerLink="routes">
+    <a mat-list-item routerLink="routes" routerLinkActive="active-list-item">
       <mat-icon matListIcon>explore</mat-icon>
-      <h3 matLine> {{ 'header.routes' | translate}} </h3>
-    </mat-list-item>
+      {{ 'header.routes' | translate }}
+    </a>
 
-    <mat-list-item routerLink="localizations">
+    <a mat-list-item routerLink="localizations" routerLinkActive="active-list-item">
       <mat-icon matListIcon>location_on</mat-icon>
-      <h3 matLine> {{ 'header.localizations' | translate}} </h3>
-    </mat-list-item>
+      {{ 'header.localizations' | translate }}
+    </a>
 
-    <mat-list-item routerLink="users">
-      <mat-icon matListIcon>person</mat-icon>
-      <h3 matLine> {{ 'header.users' | translate}} </h3>
-    </mat-list-item>
-
-    <mat-list-item (click)="openModal()">
+    <a mat-list-item routerLinkActive="active-list-item" (click)="openModal()">
       <mat-icon matListIcon *ngIf="notifications.length == 0">notifications_none</mat-icon>
 
       <mat-icon matListIcon [matBadge]="notifications.length" matBadgeColor="warn" *ngIf="notifications.length != 0">
         notifications</mat-icon>
-      <h3 matLine>
-        {{ 'header.notifications' | translate}} </h3>
-    </mat-list-item>
 
-    <mat-list-item routerLink="/users/{{currentUser.id}}">
+      {{ 'header.notifications' | translate }}
+    </a>
+
+    <a mat-list-item routerLink="/users/{{this.userService.getCurrentUserId()}}" routerLinkActive="active-list-item">
       <mat-icon matListIcon>person</mat-icon>
-      <h3 matLine>
-        {{ 'header.profile' | translate}} </h3>
-    </mat-list-item>
+      {{ 'header.profile' | translate }}
+    </a>
 
-    <mat-list-item (click)="userService.logOut()">
+    <a mat-list-item routerLinkActive="active-list-item" (click)="userService.logOut()">
       <mat-icon matListIcon>exit_to_app</mat-icon>
-      <h3 matLine> {{ 'header.logout' | translate}} </h3>
-    </mat-list-item>
+      {{ 'header.logout' | translate}}
+    </a>
 
   </mat-nav-list>
 </mat-toolbar>

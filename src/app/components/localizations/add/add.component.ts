@@ -1,12 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
+import { NgImageSliderComponent } from 'ng-image-slider';
 
 import { LocalizationService } from '../../../services/localization.service';
+import { ImageService } from '../../../services/image.service';
 
-import { Localization } from '../../../interfaces/Localization';
+import { Image } from '../../../interfaces/Image';
 
 import Swal from 'sweetalert2';
 
@@ -71,9 +73,15 @@ export class AddLocalizationComponent implements OnInit {
   //Profile Variables
   n = Date.now();
   file;
+  fileImages;
   filePath;
   fileRef;
   downloadURL;
+
+  // Images
+  @ViewChild('nav', { static: false }) slider: NgImageSliderComponent;
+  images: Array<Image> = [];
+  imagesToAdd = [];
 
   localization = new FormGroup({
     userId: new FormControl(''),
@@ -93,6 +101,7 @@ export class AddLocalizationComponent implements OnInit {
     private userService: UserService,
     private localizationService: LocalizationService,
     private notificationService: NotificationService,
+    private imageService: ImageService,
     private storage: AngularFireStorage
   ) { }
 
@@ -101,7 +110,7 @@ export class AddLocalizationComponent implements OnInit {
 
     this.map = L.map('mapid', {
       center: [0, 0],
-      zoom: 4
+      zoom: 3
     });
 
     this.map.addControl(searchControl);
@@ -134,6 +143,7 @@ export class AddLocalizationComponent implements OnInit {
             this.localization.get("userId").setValue(this.userService.getCurrentUserId());
             this.localization.get("latitude").setValue(localStorage.getItem("lat"));
             this.localization.get("longitude").setValue(localStorage.getItem("lon"));
+            this.localization.get("images").setValue(this.imagesToAdd);
 
             this.localizationService.createLocalization(localization.value).then(() => {
 
@@ -174,4 +184,44 @@ export class AddLocalizationComponent implements OnInit {
     this.fileRef = this.storage.ref(this.filePath);
   };
 
+  // onFileSelectedImages(event) {
+  //   this.n = Date.now();
+  //   this.fileImages = event.target.files[0];
+  //   this.filePath = `images/${this.n}`;
+  //   this.fileRef = this.storage.ref(this.filePath);
+
+  //   const task = this.storage.upload(`images/${this.n}`, this.fileImages);
+
+  //   task.snapshotChanges().pipe(
+  //     finalize(() => {
+  //       this.downloadURL = this.fileRef.getDownloadURL();
+  //       this.downloadURL.subscribe(url => {
+  //         if (url) {
+  //           this.storage = url;
+
+  //           let imageAux: Image = {
+  //             title: this.fileImages.name.split(".")[0],
+  //             image: String(this.storage),
+  //             thumbImage: String(this.storage),
+  //             alt: this.fileImages.name.split(".")[0]
+  //           }
+
+  //           this.imageService.createImage(imageAux).then((event: any) => {
+  //             let id = event.im.path.segments[1];
+
+  //             this.imagesToAdd.push(id);
+  //             this.images.push(imageAux);
+  //           });
+  //         }
+  //       });
+  //     })
+  //   ).subscribe(url => {
+  //     if (url) { }
+  //   });
+  // };
+
+  // deletePhoto(image) {
+  //   this.images.splice(this.images.findIndex(v => v.title == image.title), 1);
+  //   console.log(this.images);
+  // };
 }

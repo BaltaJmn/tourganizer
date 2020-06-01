@@ -25,10 +25,11 @@ import { RegisterComponent } from './components/register/register.component';
 
 //Guards
 import { AuthGuard } from './guards/auth.guard';
+import { ConfirmedComponent } from './guards/confirmed/confirmed.component';
 
 const routes: Routes = [
   { path: "", component: LoginComponent, pathMatch: 'full' },
-  { path: "home", component: HomeComponent },
+  { path: "home", component: HomeComponent, canActivate: [AuthGuard] },
   {
     path: "users",
     children: [
@@ -109,6 +110,7 @@ const routes: Routes = [
   },
   { path: "login", component: LoginComponent },
   { path: "register", component: RegisterComponent },
+  { path: "unconfirmed", component: ConfirmedComponent },
   { path: "**", component: LoginComponent }
 ];
 

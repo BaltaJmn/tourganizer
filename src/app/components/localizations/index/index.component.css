@@ -1,11 +1,33 @@
-.myGridList {
-  height: 60%;
+table {
+  width: 100%;
 }
 
-.rowWidth {
+.mat-form-field {
+  font-size: 14px;
+  width: 50%;
+}
+
+.mat-column-position {
+  max-width: 100px;
+}
+
+.mat-column-name {
+  max-width: 100px;
+}
+
+.row {
   margin: 0;
 }
 
-.card {
-  margin: 10px;
+.rowStyle {
+  background-color: #e3e3e3;
+  border-radius: 10px;
+}
+
+.col-md-12 {
+  padding: 0;
+}
+
+.mat-form-field {
+  width: 20%;
 }

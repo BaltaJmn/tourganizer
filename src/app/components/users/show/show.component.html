@@ -1,20 +1,33 @@
-<div class="center">
-  <mat-progress-spinner *ngIf="!loaded" diameter=50 mode="indeterminate" color="accent">
-  </mat-progress-spinner>
+<div class="overlay" *ngIf="!loaded">
+  <div class="center">
+    <mat-progress-spinner diameter=50 mode="indeterminate" color="accent">
+    </mat-progress-spinner>
+  </div>
 </div>
 
 <div class="container">
   <div class="row my-2">
+
+    <div class="col-lg-4 order-lg-1 text-center">
+      <img src="{{currentUser.profile}}" class="mx-auto img-fluid img-circle d-block" alt="avatar" id="OpenImgUpload">
+
+      <label class="custom-file">
+        <input type="file" id="imgupload" style="display:none" (change)="onFileSelected($event)" />
+      </label>
+    </div>
+
     <div class="col-lg-8 order-lg-2">
       <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a href="" data-target="#profile" data-toggle="tab" class="nav-link active">Profile</a>
+          <a href="" data-target="#info" data-toggle="tab" class="nav-link active">Information</a>
         </li>
         <li class="nav-item">
-          <a href="" data-target="#followers" data-toggle="tab" class="nav-link">Followers</a>
+          <a href="" data-target="#followers" data-toggle="tab" class="nav-link">{{currentUser.followers.length}}
+            Followers</a>
         </li>
         <li class="nav-item">
-          <a href="" data-target="#follows" data-toggle="tab" class="nav-link">Follows</a>
+          <a href="" data-target="#follows" data-toggle="tab" class="nav-link">{{currentUser.follows.length}}
+            Follows</a>
         </li>
         <li class="nav-item">
           <a href="" data-target="#activity" data-toggle="tab" class="nav-link">Activity</a>
@@ -24,8 +37,8 @@
         </li>
       </ul>
       <div class="tab-content py-4">
-        <div class="tab-pane active" id="profile">
-          <h5 class="mb-3">User Profile</h5>
+        <div class="tab-pane active" id="info">
+          <h5 class="mb-3">Info</h5>
           <div class="row">
             <div class="col-md-12">
               <h6>Username</h6>
@@ -38,13 +51,13 @@
               </p>
             </div>
             <div class="col-md-12">
-              <h5 class="mt-2"><span class="fa fa-clock-o ion-clock float-right"></span> Recent Activity</h5>
+              <h5 class="mt-2"> Recent Activity</h5>
 
-              <table class="table table-sm table-hover table-striped" *ngIf="recentActivities.length > 0">
-                <tbody *ngFor="let act of recentActivities">
+              <table class="table table-sm table-hover table-striped" *ngIf="currentUser.createdRoutes.length > 0">
+                <tbody *ngFor="let route of createdRoutes">
                   <tr>
                     <td>
-                      {{act.content}}
+                      <div [routerLink]="['/routes', route.id]" role="button"> {{route.name}} </div>
                     </td>
                   </tr>
                 </tbody>
@@ -67,9 +80,13 @@
         <div class="tab-pane" id="followers">
           <table class="table table-sm table-hover table-striped">
             <tbody *ngFor="let follower of followers">
-              <tr>
+              <tr [routerLink]="['/users', follower.id]">
                 <td>
-                  <strong>{{follower.username}}</strong>
+                  <img src="{{follower.profile}}" class="rounded photoStyle">
+                </td>
+
+                <td>
+                  <strong role="button">{{follower.username}}</strong>
                 </td>
 
                 <td>
@@ -95,9 +112,14 @@
         <div class="tab-pane" id="follows">
           <table class="table table-sm table-hover table-striped">
             <tbody *ngFor="let follow of follows">
-              <tr>
+              <tr [routerLink]="['/users', follow.id]">
+
                 <td>
-                  <strong>{{follow.username}}</strong>
+                  <img src="{{follow.profile}}" class="rounded photoStyle">
+                </td>
+
+                <td>
+                  <strong role="button">{{follow.username}}</strong>
                 </td>
 
                 <td>
@@ -137,7 +159,8 @@
             <tbody *ngFor="let activity of activities; let i = index">
               <tr>
                 <td>
-                  <span class="float-right font-weight-bold" (click)="removeActivity(i, activity)"><i class="fas fa-times"></i></span>
+                  <span class="float-right font-weight-bold" (click)="removeActivity(i, activity)"><i
+                      class="fas fa-times"></i></span>
                   {{activity.content}}
                 </td>
               </tr>
@@ -150,16 +173,21 @@
             <mat-card-content>
               <h2 class="example-h2">User Config</h2>
 
+              <section class="example-section" *ngIf="currentUser.config.rol == 0">
+                <button mdbBtn color="success" block="true" class="my-4" (click)="openModal()">Admin Users</button>
+              </section>
+
               <section class="example-section">
                 <label id="example-radio-group-label">Select your language</label><br>
                 <mat-radio-group name="languageList" fxLayout="column" [(ngModel)]="config.lang">
                   <mat-radio-button *ngFor="let language of languages" [value]="language.id" name="languageList">
                     {{language.name}}
                   </mat-radio-button>
+                  <br>
                 </mat-radio-group>
-              </section>
 
-              <section class="example-section">
+                <br>
+
                 <button mdbBtn color="info" block="true" class="my-4"
                   (click)="this.userService.saveConfig(config)">Save</button>
               </section>
@@ -168,17 +196,6 @@
         </div>
 
       </div>
-    </div>
-
-    <div class="col-lg-4 order-lg-1 text-center">
-      <img src="{{currentUser.profile}}" class="mx-auto img-fluid img-circle d-block" alt="avatar" id="OpenImgUpload">
-      <span class="badge badge-primary"><i class="fa fa-user"></i> {{currentUser.followers.length}} Followers</span>
-      <span class="badge badge-primary"><i class="fa fa-user"></i> {{currentUser.follows.length}} Follows</span>
-
-      <label class="custom-file">
-        <input type="file" id="imgupload" style="display:none" (change)="onFileSelected($event)" />
-      </label>
-
     </div>
 
   </div>

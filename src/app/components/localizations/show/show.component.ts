@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgImageSliderComponent } from 'ng-image-slider';
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
+import { AngularFireStorage } from '@angular/fire/storage';
 
 import { LocalizationService } from '../../../services/localization.service';
 import { ImageService } from '../../../services/image.service';
@@ -16,6 +17,9 @@ import "leaflet/dist/leaflet.css";
 import "leaflet-routing-machine";
 import "leaflet/dist/leaflet.ajax.min.js"
 import { icon, Marker } from 'leaflet';
+import { User } from '../../../interfaces/User';
+import { UserService } from '../../../services/user.service';
+import { finalize } from 'rxjs/operators';
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
 const iconUrl = 'assets/marker-icon.png';
 const shadowUrl = 'assets/marker-shadow.png';
@@ -62,7 +66,61 @@ export class ShowLocalizationComponent implements OnInit {
   // Map
   private map;
 
-  currentLocalization: Localization;
+  //Profile Variables
+  n = Date.now();
+  file;
+  filePath;
+  fileRef;
+  downloadURL;
+
+  public currentUser: User = {
+    id: "",
+    profile: "",
+    username: "",
+    password: "",
+    email: "",
+    config: {
+      lang: "",
+      confirmed: false,
+      rol: 2
+    },
+    followers: [],
+    follows: [],
+    createdRoutes: [],
+    savedRoutes: [],
+  };
+
+  currentLocalization: Localization = {
+    id: "",
+    userId: "",
+    profile: "",
+    name: "",
+    description: "",
+    confirmed: false,
+    images: [],
+    latitude: "",
+    longitude: "",
+    likes: [],
+    url: ""
+  };
+
+  creator: User = {
+    id: "",
+    profile: "",
+    username: "",
+    password: "",
+    email: "",
+    config: {
+      lang: "",
+      confirmed: false,
+      rol: 2
+    },
+    followers: [],
+    follows: [],
+    createdRoutes: [],
+    savedRoutes: [],
+  };
+
   loaded = true;
 
   // Images
@@ -72,12 +130,17 @@ export class ShowLocalizationComponent implements OnInit {
   constructor(
     private router: Router,
     private localizationService: LocalizationService,
+    public userService: UserService,
     private imageService: ImageService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private storage: AngularFireStorage
   ) { }
 
   ngOnInit() {
     this.activatedRoute.params.subscribe(params => {
+
+      this.currentUser = this.userService.getCurrentUser();
+
       this.localizationService.getLocalization(params.id).subscribe((result) => {
 
         this.currentLocalization = {
@@ -93,6 +156,21 @@ export class ShowLocalizationComponent implements OnInit {
           likes: result.data().likes,
           url: result.data().url
         };
+
+        this.userService.getUserGET(this.currentLocalization.userId).subscribe((result) => {
+          this.creator = {
+            id: result.id,
+            profile: result.data().profile,
+            username: result.data().username,
+            password: result.data().password,
+            email: result.data().email,
+            config: result.data().config,
+            followers: result.data().followers,
+            follows: result.data().follows,
+            createdRoutes: result.data().createdRoutes,
+            savedRoutes: result.data().savedRoutes,
+          }
+        });
 
         this.map = L.map('mapid', {
           center: [this.currentLocalization.latitude, this.currentLocalization.longitude],

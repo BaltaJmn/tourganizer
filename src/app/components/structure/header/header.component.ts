@@ -15,6 +15,8 @@ import { NotificationsComponent } from './notifications/notifications.component'
 })
 export class HeaderComponent implements OnInit {
 
+  admin: boolean = false;
+
   public currentUser: User = {
     id: "",
     profile: "",
@@ -24,7 +26,7 @@ export class HeaderComponent implements OnInit {
     config: {
       lang: "",
       confirmed: false,
-      rol: 3
+      rol: 2
     },
     followers: [],
     follows: [],
@@ -40,8 +42,14 @@ export class HeaderComponent implements OnInit {
     public notificationService: NotificationService,
     public dialog: MatDialog
   ) {
-    this.userService.userEmitter.subscribe(response => this.currentUser = response);
-    this.userService.notificationUSEmitter.subscribe((notifications) => this.notifications = notifications)
+
+    this.userService.userEmitter.subscribe((response) => {
+      this.currentUser = response;
+    });
+
+    this.userService.notificationUSEmitter.subscribe((notifications) => {
+      this.notifications = notifications;
+    });
   }
 
   ngOnInit() {

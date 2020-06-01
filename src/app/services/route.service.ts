@@ -37,6 +37,9 @@ export class RouteService {
   }
 
   updateRouteRating(data, value, userId) {
+    console.log(data);
+    console.log(value);
+    console.log(userId);
     data.rating.total += value;
     data.rating.votes.push(userId);
     data.rating.show = data.rating.total / data.rating.votes.length;
@@ -47,6 +50,7 @@ export class RouteService {
   };
 
   deleteRoute(data) {
+    console.log(data);
     return this.db.collection("route")
       .doc(data)
       .delete()

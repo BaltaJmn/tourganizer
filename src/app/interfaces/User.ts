@@ -16,6 +16,6 @@ export interface User {
     followers: Array<string>;
     follows: Array<string>;
 
-    createdRoutes: Array<string>;
-    savedRoutes: Array<string>;
+    createdRoutes: Array<any>;
+    savedRoutes: Array<any>;
 }

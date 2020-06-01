@@ -3,6 +3,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { Localization } from '../../../../interfaces/Localization';
 import { ImageService } from '../../../../services/image.service';
 import { Image } from '../../../../interfaces/Image';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-markerinfo',
@@ -15,7 +16,8 @@ export class MarkerinfoComponent {
 
   constructor(
     public dialogRef: MatDialogRef<MarkerinfoComponent>, @Inject(MAT_DIALOG_DATA) public data: Localization,
-    private imageService: ImageService) {
+    private imageService: ImageService,
+    private router: Router) {
 
     data.images.forEach((image) => {
       this.imageService.getImage(image).subscribe((imageSnapshot) => {
@@ -31,6 +33,11 @@ export class MarkerinfoComponent {
 
       });
     });
+  }
+
+  goTo() {
+    this.router.navigate([`localizations/${this.data.id}`]);
+    this.dialogRef.close();
   }
 
   onNoClick(): void {

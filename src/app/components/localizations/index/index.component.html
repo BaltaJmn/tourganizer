@@ -1,13 +1,14 @@
 <br>
 
 <div class="row rowWidth">
-  <div class="col text-right" *ngIf="userService.getLogged()">
+  <div class="col text-right" *ngIf="userService.getConfirmed()">
     <button class="btn btn-success mr-1" [routerLink]="['/localizations/add']">
       <i class="fa fa-plus"></i>
       Add Localization
     </button>
 
-    <button class="btn btn-info mr-1" (click)="openModal()">
+    <button class="btn btn-info mr-1" (click)="openModal()"
+      *ngIf="userService.getAdmin() || userService.getModerator()">
       <i class="fas fa-check"></i>
       Check Unconfirmed Localizations ({{this.localizationsUnconfirmed.length}})
     </button>
@@ -16,9 +17,10 @@
 
 <br>
 
-<div class="row rowWidth">
+<div class="row rowStyle">
   <div class="col text-left">
     <form class="example-form">
+      <i class="fas fa-search" style="margin-right: 15px;"></i>
       <mat-form-field class="example-full-width">
         <mat-label>Name</mat-label>
         <input matInput name="name" [(ngModel)]="filter.name">
@@ -32,7 +34,7 @@
 <div class="row rowWidth">
   <div class="col-md-4" *ngFor="let localization of localizations | filter: {name: filter.name} : false">
 
-    <div class="card mx-auto" style="width: 18rem;">
+    <div class="card" style="width: 18rem; margin-bottom: 15px;">
 
       <img class="card-img-top" src="{{localization.profile}}" alt="{{localization.name}}">
 

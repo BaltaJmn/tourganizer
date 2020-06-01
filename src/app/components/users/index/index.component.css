@@ -1,0 +1,32 @@
+table {
+  width: 100%;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 50%;
+}
+
+.mat-column-position {
+  max-width: 100px;
+}
+
+.mat-column-name {
+  max-width: 100px;
+}
+
+.rowWidth {
+  margin: 0;
+}
+
+.col-md-12 {
+  padding: 0;
+}
+
+.mat-form-field {
+  width: 20%;
+}
+
+.mat-header-cell {
+  width: 25%;
+}

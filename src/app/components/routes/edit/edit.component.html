@@ -9,38 +9,45 @@
 
   <form [formGroup]="route" (ngSubmit)="onSubmit(route)">
 
-    <label for="file">Profile</label>
-    <div class="form-group col-12">
-      <input type="file" id="file" #userPhoto (change)="onFileSelected($event)" name="image" autocomplete="off" />
+    <div class="row rowHeight">
+      <div class="col-6">
+        <label for="file">Profile</label>
+        <div class="form-group col-12">
+          <input type="file" id="file" #userPhoto (change)="onFileSelected($event)" name="image" autocomplete="off" />
+        </div>
+
+        <img *ngIf="!file" src="{{currentRoute.profile}}" style="width: 250px; height: 250px;"> <br>
+
+        <ngx-imageviewer *ngIf="file" [src]="file" width="250" height="250"></ngx-imageviewer> <br>
+      </div>
+
+      <div class="col-6">
+        <label for="defaultLoginFormName">Name</label>
+        <input type="text" id="defaultLoginFormName" class="form-control mb-4" placeholder="name"
+          formControlName="name">
+
+        <label for="defaultLoginFormType">Type</label>
+        <select id="defaultLoginFormType" class="form-control mb-4" formControlName="type">
+          <option value="0">Country</option>
+          <option value="1">Region</option>
+          <option value="2">City</option>
+        </select>
+
+        <label>Localizations</label>
+        <ng-select placeholder="Select item" bindLabel="name" [multiple]="true" [hideSelected]="true"
+          [searchable]="true" [clearable]="true" [(ngModel)]="currentLocalizations"
+          [ngModelOptions]="{standalone: true}">
+          <ng-option *ngFor="let localization of localizations" [value]="localization.id">
+            {{localization.name}}
+          </ng-option>
+        </ng-select>
+      </div>
     </div>
-
-    <img *ngIf="!file" src="{{currentRoute.profile}}" style="width: 250px; height: 250px;"> <br>
-
-    <ngx-imageviewer *ngIf="file" [src]="file" width="250" height="250"></ngx-imageviewer> <br>
-
-    <label for="defaultLoginFormName">Name</label>
-    <input type="text" id="defaultLoginFormName" class="form-control mb-4" placeholder="name" formControlName="name">
-
-    <label for="defaultLoginFormType">Type</label>
-    <select id="defaultLoginFormType" class="form-control mb-4" formControlName="type">
-      <option value="0">Country</option>
-      <option value="1">Region</option>
-      <option value="2">City</option>
-    </select>
 
     <label for="mapid">Center of the route</label>
     <div id="mapid" class="text-center"></div> <br>
 
-    <label>Localizations</label>
-    <ng-select placeholder="Select item" bindLabel="name" [multiple]="true" [hideSelected]="true" [searchable]="true"
-      [clearable]="true" [(ngModel)]="currentLocalizations" [ngModelOptions]="{standalone: true}">
-      <ng-option *ngFor="let localization of localizations" [value]="localization.id">
-        {{localization.name}}
-      </ng-option>
-    </ng-select>
-
     <button mdbBtn color="info" block="true" class="my-4" type="submit" [disabled]="!route.valid">Update</button>
 
   </form>
-
 </div>

@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '../../services/user.service';
+import { environment } from '../../../environments/environment.prod';
 
 import Swal from 'sweetalert2'
+
 
 @Component({
   selector: 'app-register',
@@ -13,7 +15,7 @@ import Swal from 'sweetalert2'
 export class RegisterComponent implements OnInit {
 
   user = new FormGroup({
-    profile: new FormControl(null),
+    profile: new FormControl(environment.urlDefaultIcon),
     username: new FormControl(null, [Validators.required]),
     password: new FormControl(null, [Validators.required]),
     email: new FormControl(null, [Validators.required]),

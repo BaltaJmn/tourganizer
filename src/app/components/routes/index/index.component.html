@@ -1,13 +1,14 @@
 <br>
 
-<div class="row">
-  <div class="col text-right" *ngIf="userService.getLogged()">
+<div class="row rowWitdh">
+  <div class="col text-right" *ngIf="userService.getConfirmed()">
     <button class="btn btn-success mr-1" [routerLink]="['/routes/add']">
       <i class="fa fa-plus"></i>
       Add Route
     </button>
 
-    <button class="btn btn-info mr-1" (click)="openModal()">
+    <button class="btn btn-info mr-1" (click)="openModal()"
+      *ngIf="userService.getAdmin() || userService.getModerator()">
       <i class="fas fa-check"></i>
       Check Unconfirmed Routes ({{this.routesUnconfirmed.length}})
     </button>
@@ -16,14 +17,18 @@
 
 <br>
 
-<div class="row rowSpace">
-  <div class="col-md-6 text-left">
-    <mat-form-field>
-      <input matInput class="form-field" [formControl]="nameFilter" placeholder="Name">
-    </mat-form-field>
+<div class="row rowStyle">
+  <div class="col text-left">
+    <form class="example-form">
+      <i class="fas fa-search" style="margin-right: 15px;"></i>
+      <mat-form-field class="example-full-width">
+        <mat-label>Name</mat-label>
+        <input matInput class="form-field" [formControl]="nameFilter">
+      </mat-form-field>
+    </form>
   </div>
 
-  <div class="col-md-6 text-left">
+  <div class="col text-left">
     <mat-form-field>
       <mat-label>Type</mat-label>
       <mat-select matNativeControl [formControl]="typeFilter">
@@ -73,7 +78,7 @@
           <div *ngSwitchDefault>
             <div>{{route.rating.show | number : '1.1-2'}}</div>
 
-            <ngb-rating *ngIf="route.rating.votes.includes(this.currentUser.id)" [(rate)]="route.rating.show"
+            <ngb-rating *ngIf="route.rating.votes.includes(this.currentUser.id) || this.currentUser.id == route.id" [(rate)]="route.rating.show"
               [readonly]="true"
               (rateChange)="this.routeService.updateRouteRating(route, $event, this.userService.getCurrentUserId())">
             </ngb-rating>

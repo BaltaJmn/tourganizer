@@ -47,28 +47,64 @@ export class ShowRouteComponent implements OnInit {
 
   map;
 
+  public currentUser: User = {
+    id: "",
+    profile: "",
+    username: "",
+    password: "",
+    email: "",
+    config: {
+      lang: "",
+      confirmed: false,
+      rol: 2
+    },
+    followers: [],
+    follows: [],
+    createdRoutes: [],
+    savedRoutes: [],
+  };
+
   currentRoute: Route = {
-    userId: null,
+    userId: "",
     profile: null,
     confirmed: null,
     center: null,
     name: null,
     type: null,
     totalTime: null,
-    rating: null,
+    rating: {
+      show: 0,
+      total: 0,
+      votes: []
+    },
     localizations: null
   };
 
-  currentUser: User;
+  creator: User = {
+    id: "",
+    profile: "",
+    username: "",
+    password: "",
+    email: "",
+    config: {
+      lang: "",
+      confirmed: false,
+      rol: 2
+    },
+    followers: [],
+    follows: [],
+    createdRoutes: [],
+    savedRoutes: [],
+  };
 
   localizations = [];
 
-  loaded = true;
+  loaded = false;
 
   constructor(
     private router: Router,
-    private routeService: RouteService,
-    public userSerivce: UserService,
+    public routeService: RouteService,
+    public userService: UserService,
     private localizationService: LocalizationService,
     private activatedRoute: ActivatedRoute,
     public dialog: MatDialog
@@ -77,11 +113,12 @@ export class ShowRouteComponent implements OnInit {
   ngOnInit() {
     this.activatedRoute.params.subscribe(params => {
 
-      this.currentUser = this.userSerivce.getCurrentUser();
+      this.currentUser = this.userService.getCurrentUser();
 
       this.routeService.getRoute(params.id).subscribe((result) => {
 
         this.currentRoute = {
+          id: result.id,
           userId: result.data().userId,
           profile: result.data().profile,
           confirmed: result.data().confirmed,
@@ -92,6 +129,21 @@ export class ShowRouteComponent implements OnInit {
           rating: result.data().rating,
           localizations: result.data().localizations
         };
+
+        this.userService.getUserGET(this.currentRoute.userId).subscribe((result) => {
+          this.creator = {
+            id: result.id,
+            profile: result.data().profile,
+            username: result.data().username,
+            password: result.data().password,
+            email: result.data().email,
+            config: result.data().config,
+            followers: result.data().followers,
+            follows: result.data().follows,
+            createdRoutes: result.data().createdRoutes,
+            savedRoutes: result.data().savedRoutes,
+          }
+        });
 
         this.currentRoute.localizations.forEach((localization) => {
           this.localizationService.getLocalization(localization).subscribe((localizationSnapshot) => {
@@ -128,7 +180,7 @@ export class ShowRouteComponent implements OnInit {
 
         this.map = L.map('mapid', {
           center: [this.currentRoute.center.latitude, this.currentRoute.center.longitude],
-          zoom: 10
+          zoom: 8
         });
 
         const tiles1 = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {

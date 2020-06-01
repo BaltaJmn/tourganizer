@@ -17,7 +17,11 @@
   position: fixed;
 }
 
+.rowHeight {
+  height: 350px;
+}
+
 #mapid {
   height: 350px;
-  width: 350px;
+  width: 100%;
 }
