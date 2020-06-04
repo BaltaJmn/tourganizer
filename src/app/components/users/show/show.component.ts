@@ -17,6 +17,8 @@ import { Activity } from '../../../interfaces/Activity';
 
 import * as $ from "jquery";
 import Swal from 'sweetalert2'
+import { NotificationService } from '../../../services/notification.service';
+import { Notification } from '../../../interfaces/Notification';
 
 @Component({
   selector: 'app-show',
@@ -61,16 +63,19 @@ export class ShowUserComponent implements OnInit {
   followers: User[];
   follows: User[];
   createdRoutes: Route[];
+  savedRoutes: Route[];
   recentActivities: Activity[] = [];
   activities: Activity[] = [];
+  notifications: Notification[] = [];
 
-  loaded = true;
+  loaded = false;
 
   constructor(
     private router: Router,
     public userService: UserService,
     public routeService: RouteService,
     public activityService: ActivityService,
+    public notificationService: NotificationService,
     private activatedRoute: ActivatedRoute,
     private storage: AngularFireStorage,
     public dialog: MatDialog
@@ -86,6 +91,7 @@ export class ShowUserComponent implements OnInit {
         this.followers = [];
         this.follows = [];
         this.createdRoutes = [];
+        this.savedRoutes = [];
         this.activities = [];
 
         this.currentUser = {
@@ -157,21 +163,56 @@ export class ShowUserComponent implements OnInit {
         });
 
         this.currentUser.createdRoutes.forEach((route) => {
-          this.routeService.getRoute(route).subscribe((result) => {
+          this.routeService.getRouteSnapshot(route).subscribe((result: any) => {
             let routeAux: Route = {
-              id: result.id,
-              userId: result.data().userId,
-              profile: result.data().profile,
-              name: result.data().name,
-              type: result.data().usetyperId,
-              confirmed: result.data().confirmed,
-              center: result.data().center,
-              totalTime: result.data().totalTime,
-              rating: result.data().rating,
-              localizations: result.data().localizations,
+              id: result.payload.id,
+              userId: result.payload.data().userId,
+              profile: result.payload.data().profile,
+              name: result.payload.data().name,
+              type: result.payload.data().usetyperId,
+              confirmed: result.payload.data().confirmed,
+              center: result.payload.data().center,
+              totalTime: result.payload.data().totalTime,
+              rating: result.payload.data().rating,
+              localizations: result.payload.data().localizations,
             };
-            console.log(routeAux);
             this.createdRoutes.push(routeAux);
+          });
+        });
+
+        this.currentUser.savedRoutes.forEach((route) => {
+          this.routeService.getRouteSnapshot(route).subscribe((result: any) => {
+            let routeAux: Route = {
+              id: result.payload.id,
+              userId: result.payload.data().userId,
+              profile: result.payload.data().profile,
+              name: result.payload.data().name,
+              type: result.payload.data().usetyperId,
+              confirmed: result.payload.data().confirmed,
+              center: result.payload.data().center,
+              totalTime: result.payload.data().totalTime,
+              rating: result.payload.data().rating,
+              localizations: result.payload.data().localizations,
+            };
+            this.savedRoutes.push(routeAux);
+          });
+        });
+
+        this.notificationService.getNotificationsById(this.currentUser.id).subscribe((notificationSnapshot) => {
+
+          notificationSnapshot.forEach((doc: any) => {
+
+            let notificationAux: Notification = {
+              id: doc.payload.doc.id,
+              content: doc.payload.doc.data().content,
+              sender: doc.payload.doc.data().sender,
+              receiver: doc.payload.doc.data().receiver,
+              seen: doc.payload.doc.data().seen,
+              date: doc.payload.doc.data().date,
+            };
+
+            this.notifications.push(notificationAux);
+
           });
         });
 
@@ -194,6 +235,7 @@ export class ShowUserComponent implements OnInit {
             this.recentActivities.push(activityAux)
           });
         });
+
         this.loaded = true;
       });
     });
@@ -224,8 +266,16 @@ export class ShowUserComponent implements OnInit {
   };
 
   removeActivity(index, activity) {
-    this.activities.splice(index, 1);
     this.activityService.updateProfileActivity(activity);
+  };
+
+  seeNoti(noti) {
+    this.notificationService.updateNotificationSeen(noti);
+  };
+
+  removeNoti(index, noti) {
+    this.notifications.splice(index, 1);
+    this.notificationService.deleteNotification(noti);
   };
 
   onFileSelected(event) {

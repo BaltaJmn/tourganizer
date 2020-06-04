@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-confirmed',
@@ -7,7 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ConfirmedComponent implements OnInit {
 
-  constructor() { }
+  confirmed = true;
+
+  constructor(
+    public userService: UserService
+  ) {
+    this.userService.userEmitter.subscribe((response) => {
+    });
+  }
 
   ngOnInit() {
   }

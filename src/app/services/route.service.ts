@@ -1,15 +1,23 @@
 import { Injectable } from '@angular/core';
-
 import { AngularFirestore } from 'angularfire2/firestore';
+
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RouteService {
-  constructor(private db: AngularFirestore) { }
+  constructor(
+    private db: AngularFirestore,
+    private userService: UserService
+  ) { }
 
   getRoutes() {
     return this.db.collection('route', ref => ref.orderBy('rating.show', 'desc').where("confirmed", "==", true)).snapshotChanges();
+  };
+
+  getRoutesHome() {
+    return this.db.collection('route', ref => ref.orderBy('rating.show', 'desc').where("confirmed", "==", true).limit(5)).snapshotChanges();
   };
 
   getRoutesUnconfirmed() {
@@ -18,6 +26,14 @@ export class RouteService {
 
   getRoute(data) {
     return this.db.collection("route").doc(data).get();
+  };
+
+  getRouteSnapshot(data) {
+    return this.db.collection("route").doc(data).snapshotChanges();
+  };
+
+  getRouteByName(data) {
+    return this.db.collection('route', ref => ref.where("name", "==", data)).get();
   };
 
   createRoute(data) {
@@ -34,12 +50,9 @@ export class RouteService {
     return this.db.collection("route")
       .doc(data.id)
       .set({ confirmed: true }, { merge: true });
-  }
+  };
 
   updateRouteRating(data, value, userId) {
-    console.log(data);
-    console.log(value);
-    console.log(userId);
     data.rating.total += value;
     data.rating.votes.push(userId);
     data.rating.show = data.rating.total / data.rating.votes.length;
@@ -50,9 +63,8 @@ export class RouteService {
   };
 
   deleteRoute(data) {
-    console.log(data);
     return this.db.collection("route")
-      .doc(data)
+      .doc(data.id)
       .delete()
   };
 }

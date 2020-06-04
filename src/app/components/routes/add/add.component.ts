@@ -184,21 +184,27 @@ export class AddRouteComponent implements OnInit {
                     seen: false,
                     date: new Date
                   };
-
                   this.notificationService.createNotification(notification);
                 });
 
                 localStorage.clear();
 
-                Swal.fire('Great!', 'Your route was created succesfully!', 'success').then(() => {
-                  this.router.navigate(['/routes']);
+                this.routeService.getRouteByName(route.value.name).subscribe((result) => {
+                  result.forEach((resultRoute: any) => {
+                    this.userService.addCreatedRoute(resultRoute.id);
+                  });
+
+                  Swal.fire('Great!', 'Your route was created succesfully!', 'success').then(() => {
+                    this.router.navigate(['/routes']);
+                  });
                 });
               });
             }
           });
         })
       ).subscribe(url => {
-        if (url) { }
+        if (url) {
+        }
       });
 
     } else {
@@ -223,8 +229,14 @@ export class AddRouteComponent implements OnInit {
 
         localStorage.clear();
 
-        Swal.fire('Great!', 'Your route was created succesfully!', 'success').then(() => {
-          this.router.navigate(['/routes']);
+        this.routeService.getRouteByName(route.value.name).subscribe((result) => {
+          result.forEach((resultRoute: any) => {
+            this.userService.addCreatedRoute(resultRoute.id);
+          });
+
+          Swal.fire('Great!', 'Your route was created succesfully!', 'success').then(() => {
+            this.router.navigate(['/routes']);
+          });
         });
       });
     }
@@ -237,5 +249,4 @@ export class AddRouteComponent implements OnInit {
     this.filePath = `images/${this.n}`;
     this.fileRef = this.storage.ref(this.filePath);
   };
-
 }

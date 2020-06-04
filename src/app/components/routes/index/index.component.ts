@@ -39,7 +39,7 @@ export class IndexRouteComponent implements OnInit {
   };
 
   routes: Route[] = [];
-  routesUnconfirmed: Route[] = [];
+  routesUnconfirmed: number = 0;
   usernames = [];
 
   displayedColumns: string[] = ['name', 'type', 'rate', 'user', 'actions'];
@@ -110,26 +110,7 @@ export class IndexRouteComponent implements OnInit {
     });
 
     this.routeService.getRoutesUnconfirmed().subscribe((routesSnapshot) => {
-
-      this.routesUnconfirmed = [];
-
-      routesSnapshot.forEach((doc: any) => {
-
-        let routeAux: Route = {
-          id: doc.payload.doc.id,
-          userId: doc.payload.doc.data().userId,
-          profile: doc.payload.doc.data().profile,
-          name: doc.payload.doc.data().name,
-          type: doc.payload.doc.data().type,
-          confirmed: doc.payload.doc.data().confirmed,
-          center: doc.payload.doc.data().center,
-          totalTime: doc.payload.doc.data().totalTime,
-          rating: doc.payload.doc.data().rating,
-          localizations: doc.payload.doc.data().localizations,
-        }
-
-        this.routesUnconfirmed.push(routeAux);
-      });
+      this.routesUnconfirmed = routesSnapshot.length;
     });
 
     this.nameFilter.valueChanges.subscribe((nameFilterValue) => {
@@ -160,10 +141,10 @@ export class IndexRouteComponent implements OnInit {
   };
 
   searchName(id) {
-    if (this.usernames.length > 0) {
-      let aux = this.usernames.find(element => element.route == id);
-      return aux.user.username;
-    }
+    // if (this.usernames.length > 0) {
+    //   let aux = this.usernames.find(element => element.route == id);
+    //   return aux.user.username;
+    // }
   };
 
   searchUser(id) {
@@ -173,11 +154,24 @@ export class IndexRouteComponent implements OnInit {
     }
   };
 
+  deleteConfirmed(element) {
+    this.routeService.deleteRoute(element).then(() => {
+      this.userService.getUserGET(element.userId).subscribe((result) => {
+
+        let routesAux = result.data().createdRoutes;
+        routesAux.splice(routesAux.indexOf(element.id), 1);
+
+        this.userService.updateCreatedRoutes(result.id, routesAux);
+
+        this.userService.searchSavedRoutes(element.id);
+      });
+    });
+  };
+
   openModal() {
     const dialogRef = this.dialog.open(RoutesUnconfirmedComponent, {
       width: '600px',
       height: '400px',
-      data: this.routesUnconfirmed
     });
   }
 }

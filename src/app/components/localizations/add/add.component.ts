@@ -222,6 +222,5 @@ export class AddLocalizationComponent implements OnInit {
 
   // deletePhoto(image) {
   //   this.images.splice(this.images.findIndex(v => v.title == image.title), 1);
-  //   console.log(this.images);
   // };
 }

@@ -87,6 +87,22 @@ export class UserService {
       .set(data, { merge: true });
   };
 
+  updateCreatedRoutes(id, data) {
+    this.currentUser.createdRoutes = data;
+
+    return this.db.collection("user")
+      .doc(id)
+      .set({ createdRoutes: this.currentUser.createdRoutes }, { merge: true });
+  };
+
+  updateSavedRoutes(id, data) {
+    this.currentUser.savedRoutes = data;
+
+    return this.db.collection("user")
+      .doc(id)
+      .set({ savedRoutes: this.currentUser.savedRoutes }, { merge: true });
+  };
+
   deleteUser(data) {
     return this.db.collection("user")
       .doc(data)
@@ -163,34 +179,35 @@ export class UserService {
         }
 
         this.loggedEmitter.emit(this.logged);
-        this.userEmitter.emit(true);
+        this.userEmitter.emit(this.currentUser);
 
         if (this.cookieService.get('login') != null) {
           this.cookieService.delete('login');
           this.cookieService.set('login', this.currentUser.username);
         }
 
-        this.notificationService.getNotificationsById(this.currentUser.id).subscribe((notificationSnapshot) => {
+        // this.notificationService.getNotificationsById(this.currentUser.id).subscribe((notificationSnapshot) => {
 
-          let arrayNotifications = [];
+        //   let arrayNotifications = [];
 
-          notificationSnapshot.forEach((doc: any) => {
+        //   notificationSnapshot.forEach((doc: any) => {
 
-            let notificationAux: Notification = {
-              id: doc.payload.doc.id,
-              content: doc.payload.doc.data().content,
-              sender: doc.payload.doc.data().sender,
-              receiver: doc.payload.doc.data().receiver
-            };
+        //     let notificationAux: Notification = {
+        //       id: doc.payload.doc.id,
+        //       content: doc.payload.doc.data().content,
+        //       sender: doc.payload.doc.data().sender,
+        //       receiver: doc.payload.doc.data().receiver
+        //     };
 
-            arrayNotifications.push(notificationAux);
+        //     arrayNotifications.push(notificationAux);
 
-          });
+        //   });
 
-          this.notificationUSEmitter.emit(arrayNotifications);
+        //   this.notificationUSEmitter.emit(arrayNotifications);
+        //   
+        // });
 
-          this.router.navigate(['/home']);
-        });
+        this.router.navigate(['/home']);
 
       } else {
         Swal.fire(
@@ -216,7 +233,7 @@ export class UserService {
       savedRoutes: null,
     };
 
-    this.cookieService.delete('login');
+    this.cookieService.deleteAll();
 
     this.logged = false;
     this.confirmed = false;
@@ -246,6 +263,53 @@ export class UserService {
     return this.db.collection("user")
       .doc(this.currentUser.id)
       .set({ follows: this.currentUser.follows }, { merge: true });
+  }
+
+  save(data) {
+    this.currentUser.savedRoutes.push(data.id);
+
+    return this.db.collection("user")
+      .doc(this.currentUser.id)
+      .set({ savedRoutes: this.currentUser.savedRoutes }, { merge: true });
+  }
+
+  unsave(data) {
+    this.currentUser.savedRoutes.splice(this.currentUser.savedRoutes.indexOf(data.id), 1);
+
+    return this.db.collection("user")
+      .doc(this.currentUser.id)
+      .set({ savedRoutes: this.currentUser.savedRoutes }, { merge: true });
+  }
+
+  addCreatedRoute(data) {
+    this.currentUser.createdRoutes.push(data);
+
+    return this.db.collection("user")
+      .doc(this.currentUser.id)
+      .set({ createdRoutes: this.currentUser.createdRoutes }, { merge: true });
+  }
+
+  removeCreatedRoute(data) {
+    if (this.currentUser.createdRoutes.indexOf(data.id) != (-1)) {
+      this.currentUser.createdRoutes.splice(this.currentUser.createdRoutes.indexOf(data.id), 1);
+
+      return this.db.collection("user")
+        .doc(this.currentUser.id)
+        .set({ createdRoutes: this.currentUser.createdRoutes }, { merge: true });
+    }
+  }
+
+  searchSavedRoutes(id) {
+    this.getUsers().subscribe((users) => {
+      users.forEach((user: any) => {
+        let routesAux = user.payload.doc.data().savedRoutes
+        if (routesAux.indexOf(id) != (-1)) {
+          routesAux.splice(routesAux.indexOf(id), 1);
+
+          this.updateSavedRoutes(user.payload.doc.id, routesAux)
+        }
+      })
+    })
   }
 
   confirmUser(id) {

@@ -207,7 +207,7 @@ export class ShowRouteComponent implements OnInit {
     });
   }
 
-  deleteRoute(id) {
+  deleteRoute(route) {
     Swal.fire({
       title: 'Do you want to delete this route?',
       icon: 'warning',
@@ -219,7 +219,7 @@ export class ShowRouteComponent implements OnInit {
       focusCancel: true
     }).then((result) => {
       if (result.value) {
-        this.routeService.deleteRoute(id).then(() => {
+        this.routeService.deleteRoute(route).then(() => {
           Swal.fire(
             'Deleted!',
             'This route was deleted succesfully!',

@@ -44,6 +44,7 @@ export class HeaderComponent implements OnInit {
   ) {
 
     this.userService.userEmitter.subscribe((response) => {
+      console.log(response);
       this.currentUser = response;
     });
 

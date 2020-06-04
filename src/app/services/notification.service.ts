@@ -15,10 +15,14 @@ export class NotificationService {
   }
 
   getNotificationsById(data) {
-    return this.db.collection("notification", ref => ref.where('receiver', '==', data).where('seen', '==', false)).snapshotChanges()
+    return this.db.collection("notification", ref => ref.where('receiver', '==', data).orderBy('date')).snapshotChanges()
   }
 
-  updateNotificationSeen(data){
-    return this.db.collection("notification").doc(data).set({seen: true}, { merge: true });     
+  updateNotificationSeen(data) {
+    return this.db.collection("notification").doc(data.id).set({ seen: true }, { merge: true });
+  }
+
+  deleteNotification(data){
+    return this.db.collection("notification").doc(data.id).delete()
   }
 }

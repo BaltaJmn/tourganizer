@@ -103,6 +103,7 @@ import { CookieService } from 'ngx-cookie-service';
 
 // Jquery
 import * as $ from 'jquery';
+import { FooterComponent } from './components/structure/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -134,7 +135,8 @@ import * as $ from 'jquery';
     NotificationsComponent,
     RoutesUnconfirmedComponent,
     LocalizationsUnconfirmedComponent,
-    ConfirmedComponent
+    ConfirmedComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

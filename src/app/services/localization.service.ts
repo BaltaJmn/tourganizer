@@ -15,6 +15,10 @@ export class LocalizationService {
     return this.db.collection('localization', ref => ref.orderBy('likes', 'desc').where('confirmed', '==', true)).snapshotChanges();
   };
 
+  getLocalizationsHome() {
+    return this.db.collection('localization', ref => ref.orderBy('likes', 'desc').where('confirmed', '==', true).limit(5)).snapshotChanges();
+  };
+
   getLocalizationsUnconfirmed() {
     return this.db.collection('localization', ref => ref.orderBy('likes', 'desc').where('confirmed', '==', false)).snapshotChanges();
   };

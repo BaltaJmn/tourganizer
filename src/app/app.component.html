@@ -1,26 +1,11 @@
-<!DOCTYPE html>
-<html>
+<mat-sidenav-container class="example-container" *ngIf="logged; else notLogged">
+  <mat-sidenav opened mode="side">
+    <app-header></app-header>
+  </mat-sidenav>
+  <router-outlet></router-outlet>
+  <app-footer class="mt-auto border-top text-center"></app-footer>
+</mat-sidenav-container>
 
-<head>
-  <title>Leaflet.GeoSearch / Google Provider</title>
-
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto" rel="stylesheet">
-
-  <link rel="stylesheet" href="https://unpkg.com/leaflet-geosearch@latest/assets/css/leaflet.css" />
-</head>
-
-<body>
-  <mat-sidenav-container class="example-container" *ngIf="logged; else notLogged">
-    <mat-sidenav opened mode="side">
-      <app-header></app-header>
-    </mat-sidenav>
-    <router-outlet></router-outlet>
-  </mat-sidenav-container>
-
-  <ng-template #notLogged>
-    <router-outlet></router-outlet>
-  </ng-template>
-
-</body>
-
-</html>
+<ng-template #notLogged>
+  <router-outlet></router-outlet>
+</ng-template>

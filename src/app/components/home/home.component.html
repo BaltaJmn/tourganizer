@@ -1,16 +1,35 @@
-<table class="table table-hover table-striped">
-  <tbody *ngFor="let activity of activities">
-    <tr>
-      <td>
-        {{activity.content}}
-      </td>
-    </tr>
-  </tbody>
-  <tbody *ngIf="activities.length <= 0" >
-    <tr>
-      <td>
-        No hay actividades
-      </td>
-    </tr>
-  </tbody>
-</table>
+<section>
+  <div class="row justify-content-center">
+
+    <div class="col-12">
+      <mat-card>
+        <h1 class="text-center title"><strong>¡ Welcome back to Tourganizer, {{currentUser.username}} !</strong></h1>
+      </mat-card>
+    </div>
+
+    <div class="col-5 text-center">
+
+      <h3 class="text-center title"><strong>Check the most valorated routes</strong></h3>
+
+      <mat-list *ngFor="let route of routes; let i = index">
+        <mat-list-item [routerLink]="['/routes', route.id]">
+          <strong> {{i+1}} </strong> - {{route.name}} ({{route.rating.show}})
+        </mat-list-item>
+      </mat-list>
+
+    </div>
+
+    <div class="col-5 text-center" style="margin-left: 10px;">
+
+      <h3 class="text-center title"><strong>Check the most valorated localizations</strong></h3>
+
+      <mat-list *ngFor="let localization of localizations; let i = index">
+        <mat-list-item [routerLink]="['/localizations', localization.id]">
+          <strong> {{i+1}} </strong> - {{localization.name}} ({{localization.likes.length}})
+        </mat-list-item>
+      </mat-list>
+
+    </div>
+
+  </div>
+</section>

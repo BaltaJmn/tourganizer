@@ -16,18 +16,18 @@
       {{ 'header.localizations' | translate }}
     </a>
 
-    <a mat-list-item routerLinkActive="active-list-item" (click)="openModal()">
+    <!-- <a mat-list-item routerLinkActive="active-list-item" (click)="openModal()">
       <mat-icon matListIcon *ngIf="notifications.length == 0">notifications_none</mat-icon>
 
       <mat-icon matListIcon [matBadge]="notifications.length" matBadgeColor="warn" *ngIf="notifications.length != 0">
         notifications</mat-icon>
 
       {{ 'header.notifications' | translate }}
-    </a>
+    </a> -->
 
     <a mat-list-item routerLink="/users/{{this.userService.getCurrentUserId()}}" routerLinkActive="active-list-item">
       <mat-icon matListIcon>person</mat-icon>
-      {{ 'header.profile' | translate }}
+      {{ currentUser.username }}
     </a>
 
     <a mat-list-item routerLinkActive="active-list-item" (click)="userService.logOut()">

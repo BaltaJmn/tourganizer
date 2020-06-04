@@ -216,8 +216,6 @@ export class EditRouteComponent implements OnInit {
 
               route.get("profile").setValue(this.storage);
 
-              console.log(route.value);
-
               this.routeService.updateRoute(this.id, route.value).then(() => {
                 localStorage.clear();
                 Swal.fire('Great!', 'Your route was updated succesfully!', 'success').then(() => {

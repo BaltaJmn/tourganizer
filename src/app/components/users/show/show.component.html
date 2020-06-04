@@ -8,7 +8,7 @@
 <div class="container">
   <div class="row my-2">
 
-    <div class="col-lg-4 order-lg-1 text-center">
+    <div class="col-lg-3 order-lg-1 text-center">
       <img src="{{currentUser.profile}}" class="mx-auto img-fluid img-circle d-block" alt="avatar" id="OpenImgUpload">
 
       <label class="custom-file">
@@ -16,7 +16,7 @@
       </label>
     </div>
 
-    <div class="col-lg-8 order-lg-2">
+    <div class="col-lg-9 order-lg-2">
       <ul class="nav nav-tabs">
         <li class="nav-item">
           <a href="" data-target="#info" data-toggle="tab" class="nav-link active">Information</a>
@@ -30,9 +30,17 @@
             Follows</a>
         </li>
         <li class="nav-item">
-          <a href="" data-target="#activity" data-toggle="tab" class="nav-link">Activity</a>
+          <a href="" data-target="#created" data-toggle="tab" class="nav-link">{{currentUser.createdRoutes.length}}
+            Created Routes</a>
         </li>
         <li class="nav-item">
+          <a href="" data-target="#saved" data-toggle="tab" class="nav-link">{{currentUser.savedRoutes.length}}
+            Saved Routes</a>
+        </li>
+        <li class="nav-item" *ngIf="this.currentUser.id == this.userService.getCurrentUserId()">
+          <a href="" data-target="#notifications" data-toggle="tab" class="nav-link">Notifications</a>
+        </li>
+        <li class="nav-item" *ngIf="this.currentUser.id == this.userService.getCurrentUserId()">
           <a href="" data-target="#config" data-toggle="tab" class="nav-link">Config</a>
         </li>
       </ul>
@@ -51,13 +59,13 @@
               </p>
             </div>
             <div class="col-md-12">
-              <h5 class="mt-2"> Recent Activity</h5>
+              <h5 class="mt-2"> Recent Created Routes</h5>
 
-              <table class="table table-sm table-hover table-striped" *ngIf="currentUser.createdRoutes.length > 0">
+              <table class="table table-sm table-hover table-striped" *ngIf="recentActivities.length > 0">
                 <tbody *ngFor="let route of createdRoutes">
                   <tr>
                     <td>
-                      <div [routerLink]="['/routes', route.id]" role="button"> {{route.name}} </div>
+                      <a [routerLink]="['/routes', route.id]" role="button"> {{route.name}} </a>
                     </td>
                   </tr>
                 </tbody>
@@ -142,26 +150,92 @@
           </table>
         </div>
 
-        <div class="tab-pane" id="activity">
-
-          <table class="table table-hover table-striped" *ngIf="activities.length == 0">
-            <tbody>
+        <div class="tab-pane" id="created">
+          <table class="table table-sm table-hover table-striped" *ngIf="currentUser.createdRoutes.length > 0">
+            <tbody *ngFor="let route of createdRoutes">
               <tr>
                 <td>
-                  <span class="float-right font-weight-bold"></span>
-                  There is no activities
+                  <a [routerLink]="['/routes', route.id]" role="button"> {{route.name}} </a>
                 </td>
               </tr>
             </tbody>
           </table>
 
-          <table class="table table-hover table-striped" *ngIf="activities.length > 0">
-            <tbody *ngFor="let activity of activities; let i = index">
+          <table class="table table-sm table-hover table-striped" *ngIf="currentUser.createdRoutes.length == 0">
+            <tbody>
               <tr>
                 <td>
-                  <span class="float-right font-weight-bold" (click)="removeActivity(i, activity)"><i
-                      class="fas fa-times"></i></span>
-                  {{activity.content}}
+                  No Created Routes
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="tab-pane" id="saved">
+          <table class="table table-sm table-hover table-striped" *ngIf="currentUser.savedRoutes.length > 0">
+            <tbody *ngFor="let route of savedRoutes">
+              <tr>
+                <td>
+                  <a [routerLink]="['/routes', route.id]" role="button"> {{route.name}} </a>
+                </td>
+                <td>
+                  <a (click)="userService.save(route)" class="card-link" style="color: #28a745;"
+                    *ngIf="!this.currentUser.savedRoutes.includes(route.id)">
+                    <i class="fa fa-plus"></i>
+                  </a>
+
+                  <a (click)="userService.unsave(route)" class="card-link" style="color: #bd2130;"
+                    *ngIf="this.currentUser.savedRoutes.includes(route.id)">
+                    <i class="fa fa-times"></i>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table class="table table-sm table-hover table-striped" *ngIf="currentUser.savedRoutes.length == 0">
+            <tbody>
+              <tr>
+                <td>
+                  No Saved Routes
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="tab-pane" id="notifications">
+
+          <table class="table table-hover table-striped" *ngIf="notifications.length == 0">
+            <tbody>
+              <tr>
+                <td>
+                  <span class="float-right font-weight-bold"></span>
+                  There is no notifications
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table class="table table-hover table-striped" *ngIf="notifications.length > 0">
+            <tbody *ngFor="let notification of notifications; let i = index">
+              <tr>
+                <td *ngIf="notification.seen == false">
+                  <span class="float-right font-weight-bold" style="margin-left: 10px;"
+                    (click)="removeNoti(i, notification)"><i class="fas fa-times"></i></span>
+
+                  <span class="float-right font-weight-bold" style="margin-left: 10px;"
+                    (click)="seeNoti(notification)"><i class="fas fa-eye"></i></span>
+
+                  <strong>{{notification.content}}</strong>
+                </td>
+
+                <td *ngIf="notification.seen != false">
+                  <span class="float-right font-weight-bold" style="margin-left: 10px;"
+                    (click)="removeNoti(notification)"><i class="fas fa-times"></i></span>
+
+                  {{notification.content}}
                 </td>
               </tr>
             </tbody>
@@ -183,7 +257,7 @@
                   <mat-radio-button *ngFor="let language of languages" [value]="language.id" name="languageList">
                     {{language.name}}
                   </mat-radio-button>
-                  <br>
+
                 </mat-radio-group>
 
                 <br>

@@ -13,7 +13,7 @@
       <i class="fa fa-pen"></i>
     </button>
 
-    <button class="btn btn-danger mr-1" (click)="deleteRoute(currentRoute.id)">
+    <button class="btn btn-danger mr-1" (click)="deleteRoute(currentRoute)">
       <i class="fa fa-trash"></i>
     </button>
   </div>
@@ -50,7 +50,7 @@
 
       <br><br>
 
-      <label for="creator"><strong>Rating</strong></label> <br>
+      <label for="rating"><strong>Rating</strong></label> <br>
       <div [ngSwitch]="currentRoute.rating.votes.length">
         <div *ngSwitchCase="0">
           <div>No votes</div>
@@ -62,7 +62,8 @@
         <div *ngSwitchDefault>
           <div>{{currentRoute.rating.show | number : '1.1-2'}}</div>
 
-          <ngb-rating *ngIf="currentRoute.rating.votes.includes(this.currentUser.id) || this.currentUser.id == currentRoute.id"
+          <ngb-rating
+            *ngIf="currentRoute.rating.votes.includes(this.currentUser.id) || this.currentUser.id == currentRoute.id"
             [(rate)]="currentRoute.rating.show" [readonly]="true"
             (rateChange)="this.routeService.updateRouteRating(currentRoute, $event, this.userService.getCurrentUserId())">
           </ngb-rating>
@@ -73,6 +74,22 @@
           </ngb-rating>
         </div>
       </div>
+
+      <br><br>
+
+      <div>
+        <a (click)="userService.save(currentRoute)" class="card-link"
+          *ngIf="!this.currentUser.savedRoutes.includes(currentRoute.id)">
+          <label for="saved"><strong>Not saved</strong></label> <br>
+          <i class="fa fa-plus" style="color: #28a745;"></i>
+        </a>
+
+        <a (click)="userService.unsave(currentRoute)" class="card-link"
+          *ngIf="this.currentUser.savedRoutes.includes(currentRoute.id)">
+          <label for="saved"><strong>Saved</strong></label> <br>
+          <i class="fa fa-times" style="color: #bd2130;"></i>
+        </a>
+      </div>
     </div>
   </div>
 
@@ -82,12 +99,12 @@
   <div id="mapid" class="text-center"></div>
 
   <div aria-labelledby="myModalLabel" class="modal right fade" id="emptymodal" role="dialog" tabindex="-1">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content"></div>
+    <div class="modal-dialog" role="document">
+      <div class="modal-content"></div>
+    </div>
   </div>
-</div>
 
-<button mat-button id="modal" class="display:none" (click)="openModal()"></button>
+  <button mat-button id="modal" class="display:none" (click)="openModal()"></button>
 </div>
 
 <router-outlet></router-outlet>
