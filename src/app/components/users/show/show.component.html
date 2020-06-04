@@ -233,7 +233,7 @@
 
                 <td *ngIf="notification.seen != false">
                   <span class="float-right font-weight-bold" style="margin-left: 10px;"
-                    (click)="removeNoti(notification)"><i class="fas fa-times"></i></span>
+                    (click)="removeNoti(i, notification)"><i class="fas fa-times"></i></span>
 
                   {{notification.content}}
                 </td>
