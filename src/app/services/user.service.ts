@@ -15,6 +15,7 @@ import { NotificationService } from './notification.service';
 import { CookieService } from 'ngx-cookie-service';
 
 import Swal from 'sweetalert2'
+import { MatSnackBar } from '@angular/material';
 
 @Injectable({
   providedIn: 'root'
@@ -50,6 +51,7 @@ export class UserService {
   constructor(
     private db: AngularFirestore,
     private storage: AngularFireStorage,
+    private _snackBar: MatSnackBar,
     private emailService: EmailService,
     private notificationService: NotificationService,
     private activityService: ActivityService,
@@ -135,17 +137,14 @@ export class UserService {
           })
         });
 
-        Swal.fire(
-          'Succesfully Registered!',
-          'You have been succesfully registered!',
-          'success'
-        );
+        this._snackBar.open('Usuario creado. Confirme la cuenta en su correo', 'Ok', {
+          duration: 3000
+        });
+
       } else {
-        Swal.fire(
-          'Error!',
-          'Your username is already taken!',
-          'error'
-        );
+        this._snackBar.open('Ese usuario está en uso', 'Ok', {
+          duration: 3000
+        });
       }
     });
   };

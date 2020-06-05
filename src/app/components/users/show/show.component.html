@@ -248,6 +248,10 @@
               <h2 class="example-h2">User Config</h2>
 
               <section class="example-section" *ngIf="currentUser.config.rol == 0">
+                <button mdbBtn color="success" block="true" class="my-4" (click)="openEdit()">Edit Profile</button>
+              </section>
+
+              <section class="example-section" *ngIf="currentUser.config.rol == 0">
                 <button mdbBtn color="success" block="true" class="my-4" (click)="openModal()">Admin Users</button>
               </section>
 

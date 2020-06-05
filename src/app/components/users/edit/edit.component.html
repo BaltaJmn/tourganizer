@@ -9,12 +9,24 @@
 
   <p class="h4 mb-4">Edit user</p>
 
+  <mat-label>Profile</mat-label>
+  <div class="form-group col-12">
+    <input type="file" id="file" #userPhoto (change)="onFileSelected($event)" name="image" autocomplete="off" />
+  </div>
+
+  <img *ngIf="!file" src="{{currentUser.profile}}" style="width: 250px; height: 250px;"> <br>
+
+  <ngx-imageviewer *ngIf="file" [src]="file" width="250" height="250"></ngx-imageviewer>
+
+  <mat-label>Username</mat-label>
   <input type="text" id="defaultLoginFormUsername" class="form-control mb-4" placeholder="username"
     formControlName="username">
 
+  <mat-label>Password</mat-label>-
   <input type="text" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="password"
     formControlName="password">
 
+  <mat-label>Email</mat-label>
   <input type="text" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="email" formControlName="email">
 
   <button mdbBtn color="info" block="true" class="my-4" type="submit">Update</button>

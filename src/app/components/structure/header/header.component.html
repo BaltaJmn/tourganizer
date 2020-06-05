@@ -27,7 +27,7 @@
 
     <a mat-list-item routerLink="/users/{{this.userService.getCurrentUserId()}}" routerLinkActive="active-list-item">
       <mat-icon matListIcon>person</mat-icon>
-      {{ currentUser.username }}
+      {{ this.userService.getCurrentUserName() }}
     </a>
 
     <a mat-list-item routerLinkActive="active-list-item" (click)="userService.logOut()">

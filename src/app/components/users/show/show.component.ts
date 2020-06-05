@@ -19,6 +19,7 @@ import * as $ from "jquery";
 import Swal from 'sweetalert2'
 import { NotificationService } from '../../../services/notification.service';
 import { Notification } from '../../../interfaces/Notification';
+import { EditUserComponent } from '../edit/edit.component';
 
 @Component({
   selector: 'app-show',
@@ -323,6 +324,14 @@ export class ShowUserComponent implements OnInit {
     const dialogRef = this.dialog.open(IndexUserComponent, {
       width: '800px',
       height: '600px'
+    });
+  };
+
+  openEdit() {
+    const dialogRef = this.dialog.open(EditUserComponent, {
+      width: '500px',
+      height: '625px',
+      data: this.currentUser
     });
   }
 }

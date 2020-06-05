@@ -12,7 +12,8 @@ export class NotificationsComponent implements OnInit {
   notifications = [];
 
   constructor(
-    public dialogRef: MatDialogRef<NotificationsComponent>, @Inject(MAT_DIALOG_DATA) public notification: Array<Notification>,
+    @Inject(MAT_DIALOG_DATA) public notification: Array<Notification>,
+    public dialogRef: MatDialogRef<NotificationsComponent>,
     private notificationService: NotificationService
   ) {
     this.notifications = notification
