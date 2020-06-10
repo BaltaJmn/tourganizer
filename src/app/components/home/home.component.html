@@ -3,13 +3,24 @@
 
     <div class="col-12">
       <mat-card>
-        <h1 class="text-center title"><strong>¡ Welcome back to Tourganizer, {{currentUser.username}} !</strong></h1>
+        <h1 class="text-center title"><strong>{{ 'home.title' | translate}} {{currentUser.username}} !</strong></h1>
       </mat-card>
+    </div>
+
+    <div class="col-8 text-center">
+
+      <h3 class="text-center title"><strong>{{ 'home.tuto' | translate}}</strong></h3>
+
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/gy4E7aTWtXo" frameborder="0"
+        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+      <br><br><br>
+
     </div>
 
     <div class="col-5 text-center">
 
-      <h3 class="text-center title"><strong>Check the most valorated routes</strong></h3>
+      <h3 class="text-center title"><strong>{{ 'home.valRoutes' | translate}}</strong></h3>
 
       <mat-list *ngFor="let route of routes; let i = index">
         <mat-list-item [routerLink]="['/routes', route.id]">
@@ -21,7 +32,7 @@
 
     <div class="col-5 text-center" style="margin-left: 10px;">
 
-      <h3 class="text-center title"><strong>Check the most valorated localizations</strong></h3>
+      <h3 class="text-center title"><strong>{{ 'home.valLocalizations' | translate}}</strong></h3>
 
       <mat-list *ngFor="let localization of localizations; let i = index">
         <mat-list-item [routerLink]="['/localizations', localization.id]">

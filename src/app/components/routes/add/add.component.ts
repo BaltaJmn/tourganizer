@@ -3,7 +3,7 @@ import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { finalize } from 'rxjs/operators';
-import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
+import { environment } from '../../../../environments/environment';
 
 import { UserService } from '../../../services/user.service';
 import { RouteService } from '../../../services/route.service';
@@ -21,7 +21,7 @@ import "leaflet-routing-machine";
 import "leaflet/dist/leaflet.ajax.min.js"
 import "leaflet/dist/leaflet.ajax.min.js"
 import { icon, Marker } from 'leaflet';
-import { environment } from '../../../../environments/environment';
+import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
 const iconUrl = 'assets/marker-icon.png';
 const shadowUrl = 'assets/marker-shadow.png';

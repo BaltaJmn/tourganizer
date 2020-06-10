@@ -8,6 +8,12 @@ section {
   margin: 0;
 }
 
+.col-8 {
+  margin-top: 20px;
+  background-color: white;
+  border-radius: 25px;
+}
+
 .col-5 {
   margin-top: 20px;
   background-color: white;

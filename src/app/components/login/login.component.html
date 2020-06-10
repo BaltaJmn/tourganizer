@@ -2,7 +2,7 @@
   <div class="col-md-6 center">
     <form class="text-center p-5" [formGroup]="user" (ngSubmit)="onSubmit(user)">
 
-      <p class="h4 mb-4">Log In</p>
+      <p class="h4 mb-4">{{'login.title' | translate}}</p>
 
       <!-- Email -->
       <input type="email" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="Username"
@@ -15,18 +15,18 @@
       <div class="d-flex justify-content-around">
         <div>
           <!-- Forgot password -->
-          <a role="button" (click)="openModal()">Forgot password?</a>
+          <a role="button" (click)="openModal()">{{'login.forPass' | translate}}</a>
         </div>
       </div>
       <div class="d-flex justify-content-around">
         <div>
           <!-- Register -->
-          <a routerLink="/register">Go to Register Page</a>
+          <a routerLink="/register">{{'login.goRegister' | translate}}</a>
         </div>
       </div>
 
       <!-- Login button -->
-      <button mdbBtn color="info" block="true" class="my-4" type="submit" [disabled]="!user.valid">Login</button>
+      <button mdbBtn color="info" block="true" class="my-4" type="submit" [disabled]="!user.valid">{{'login.title' | translate}}</button>
 
     </form>
   </div>

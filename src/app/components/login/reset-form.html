@@ -1,12 +1,12 @@
 <h1 mat-dialog-title>Reset Password</h1>
 <div mat-dialog-content>
-  <p>Write your email:</p>
+  <p>{{'login.reset.title' | translate}}</p>
   <mat-form-field>
     <mat-label>Email</mat-label>
     <input matInput [(ngModel)]="data.email">
   </mat-form-field>
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button [mat-dialog-close]="data.email" cdkFocusInitial>Accept</button>
+  <button mat-button (click)="onNoClick()">{{'login.reset.cancel' | translate}}</button>
+  <button mat-button [mat-dialog-close]="data.email" cdkFocusInitial>{{'login.reset.accept' | translate}}</button>
 </div>

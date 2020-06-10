@@ -236,6 +236,8 @@ export class UserService {
 
     this.logged = false;
     this.confirmed = false;
+    this.admin = false;
+    this.moderator = false;
 
     this.loggedEmitter.emit(this.logged);
     this.userEmitter.emit(this.currentUser);

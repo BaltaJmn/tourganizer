@@ -24,7 +24,7 @@ export class RoutesUnconfirmedComponent implements OnInit {
     this.refreshContent();
   }
 
-  updateConfirmed(i, element) {
+  updateConfirmed(element) {
     this.routeService.updateConfirmed(element).then(() => {
       this.refreshContent();
     });
@@ -71,6 +71,6 @@ export class RoutesUnconfirmedComponent implements OnInit {
 
       this.data = new MatTableDataSource<any>(this.data);
     });
-  }
+  };
 
 }

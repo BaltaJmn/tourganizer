@@ -205,7 +205,7 @@ export class ShowLocalizationComponent implements OnInit {
     this.loaded = true;
   };
 
-  deleteLocalization(id) {
+  deleteLocalization(localization) {
     Swal.fire({
       title: 'Do you want to delete this localization?',
       icon: 'warning',
@@ -217,7 +217,7 @@ export class ShowLocalizationComponent implements OnInit {
       focusCancel: true
     }).then((result) => {
       if (result.value) {
-        this.localizationService.deleteLocalization(id).then(() => {
+        this.localizationService.deleteLocalization(localization).then(() => {
           Swal.fire(
             'Deleted!',
             'This route was deleted succesfully!',
@@ -227,6 +227,6 @@ export class ShowLocalizationComponent implements OnInit {
           this.router.navigate(['/localizations'])
         });
       }
-    })
+    });
   };
 }

@@ -5,13 +5,13 @@
 
 <div class="text-center border border-light p-5">
 
-  <p class="h4 mb-4">Edit route</p>
+  <p class="h4 mb-4">{{'routes.edit.title' | translate}}</p>
 
   <form [formGroup]="route" (ngSubmit)="onSubmit(route)">
 
     <div class="row rowHeight">
       <div class="col-6">
-        <label for="file">Profile</label>
+        <label for="file">{{'routes.edit.profile' | translate}}</label>
         <div class="form-group col-12">
           <input type="file" id="file" #userPhoto (change)="onFileSelected($event)" name="image" autocomplete="off" />
         </div>
@@ -22,18 +22,18 @@
       </div>
 
       <div class="col-6">
-        <label for="defaultLoginFormName">Name</label>
+        <label for="defaultLoginFormName">{{'routes.edit.name' | translate}}</label>
         <input type="text" id="defaultLoginFormName" class="form-control mb-4" placeholder="name"
           formControlName="name">
 
-        <label for="defaultLoginFormType">Type</label>
+        <label for="defaultLoginFormType">{{'routes.edit.type' | translate}}</label>
         <select id="defaultLoginFormType" class="form-control mb-4" formControlName="type">
-          <option value="0">Country</option>
-          <option value="1">Region</option>
-          <option value="2">City</option>
+          <option value="0">{{'routes.edit.country' | translate}}</option>
+          <option value="1">{{'routes.edit.country' | translate}}</option>
+          <option value="2">{{'routes.edit.country' | translate}}</option>
         </select>
 
-        <label>Localizations</label>
+        <label>{{'routes.edit.localizations' | translate}}</label>
         <ng-select placeholder="Select item" bindLabel="name" [multiple]="true" [hideSelected]="true"
           [searchable]="true" [clearable]="true" [(ngModel)]="currentLocalizations"
           [ngModelOptions]="{standalone: true}">
@@ -44,10 +44,11 @@
       </div>
     </div>
 
-    <label for="mapid">Center of the route</label>
+    <label for="mapid">{{'routes.edit.center' | translate}}</label>
     <div id="mapid" class="text-center"></div> <br>
 
-    <button mdbBtn color="info" block="true" class="my-4" type="submit" [disabled]="!route.valid">Update</button>
+    <button mdbBtn color="info" block="true" class="my-4" type="submit"
+      [disabled]="!route.valid">{{'routes.edit.center' | translate}}</button>
 
   </form>
 </div>

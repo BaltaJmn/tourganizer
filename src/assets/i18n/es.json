@@ -8,5 +8,151 @@
     "notifications": "Notificaciones",
     "login": "Inicio de Sesión",
     "logout": "Cerrar Sesión"
+  },
+  "home": {
+    "title": "¡Bienvenido de nuevo, ",
+    "valRoutes": "Mira las rutas más valoradas",
+    "valLocalizations": "Mira las localizaciones más valoradas",
+    "tuto": "Mira el tutorial"
+  },
+  "localizations": {
+    "add": {
+      "title": "Añadir localización",
+      "profile": "Perfil",
+      "name": "Nombre",
+      "description": "Descripción",
+      "url": "URL web de localización",
+      "localization": "Localización",
+      "button": "Añadir"
+    },
+    "edit": {
+      "title": "Editar localización",
+      "profile": "Perfil",
+      "name": "Nombre",
+      "description": "Descripción",
+      "url": "URL web de localización",
+      "images": "Imágenes",
+      "noImages": "No hay imágenes",
+      "localization": "Localización",
+      "button": "Actualizar"
+    },
+    "index": {
+      "addButton": "Añadir localización",
+      "checkButton": "Comprobar localizaciones sin confirmar",
+      "name": "Nombre",
+      "see": "Ver más"
+    },
+    "show": {
+      "creator": "Creador",
+      "unfollow": "Dejar de seguir",
+      "follow": "Seguir",
+      "web": "Ir a la página web",
+      "localizations": "Localizaciones"
+    },
+    "unconfirmed": {
+      "name": "Nombre",
+      "see": "Ver",
+      "check": "Aceptar"
+    }
+  },
+  "routes": {
+    "add": {
+      "title": "Añadir ruta",
+      "profile": "Perfil",
+      "name": "Nombre",
+      "type": "Tipo",
+      "country": "País",
+      "region": "Región",
+      "city": "Ciudad",
+      "localizations": "Localizaciones",
+      "center": "Centro de la Ruta",
+      "button": "Añadir"
+    },
+    "edit": {
+      "title": "Editar ruta",
+      "profile": "Perfil",
+      "name": "Nombre",
+      "type": "Tipo",
+      "country": "País",
+      "region": "Región",
+      "city": "Ciudad",
+      "localizations": "Localizaciones",
+      "center": "Centro de la Ruta",
+      "button": "Añadir"
+    },
+    "index": {
+      "addButton": "Añadir localización",
+      "checkButton": "Comprobar localizaciones sin confirmar",
+      "name": "Nombre",
+      "type": "Tipo",
+      "all": "todos",
+      "country": "País",
+      "region": "Región",
+      "city": "Ciudad",
+      "rating": "Puntuación",
+      "noVotes": "No hay votos aun",
+      "user": "Usuario",
+      "actions": "Acciones",
+      "see": "Ver más"
+    },
+    "show": {
+      "creator": "Creador",
+      "unfollow": "Dejar de seguir",
+      "follow": "Seguir",
+      "rating": "Ir a la página web",
+      "noVotes": "No hay votos aun",
+      "noSaved": "No la tienes guardada",
+      "saved": "La tienes guardada",
+      "localizations": "Localizaciones",
+      "modal": {
+        "goTo": "Ir a la localización"
+      }
+    }
+  },
+  "users": {
+    "show": {
+      "info": "Información",
+      "followers": "Seguidores",
+      "follows": "Seguidos",
+      "createdR": "Rutas Creadas",
+      "savedR": "Rutas Guardadas",
+      "notifications": "Notificaciones",
+      "config": "Configuración",
+      "username": "Usuario",
+      "recent": "Rutas creadas recientemente",
+      "noRecent": "No hay actividad reciente",
+      "unfollow": "Dejar de seguir",
+      "follow": "Seguir",
+      "noCreated": "No hay rutas creadas",
+      "noSaved": "No hay rutas guardadas",
+      "noNoti": "No hay notificaciones",
+      "userConfig": "Configuración de usuario",
+      "editPro": "Editar perfil",
+      "adminUser": "Administrar usuarios",
+      "select": "Elige tu idioma",
+      "save": "Guardar"
+    },
+    "edit": {
+      "title": "Editar",
+      "profile": "Perfil",
+      "username": "Usuario",
+      "password": "Contraseña",
+      "email": "Email",
+      "update": "Actualizar"
+    }
+  },
+  "login": {
+    "title": "Iniciar Sesión",
+    "forPass": "¿Olvidaste la contraseña?",
+    "goRegister": "Ir a la página de registro",
+    "reset": {
+      "title": "Escribe tu email",
+      "accept": "Aceptar",
+      "cancel": "Cancelar"
+    }
+  },
+  "register": {
+    "title": "Registrarse",
+    "goLogin": "Ir a Inicio de sesión"
   }
 }

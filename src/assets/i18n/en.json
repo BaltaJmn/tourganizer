@@ -8,5 +8,151 @@
     "notifications": "Notificactions",
     "login": "Log In",
     "logout": "Log Out"
+  },
+  "home": {
+    "title": "Welcome back, ",
+    "valRoutes": "Check the most rated Routes",
+    "valLocalizations": "Check the most rated Localizations",
+    "tuto": "Check the tutorial"
+  },
+  "localizations": {
+    "add": {
+      "title": "Add localization",
+      "profile": "Profile",
+      "name": "Name",
+      "description": "Description",
+      "url": "URL",
+      "localization": "Localization",
+      "button": "Add"
+    },
+    "edit": {
+      "title": "Edit Localization",
+      "profile": "Profile",
+      "name": "Name",
+      "description": "Description",
+      "url": "URL Localization",
+      "images": "Images",
+      "noImages": "There is no images",
+      "localization": "Localization",
+      "button": "Update"
+    },
+    "index": {
+      "addButton": "Add Localization",
+      "checkButton": "Check Unconfirmed",
+      "name": "Name",
+      "see": "See more"
+    },
+    "show": {
+      "creator": "Creator",
+      "unfollow": "Unfollow",
+      "follow": "Follow",
+      "web": "Go to the website",
+      "localizations": "Localizations"
+    },
+    "unconfirmed": {
+      "name": "Name",
+      "see": "See",
+      "check": "Accept"
+    }
+  },
+  "routes": {
+    "add": {
+      "title": "Add route",
+      "profile": "Profile",
+      "name": "Name",
+      "type": "Type",
+      "country": "Country",
+      "region": "Region",
+      "city": "City",
+      "localizations": "Localizations",
+      "center": "Routes' Center",
+      "button": "Add"
+    },
+    "edit": {
+      "title": "Edit route",
+      "profile": "Profile",
+      "name": "Name",
+      "type": "Tipo",
+      "country": "Country",
+      "region": "Region",
+      "city": "City",
+      "localizations": "Localizations",
+      "center": "Routes' Center",
+      "button": "Update"
+    },
+    "index": {
+      "addButton": "Add Localization",
+      "checkButton": "Check unconfirmed",
+      "name": "Name",
+      "type": "Type",
+      "all": "All",
+      "country": "Country",
+      "region": "Region",
+      "city": "City",
+      "rating": "Rating",
+      "noVotes": "There is no votes",
+      "user": "User",
+      "actions": "Actions",
+      "see": "See More"
+    },
+    "show": {
+      "creator": "Creator",
+      "unfollow": "Unfollow",
+      "follow": "Follow",
+      "rating": "Go to the website",
+      "noVotes": "There is no votes",
+      "noSaved": "Not saved yet",
+      "saved": "Saved",
+      "localizations": "Localizations",
+      "modal": {
+        "goTo": "Go to the localization"
+      }
+    }
+  },
+  "users": {
+    "show": {
+      "info": "Information",
+      "followers": "Followers",
+      "follows": "Follows",
+      "createdR": "Created Routes",
+      "savedR": "Saved Routes",
+      "notifications": "Notifications",
+      "config": "Config",
+      "username": "Username",
+      "recent": "Recent Created Routes",
+      "noRecent": "No recent activity",
+      "unfollow": "Unfollow",
+      "follow": "Follow",
+      "noCreated": "No created routes",
+      "noSaved": "No saved routes",
+      "noNoti": "No notifications",
+      "userConfig": "User config",
+      "editPro": "Edit profile",
+      "adminUser": "Admin users",
+      "select": "Choose your language",
+      "save": "Save"
+    },
+    "edit": {
+      "title": "Editar",
+      "profile": "Perfil",
+      "username": "Usuario",
+      "password": "Contraseña",
+      "email": "Email",
+      "update": "Actualizar"
+    }
+  },
+  "login": {
+    "title": "Log In",
+    "forPass": "Forgot password?",
+    "goRegister": "Go to the register page",
+    "reset": {
+      "title": "Write your email",
+      "accept": "Accept",
+      "cancel": "Cancel"
+    }
+  },
+  "register": {
+    "title": "Register",
+    "goLogin": "Go to the log in page"
   }
 }

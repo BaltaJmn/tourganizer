@@ -65,7 +65,7 @@ export class LocalizationService {
 
   deleteLocalization(data) {
     return this.db.collection("localization")
-      .doc(data)
+      .doc(data.id)
       .delete()
   };
 

@@ -141,10 +141,10 @@ export class IndexRouteComponent implements OnInit {
   };
 
   searchName(id) {
-    // if (this.usernames.length > 0) {
-    //   let aux = this.usernames.find(element => element.route == id);
-    //   return aux.user.username;
-    // }
+    if (this.usernames.length > 0) {
+      let aux = this.usernames.find(element => element.route == id);
+      return aux.user.username;
+    }
   };
 
   searchUser(id) {

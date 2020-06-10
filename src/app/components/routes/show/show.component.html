@@ -28,14 +28,14 @@
     </div>
 
     <div class="col-6">
-      <label for="creator"><strong>Creador</strong></label> <br>
+      <label for="creator"><strong>{{'routes.show.creator' | translate}}</strong></label> <br>
       <a id="creator" [routerLink]="['/users', currentRoute.userId]" class="card-link">
         {{creator.username}}
       </a>
 
       <div *ngIf="this.currentUser.follows.includes(currentRoute.userId) && this.currentUser.id != currentRoute.userId">
         <button class="btn btn-danger mr-1" (click)="this.userService.unfollow(creator)">
-          Unfollow
+          {{'routes.show.unfollow' | translate}}
           <i class="far fa-times-circle"></i>
         </button>
       </div>
@@ -43,17 +43,17 @@
       <div
         *ngIf="!this.currentUser.follows.includes(currentRoute.userId) && this.currentUser.id != currentRoute.userId">
         <button class="btn btn-success mr-1" (click)="this.userService.follow(creator)">
-          Follow
+          {{'routes.show.follow' | translate}}
           <i class="fa fa-plus"></i>
         </button>
       </div>
 
       <br><br>
 
-      <label for="rating"><strong>Rating</strong></label> <br>
+      <label for="rating"><strong>{{'routes.show.rating' | translate}}</strong></label> <br>
       <div [ngSwitch]="currentRoute.rating.votes.length">
         <div *ngSwitchCase="0">
-          <div>No votes</div>
+          <div>{{'routes.show.noVotes' | translate}}</div>
           <ngb-rating [(rate)]="currentRoute.rating.show"
             (rateChange)="this.routeService.updateRouteRating(currentRoute, $event, this.userService.getCurrentUserId())">
           </ngb-rating>
@@ -80,13 +80,13 @@
       <div>
         <a (click)="userService.save(currentRoute)" class="card-link"
           *ngIf="!this.currentUser.savedRoutes.includes(currentRoute.id)">
-          <label for="saved"><strong>Not saved</strong></label> <br>
+          <label for="saved"><strong>{{'routes.show.noSaved' | translate}}</strong></label> <br>
           <i class="fa fa-plus" style="color: #28a745;"></i>
         </a>
 
         <a (click)="userService.unsave(currentRoute)" class="card-link"
           *ngIf="this.currentUser.savedRoutes.includes(currentRoute.id)">
-          <label for="saved"><strong>Saved</strong></label> <br>
+          <label for="saved"><strong>{{'routes.show.saved' | translate}}</strong></label> <br>
           <i class="fa fa-times" style="color: #bd2130;"></i>
         </a>
       </div>
@@ -95,14 +95,8 @@
 
   <br><br>
 
-  <label for="mapid"><strong>Localizations</strong></label>
+  <label for="mapid"><strong>{{'routes.show.localizations' | translate}}</strong></label>
   <div id="mapid" class="text-center"></div>
-
-  <div aria-labelledby="myModalLabel" class="modal right fade" id="emptymodal" role="dialog" tabindex="-1">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content"></div>
-    </div>
-  </div>
 
   <button mat-button id="modal" class="display:none" (click)="openModal()"></button>
 </div>

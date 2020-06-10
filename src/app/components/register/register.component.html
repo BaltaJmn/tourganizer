@@ -2,7 +2,7 @@
   <div class="col-md-6 center">
     <form class="text-center border border-light p-5" [formGroup]="user" (ngSubmit)="onSubmit(user)">
 
-      <p class="h4 mb-4">Register</p>
+      <p class="h4 mb-4">{{'register.title' | translate}}</p>
 
       <input type="username" id="defaultRegisterFormUsername" class="form-control mb-4" placeholder="Username"
         formControlName="username">
@@ -16,11 +16,11 @@
       <div class="d-flex justify-content-around">
         <div>
           <!-- Login -->
-          <a routerLink="/login">Go to Login Page</a>
+          <a routerLink="/login">{{'register.goLogin' | translate}}</a>
         </div>
       </div>
 
-      <button mdbBtn color="info" block="true" class="my-4" type="submit" [disabled]="!user.valid">Register</button>
+      <button mdbBtn color="info" block="true" class="my-4" type="submit" [disabled]="!user.valid">{{'register.title' | translate}}</button>
 
     </form>
   </div>

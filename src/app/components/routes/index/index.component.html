@@ -4,13 +4,13 @@
   <div class="col text-right" *ngIf="userService.getConfirmed()">
     <button class="btn btn-success mr-1" [routerLink]="['/routes/add']">
       <i class="fa fa-plus"></i>
-      Add Route
+      {{'routes.index.addButton' | translate}}
     </button>
 
     <button class="btn btn-info mr-1" (click)="openModal()"
       *ngIf="userService.getAdmin() || userService.getModerator()">
       <i class="fas fa-check"></i>
-      Check Unconfirmed Routes ({{this.routesUnconfirmed}})
+      {{'routes.index.checkButton' | translate}} ({{this.routesUnconfirmed}})
     </button>
   </div>
 </div>
@@ -22,7 +22,7 @@
     <form class="example-form">
       <i class="fas fa-search" style="margin-right: 15px;"></i>
       <mat-form-field class="example-full-width">
-        <mat-label>Name</mat-label>
+        <mat-label>{{'routes.index.name' | translate}}</mat-label>
         <input matInput class="form-field" [formControl]="nameFilter">
       </mat-form-field>
     </form>
@@ -30,12 +30,12 @@
 
   <div class="col text-left">
     <mat-form-field>
-      <mat-label>Type</mat-label>
+      <mat-label>{{'routes.index.type' | translate}}</mat-label>
       <mat-select matNativeControl [formControl]="typeFilter">
-        <mat-option value="" selected>All</mat-option>
-        <mat-option value="0">Country</mat-option>
-        <mat-option value="1">Region</mat-option>
-        <mat-option value="2">City</mat-option>
+        <mat-option value="" selected>{{'routes.index.all' | translate}}</mat-option>
+        <mat-option value="0">{{'routes.index.country' | translate}}</mat-option>
+        <mat-option value="1">{{'routes.index.region' | translate}}</mat-option>
+        <mat-option value="2">{{'routes.index.city' | translate}}</mat-option>
       </mat-select>
     </mat-form-field>
   </div>
@@ -49,13 +49,13 @@
 
       <!-- Name Column -->
       <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef> Name </th>
+        <th mat-header-cell *matHeaderCellDef> {{'routes.index.name' | translate}} </th>
         <td mat-cell *matCellDef="let route"> {{route.name}} </td>
       </ng-container>
 
       <!-- Type Column -->
       <ng-container matColumnDef="type">
-        <th mat-header-cell *matHeaderCellDef> Type </th>
+        <th mat-header-cell *matHeaderCellDef> {{'routes.index.type' | translate}} </th>
         <td mat-cell *matCellDef="let route" [ngSwitch]="route.type">
           <div *ngSwitchCase="0">Country</div>
           <div *ngSwitchCase="1">Region</div>
@@ -65,11 +65,11 @@
 
       <!-- Rate Column -->
       <ng-container matColumnDef="rate">
-        <th mat-header-cell *matHeaderCellDef> Rating </th>
+        <th mat-header-cell *matHeaderCellDef> {{'routes.index.rating' | translate}} </th>
         <td mat-cell *matCellDef="let route" [ngSwitch]="route.rating.votes.length">
 
           <div *ngSwitchCase="0">
-            <div>No votes</div>
+            <div>{{'routes.index.noVotes' | translate}}</div>
             <ngb-rating [(rate)]="route.rating.show"
               (rateChange)="this.routeService.updateRouteRating(route, $event, this.userService.getCurrentUserId())">
             </ngb-rating>
@@ -93,7 +93,7 @@
 
       <!-- User Column -->
       <ng-container matColumnDef="user">
-        <th mat-header-cell *matHeaderCellDef> User </th>
+        <th mat-header-cell *matHeaderCellDef> {{'routes.index.user' | translate}} </th>
         <td mat-cell *matCellDef="let route">
           <a [routerLink]="['/users', route.userId]" class="card-link">
             {{searchName(route.id)}}
@@ -115,7 +115,7 @@
 
       <!-- Actions Column -->
       <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef> Actions </th>
+        <th mat-header-cell *matHeaderCellDef> {{'routes.index.actions' | translate}} </th>
         <td mat-cell *matCellDef="let route">
           <a [routerLink]="['/routes', route.id]" class="card-link">
             <i class="fa fa-eye"></i>
@@ -131,7 +131,8 @@
             <i class="fa fa-times"></i>
           </a>
 
-          <a (click)="deleteConfirmed(route)" class="card-link" *ngIf="this.currentUser.id == route.userId || userService.getAdmin() || userService.getModerator()">
+          <a (click)="deleteConfirmed(route)" class="card-link" style="color: #bd2130;"
+            *ngIf="this.currentUser.id == route.userId || userService.getAdmin() || userService.getModerator()">
             <i class="fa fa-trash"></i>
           </a>
         </td>

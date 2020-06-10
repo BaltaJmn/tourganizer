@@ -4,13 +4,13 @@
   <div class="col text-right" *ngIf="userService.getConfirmed()">
     <button class="btn btn-success mr-1" [routerLink]="['/localizations/add']">
       <i class="fa fa-plus"></i>
-      Add Localization
+      {{'localizations.index.addButton' | translate}}
     </button>
 
     <button class="btn btn-info mr-1" (click)="openModal()"
       *ngIf="userService.getAdmin() || userService.getModerator()">
       <i class="fas fa-check"></i>
-      Check Unconfirmed Localizations ({{this.localizationsUnconfirmed.length}})
+      {{'localizations.index.checkButton' | translate}} ({{this.localizationsUnconfirmed.length}})
     </button>
   </div>
 </div>
@@ -64,7 +64,11 @@
       <div class="card-body">
         <a [routerLink]="['/localizations', localization.id]" class="card-link">
           <i class="fa fa-eye"></i>
-          See more
+        </a>
+
+        <a (click)="deleteLocalization(localization)" class="card-link" style="color: #bd2130;"
+          *ngIf="this.currentUser.id == localization.userId || userService.getAdmin() || userService.getModerator()">
+          <i class="fa fa-trash"></i>
         </a>
       </div>
 

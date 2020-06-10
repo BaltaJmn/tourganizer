@@ -8,7 +8,7 @@
 <div class="container">
   <div class="row my-2">
 
-    <div class="col-lg-3 order-lg-1 text-center">
+    <div class="col-lg-2 order-lg-1 text-center">
       <img src="{{currentUser.profile}}" class="mx-auto img-fluid img-circle d-block" alt="avatar" id="OpenImgUpload">
 
       <label class="custom-file">
@@ -16,32 +16,33 @@
       </label>
     </div>
 
-    <div class="col-lg-9 order-lg-2">
+    <div class="col-lg-10 order-lg-2">
       <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a href="" data-target="#info" data-toggle="tab" class="nav-link active">Information</a>
+          <a href="" data-target="#info" data-toggle="tab" class="nav-link active">{{'users.show.info' | translate}}</a>
         </li>
         <li class="nav-item">
           <a href="" data-target="#followers" data-toggle="tab" class="nav-link">{{currentUser.followers.length}}
-            Followers</a>
+            {{'users.show.followers' | translate}}</a>
         </li>
         <li class="nav-item">
           <a href="" data-target="#follows" data-toggle="tab" class="nav-link">{{currentUser.follows.length}}
-            Follows</a>
+            {{'users.show.follows' | translate}}</a>
         </li>
         <li class="nav-item">
           <a href="" data-target="#created" data-toggle="tab" class="nav-link">{{currentUser.createdRoutes.length}}
-            Created Routes</a>
+            {{'users.show.createdR' | translate}}</a>
         </li>
         <li class="nav-item">
           <a href="" data-target="#saved" data-toggle="tab" class="nav-link">{{currentUser.savedRoutes.length}}
-            Saved Routes</a>
+            {{'users.show.savedR' | translate}}</a>
         </li>
         <li class="nav-item" *ngIf="this.currentUser.id == this.userService.getCurrentUserId()">
-          <a href="" data-target="#notifications" data-toggle="tab" class="nav-link">Notifications</a>
+          <a href="" data-target="#notifications" data-toggle="tab"
+            class="nav-link">{{'users.show.notifications' | translate}}</a>
         </li>
         <li class="nav-item" *ngIf="this.currentUser.id == this.userService.getCurrentUserId()">
-          <a href="" data-target="#config" data-toggle="tab" class="nav-link">Config</a>
+          <a href="" data-target="#config" data-toggle="tab" class="nav-link">{{'users.show.config' | translate}}</a>
         </li>
       </ul>
       <div class="tab-content py-4">
@@ -49,7 +50,7 @@
           <h5 class="mb-3">Info</h5>
           <div class="row">
             <div class="col-md-12">
-              <h6>Username</h6>
+              <h6>{{'users.show.username' | translate}}</h6>
               <p>
                 {{currentUser.username}}
               </p>
@@ -59,7 +60,7 @@
               </p>
             </div>
             <div class="col-md-12">
-              <h5 class="mt-2"> Recent Created Routes</h5>
+              <h5 class="mt-2">{{'users.show.recent' | translate}}</h5>
 
               <table class="table table-sm table-hover table-striped" *ngIf="recentActivities.length > 0">
                 <tbody *ngFor="let route of createdRoutes">
@@ -75,7 +76,7 @@
                 <tbody>
                   <tr>
                     <td>
-                      No recent activities
+                      {{'users.show.noRecent' | translate}}
                     </td>
                   </tr>
                 </tbody>
@@ -101,14 +102,14 @@
                   <div *ngIf="this.currentUser.follows.includes(follower.id)">
                     <button class="btn btn-danger mr-1" (click)="this.userService.unfollow(follower)">
                       <i class="far fa-times-circle"></i>
-                      Unfollow
+                      {{'users.show.unfollow' | translate}}
                     </button>
                   </div>
 
                   <div *ngIf="!this.currentUser.follows.includes(follower.id)">
                     <button class="btn btn-success mr-1" (click)="this.userService.follow(follower)">
                       <i class="fa fa-plus"></i>
-                      Follow
+                      {{'users.show.follow' | translate}}
                     </button>
                   </div>
                 </td>
@@ -134,14 +135,14 @@
                   <div *ngIf="this.currentUser.follows.includes(follow.id)">
                     <button class="btn btn-danger mr-1" (click)="this.userService.unfollow(follow.id)">
                       <i class="far fa-times-circle"></i>
-                      Unfollow
+                      {{'users.show.unfollow' | translate}}
                     </button>
                   </div>
 
                   <div *ngIf="!this.currentUser.follows.includes(follow.id)">
                     <button class="btn btn-success mr-1" (click)="this.userService.follow(follow)">
                       <i class="fa fa-plus"></i>
-                      Follow
+                      {{'users.show.follow' | translate}}
                     </button>
                   </div>
                 </td>
@@ -165,7 +166,7 @@
             <tbody>
               <tr>
                 <td>
-                  No Created Routes
+                  {{'users.show.noCreated' | translate}}
                 </td>
               </tr>
             </tbody>
@@ -198,7 +199,7 @@
             <tbody>
               <tr>
                 <td>
-                  No Saved Routes
+                  {{'users.show.noSaved' | translate}}
                 </td>
               </tr>
             </tbody>
@@ -212,7 +213,7 @@
               <tr>
                 <td>
                   <span class="float-right font-weight-bold"></span>
-                  There is no notifications
+                  {{'users.show.noNoti' | translate}}
                 </td>
               </tr>
             </tbody>
@@ -245,18 +246,20 @@
         <div class="tab-pane" id="config">
           <mat-card>
             <mat-card-content>
-              <h2 class="example-h2">User Config</h2>
+              <h2 class="example-h2">{{'users.show.userConfig' | translate}}</h2>
 
               <section class="example-section" *ngIf="currentUser.config.rol == 0">
-                <button mdbBtn color="success" block="true" class="my-4" (click)="openEdit()">Edit Profile</button>
+                <button mdbBtn color="success" block="true" class="my-4"
+                  (click)="openEdit()">{{'users.show.editPro' | translate}}</button>
               </section>
 
               <section class="example-section" *ngIf="currentUser.config.rol == 0">
-                <button mdbBtn color="success" block="true" class="my-4" (click)="openModal()">Admin Users</button>
+                <button mdbBtn color="success" block="true" class="my-4"
+                  (click)="openModal()">{{'users.show.adminUser' | translate}}</button>
               </section>
 
               <section class="example-section">
-                <label id="example-radio-group-label">Select your language</label><br>
+                <label id="example-radio-group-label">{{'users.show.select' | translate}}</label><br>
                 <mat-radio-group name="languageList" fxLayout="column" [(ngModel)]="config.lang">
                   <mat-radio-button *ngFor="let language of languages" [value]="language.id" name="languageList">
                     {{language.name}}
@@ -267,7 +270,7 @@
                 <br>
 
                 <button mdbBtn color="info" block="true" class="my-4"
-                  (click)="this.userService.saveConfig(config)">Save</button>
+                  (click)="this.userService.saveConfig(config)">{{'users.show.save' | translate}}</button>
               </section>
             </mat-card-content>
           </mat-card>

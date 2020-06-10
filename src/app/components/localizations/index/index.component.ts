@@ -92,5 +92,29 @@ export class IndexLocalizationComponent implements OnInit {
       height: '400px',
       data: this.localizationsUnconfirmed
     });
+  };
+
+  deleteLocalization(localization) {
+
+    Swal.fire({
+      title: 'Do you want to delete this localization?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Delete',
+      cancelButtonText: 'Cancel',
+      focusCancel: true
+    }).then((result) => {
+      if (result.value) {
+        this.localizationService.deleteLocalization(localization).then(() => {
+          Swal.fire(
+            'Deleted!',
+            'This route was deleted succesfully!',
+            'success'
+          );
+        });
+      }
+    });
   }
 }

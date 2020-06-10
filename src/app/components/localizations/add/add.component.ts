@@ -4,6 +4,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 import { NgImageSliderComponent } from 'ng-image-slider';
+import { environment } from '../../../../environments/environment';
 
 import { LocalizationService } from '../../../services/localization.service';
 import { ImageService } from '../../../services/image.service';
@@ -84,8 +85,8 @@ export class AddLocalizationComponent implements OnInit {
   imagesToAdd = [];
 
   localization = new FormGroup({
-    userId: new FormControl(''),
-    profile: new FormControl(''),
+    userId: new FormControl(this.userService.getCurrentUserId()),
+    profile: new FormControl(environment.urlDefaultItem),
     name: new FormControl('', [Validators.required]),
     description: new FormControl('', [Validators.required]),
     confirmed: new FormControl(false),
@@ -130,51 +131,88 @@ export class AddLocalizationComponent implements OnInit {
   };
 
   onSubmit(localization: FormGroup) {
-    const task = this.storage.upload(`images/${this.n}`, this.file);
 
-    task.snapshotChanges().pipe(
-      finalize(() => {
-        this.downloadURL = this.fileRef.getDownloadURL();
-        this.downloadURL.subscribe(url => {
-          if (url) {
-            this.storage = url;
+    if (localStorage.getItem("lat") != null) {
+      localization.get("latitude").setValue(localStorage.getItem("lat"));
+    };
 
-            this.localization.get("profile").setValue(this.storage);
-            this.localization.get("userId").setValue(this.userService.getCurrentUserId());
-            this.localization.get("latitude").setValue(localStorage.getItem("lat"));
-            this.localization.get("longitude").setValue(localStorage.getItem("lon"));
-            this.localization.get("images").setValue(this.imagesToAdd);
+    if (localStorage.getItem("lon") != null) {
+      localization.get("longitude").setValue(localStorage.getItem("lon"));
+    };
 
-            this.localizationService.createLocalization(localization.value).then(() => {
+    localization.get("images").setValue(this.imagesToAdd);
 
-              let receivers = this.userService.getCurrentUserFollowers();
-              let sender = this.userService.getCurrentUserId();
+    if (this.file != null) {
+      const task = this.storage.upload(`images/${this.n}`, this.file);
 
-              receivers.forEach((receiver) => {
+      task.snapshotChanges().pipe(
+        finalize(() => {
+          this.downloadURL = this.fileRef.getDownloadURL();
+          this.downloadURL.subscribe(url => {
+            if (url) {
+              this.storage = url;
 
-                let notification: Notification = {
-                  content: `${this.userService.getCurrentUserName()} a creado una nueva ruta llamada ${this.localization.get("name").value}`,
-                  sender: sender,
-                  receiver: receiver,
-                  seen: false,
-                  date: new Date
-                };
+              localization.get("profile").setValue(this.storage);
 
-                this.notificationService.createNotification(notification);
+              this.localizationService.createLocalization(localization.value).then(() => {
+
+                let receivers = this.userService.getCurrentUserFollowers();
+                let sender = this.userService.getCurrentUserId();
+
+                receivers.forEach((receiver) => {
+
+                  let notification: Notification = {
+                    content: `${this.userService.getCurrentUserName()} a creado una nueva ruta llamada ${this.localization.get("name").value}`,
+                    sender: sender,
+                    receiver: receiver,
+                    seen: false,
+                    date: new Date
+                  };
+
+                  this.notificationService.createNotification(notification);
+                });
+
+                localStorage.clear();
+
+                Swal.fire('Great!', 'Your localization was created succesfully!', 'success').then(() => {
+                  this.router.navigate(['/localizations']);
+                });
               });
+            }
+          });
+        })
+      ).subscribe(url => {
+        if (url) { }
+      });
 
-              localStorage.clear();
+    } else {
 
-              Swal.fire('Great!', 'Your localization was created succesfully!', 'success').then(() => {
-                this.router.navigate(['/localizations']);
-              });
-            });
-          }
+      this.localizationService.createLocalization(localization.value).then(() => {
+
+        let receivers = this.userService.getCurrentUserFollowers();
+        let sender = this.userService.getCurrentUserId();
+
+        receivers.forEach((receiver) => {
+
+          let notification: Notification = {
+            content: `${this.userService.getCurrentUserName()} a creado una nueva ruta llamada ${this.localization.get("name").value}`,
+            sender: sender,
+            receiver: receiver,
+            seen: false,
+            date: new Date
+          };
+
+          this.notificationService.createNotification(notification);
         });
-      })
-    ).subscribe(url => {
-      if (url) { }
-    });
+
+        localStorage.clear();
+
+        Swal.fire('Great!', 'Your localization was created succesfully!', 'success').then(() => {
+          this.router.navigate(['/localizations']);
+        });
+      });
+
+    }
   };
 
   onFileSelected(event) {

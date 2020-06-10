@@ -7,14 +7,14 @@
 
 <div class="text-center border border-light p-5">
 
-  <p class="h4 mb-4">Add localization</p>
+  <p class="h4 mb-4">{{'localizations.add.title' | translate}}</p>
 
   <form [formGroup]="localization" (ngSubmit)="onSubmit(localization)">
 
     <div class="row rowHeight">
 
       <div class="col-6">
-        <label for="file">Profile</label>
+        <label for="file">{{'localizations.add.title' | translate}}</label>
         <div class="form-group col-12">
           <input type="file" id="file" #userPhoto (change)="onFileSelected($event)" name="image" autocomplete="off" />
         </div>
@@ -23,15 +23,15 @@
       </div>
 
       <div class="col-6">
-        <label for="defaultLoginFormName">Name</label>
+        <label for="defaultLoginFormName">{{'localizations.add.name' | translate}}</label>
         <input type="text" id="defaultLoginFormName" class="form-control mb-4" placeholder="name"
           formControlName="name">
 
-        <label for="defaultLoginFormDescription">Description</label>
+        <label for="defaultLoginFormDescription">{{'localizations.add.description' | translate}}</label>
         <input type="text" id="defaultLoginFormDescription" class="form-control mb-4" placeholder="description"
           formControlName="description">
 
-        <label for="defaultLoginFormUrl">URL de la localización</label>
+        <label for="defaultLoginFormUrl">{{'localizations.add.url' | translate}}</label>
         <input type="text" id="defaultLoginFormUrl" class="form-control mb-4" placeholder="url" formControlName="url">
       </div>
 
@@ -45,9 +45,9 @@
       </div>
     </div>
 
-    <ng-image-slider [images]="images" #nav></ng-image-slider> <br>
+    <ng-image-slider [images]="images" #nav></ng-image-slider> <br> -->
 
-    <div class="col text-left">
+    <!-- <div class="col text-left">
       <label for="fileImages">Images availables</label>
       <div class="form-group col-12" *ngIf="images.length == 0">
         <p>There is no images</p>
@@ -66,10 +66,11 @@
 
     <br>
 
-    <label for="mapid">Localization</label>
+    <label for="mapid">{{'localizations.add.localization' | translate}}</label>
     <div id="mapid" class="text-center"></div> <br>
 
-    <button mdbBtn color="info" block="true" class="my-4" type="submit" [disabled]="!localization.valid">Add</button>
+    <button mdbBtn color="info" block="true" class="my-4" type="submit"
+      [disabled]="!localization.valid">{{'localizations.add.button' | translate}}</button>
 
   </form>
 </div>

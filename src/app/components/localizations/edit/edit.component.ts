@@ -276,48 +276,48 @@ export class EditLocalizationComponent implements OnInit {
     this.fileRef = this.storage.ref(this.filePath);
   };
 
-  onFileSelectedImages(event) {
-    this.n = Date.now();
-    this.fileImages = event.target.files[0];
-    this.filePath = `images/${this.n}`;
-    this.fileRef = this.storage.ref(this.filePath);
+  // onFileSelectedImages(event) {
+  //   this.n = Date.now();
+  //   this.fileImages = event.target.files[0];
+  //   this.filePath = `images/${this.n}`;
+  //   this.fileRef = this.storage.ref(this.filePath);
 
-    const task = this.storage.upload(`images/${this.n}`, this.fileImages);
+  //   const task = this.storage.upload(`images/${this.n}`, this.fileImages);
 
-    task.snapshotChanges().pipe(
-      finalize(() => {
-        this.downloadURL = this.fileRef.getDownloadURL();
-        this.downloadURL.subscribe(url => {
-          if (url) {
-            this.storage = url;
+  //   task.snapshotChanges().pipe(
+  //     finalize(() => {
+  //       this.downloadURL = this.fileRef.getDownloadURL();
+  //       this.downloadURL.subscribe(url => {
+  //         if (url) {
+  //           this.storage = url;
 
-            let imageAux: Image = {
-              title: this.fileImages.name.split(".")[0],
-              image: String(this.storage),
-              thumbImage: String(this.storage),
-              alt: this.fileImages.name.split(".")[0]
-            }
+  //           let imageAux: Image = {
+  //             title: this.fileImages.name.split(".")[0],
+  //             image: String(this.storage),
+  //             thumbImage: String(this.storage),
+  //             alt: this.fileImages.name.split(".")[0]
+  //           }
 
-            this.imageService.createImage(imageAux).then((event: any) => {
-              let id = event.im.path.segments[1];
+  //           this.imageService.createImage(imageAux).then((event: any) => {
+  //             let id = event.im.path.segments[1];
 
-              this.currentLocalization.images.push(id);
+  //             this.currentLocalization.images.push(id);
 
-              this.localizationService.updateImages(this.currentLocalization);
+  //             this.localizationService.updateImages(this.currentLocalization);
 
-              this.router.navigate([`localizations/${this.currentLocalization.id}`]);
-            });
-          }
-        });
-      })
-    ).subscribe(url => {
-      if (url) { }
-    });
-  };
+  //             this.router.navigate([`localizations/${this.currentLocalization.id}`]);
+  //           });
+  //         }
+  //       });
+  //     })
+  //   ).subscribe(url => {
+  //     if (url) { }
+  //   });
+  // };
 
-  deletePhoto(image) {
-    this.images.splice(this.images.findIndex(v => v.title == image.title), 1);
-    this.router.navigate([`localizations/${this.currentLocalization.id}`]);
-  };
+  // deletePhoto(image) {
+  //   this.images.splice(this.images.findIndex(v => v.title == image.title), 1);
+  //   this.router.navigate([`localizations/${this.currentLocalization.id}`]);
+  // };
 
 }
