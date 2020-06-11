@@ -1,6 +1,13 @@
 <br>
 
 <div class="row rowWitdh">
+
+  <div class="col text-left">
+    <h3>
+      <mat-icon matListIcon>explore</mat-icon> {{'routes.index.title' | translate}}
+    </h3>
+  </div>
+
   <div class="col text-right" *ngIf="userService.getConfirmed()">
     <button class="btn btn-success mr-1" [routerLink]="['/routes/add']">
       <i class="fa fa-plus"></i>
@@ -101,13 +108,13 @@
 
           <div *ngIf="this.currentUser.follows.includes(route.userId) && this.currentUser.id != route.userId">
             <button class="btn btn-danger mr-1" (click)="this.userService.unfollow(searchUser(route.id))">
-              <i class="far fa-times-circle"></i>
+              <i class="far fa-times-circle"></i> {{'routes.index.unfollow' | translate}}
             </button>
           </div>
 
           <div *ngIf="!this.currentUser.follows.includes(route.userId) && this.currentUser.id != route.userId">
             <button class="btn btn-success mr-1" (click)="this.userService.follow(searchUser(route.id))">
-              <i class="fa fa-plus"></i>
+              <i class="fa fa-plus"></i> {{'routes.index.follow' | translate}}
             </button>
           </div>
         </td>

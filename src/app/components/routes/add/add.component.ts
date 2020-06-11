@@ -178,7 +178,7 @@ export class AddRouteComponent implements OnInit {
                 receivers.forEach((receiver) => {
 
                   let notification: Notification = {
-                    content: `${this.userService.getCurrentUserName()} a creado una nueva ruta llamada ${this.route.get("name").value}`,
+                    content: `${this.userService.getCurrentUserName()} ha creado una nueva ruta llamada ${this.route.get("name").value}`,
                     sender: sender,
                     receiver: receiver,
                     seen: false,
@@ -217,7 +217,7 @@ export class AddRouteComponent implements OnInit {
         receivers.forEach((receiver) => {
 
           let notification: Notification = {
-            content: `${this.userService.getCurrentUserName()} a creado una nueva ruta llamada ${this.route.get("name").value}`,
+            content: `${this.userService.getCurrentUserName()} ha creado una nueva ruta llamada ${this.route.get("name").value}`,
             sender: sender,
             receiver: receiver,
             seen: false,

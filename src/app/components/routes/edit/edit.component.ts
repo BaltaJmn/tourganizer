@@ -21,6 +21,8 @@ import "leaflet-routing-machine";
 import "leaflet/dist/leaflet.ajax.min.js"
 import "leaflet/dist/leaflet.ajax.min.js"
 import { icon, Marker } from 'leaflet';
+import { Notification } from '../../../interfaces/Notification';
+import { NotificationService } from '../../../services/notification.service';
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
 const iconUrl = 'assets/marker-icon.png';
 const shadowUrl = 'assets/marker-shadow.png';
@@ -109,6 +111,7 @@ export class EditRouteComponent implements OnInit {
     private userService: UserService,
     private routeService: RouteService,
     private localizationService: LocalizationService,
+    private notificationService: NotificationService,
     private activatedRoute: ActivatedRoute,
     private storage: AngularFireStorage
   ) {
@@ -217,7 +220,25 @@ export class EditRouteComponent implements OnInit {
               route.get("profile").setValue(this.storage);
 
               this.routeService.updateRoute(this.id, route.value).then(() => {
+
+                let receivers = this.userService.getCurrentUserFollowers();
+                let sender = this.userService.getCurrentUserId();
+
+                receivers.forEach((receiver) => {
+
+                  let notification: Notification = {
+                    content: `${this.userService.getCurrentUserName()} ha editado la ruta llamada ${route.get("name").value}`,
+                    sender: sender,
+                    receiver: receiver,
+                    seen: false,
+                    date: new Date
+                  };
+
+                  this.notificationService.createNotification(notification);
+                });
+
                 localStorage.clear();
+
                 Swal.fire('Great!', 'Your route was updated succesfully!', 'success').then(() => {
                   this.router.navigate(['/routes']);
                 });
@@ -232,7 +253,25 @@ export class EditRouteComponent implements OnInit {
     } else {
       route.get("profile").setValue(this.currentRoute.profile);
       this.routeService.updateRoute(this.id, route.value).then(() => {
+
+        let receivers = this.userService.getCurrentUserFollowers();
+        let sender = this.userService.getCurrentUserId();
+
+        receivers.forEach((receiver) => {
+
+          let notification: Notification = {
+            content: `${this.userService.getCurrentUserName()} ha editado la ruta llamada ${route.get("name").value}`,
+            sender: sender,
+            receiver: receiver,
+            seen: false,
+            date: new Date
+          };
+
+          this.notificationService.createNotification(notification);
+        });
+
         localStorage.clear();
+
         Swal.fire('Great!', 'Your route was updated succesfully!', 'success').then(() => {
           this.router.navigate(['/routes']);
         });

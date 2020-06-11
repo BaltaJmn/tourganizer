@@ -37,6 +37,7 @@
       "button": "Actualizar"
     },
     "index": {
+      "title": "Localizaciones",
       "addButton": "Añadir localización",
       "checkButton": "Comprobar localizaciones sin confirmar",
       "name": "Nombre",
@@ -81,7 +82,8 @@
       "button": "Añadir"
     },
     "index": {
-      "addButton": "Añadir localización",
+      "title": "Rutas",
+      "addButton": "Añadir Ruta",
       "checkButton": "Comprobar localizaciones sin confirmar",
       "name": "Nombre",
       "type": "Tipo",
@@ -93,7 +95,9 @@
       "noVotes": "No hay votos aun",
       "user": "Usuario",
       "actions": "Acciones",
-      "see": "Ver más"
+      "see": "Ver más",
+      "unfollow": "Dejar de seguir",
+      "follow": "Seguir"
     },
     "show": {
       "creator": "Creador",

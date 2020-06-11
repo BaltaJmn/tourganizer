@@ -262,6 +262,25 @@ export class EditLocalizationComponent implements OnInit {
       }
 
       this.localizationService.updateLocalization(this.id, localization.value).then(() => {
+
+        let receivers = this.userService.getCurrentUserFollowers();
+        let sender = this.userService.getCurrentUserId();
+
+        receivers.forEach((receiver) => {
+
+          let notification: Notification = {
+            content: `${this.userService.getCurrentUserName()} ha editado la ruta llamada ${this.localization.get("name").value}`,
+            sender: sender,
+            receiver: receiver,
+            seen: false,
+            date: new Date
+          };
+
+          this.notificationService.createNotification(notification);
+        });
+
+        localStorage.clear();
+
         Swal.fire('Great!', 'Your localization was updated succesfully!', 'success').then(() => {
           this.router.navigate(['/localizations']);
         });

@@ -2,7 +2,7 @@
   "header": {
     "home": "Home",
     "routes": "Routes",
-    "localizations": "Localizations",
+    "localizations": "Locations",
     "users": "Users",
     "profile": "Profile",
     "notifications": "Notificactions",
@@ -12,32 +12,33 @@
   "home": {
     "title": "Welcome back, ",
     "valRoutes": "Check the most rated Routes",
-    "valLocalizations": "Check the most rated Localizations",
+    "valLocalizations": "Check the most rated Locations",
     "tuto": "Check the tutorial"
   },
   "localizations": {
     "add": {
-      "title": "Add localization",
+      "title": "Add location",
       "profile": "Profile",
       "name": "Name",
       "description": "Description",
       "url": "URL",
-      "localization": "Localization",
+      "localization": "Location",
       "button": "Add"
     },
     "edit": {
-      "title": "Edit Localization",
+      "title": "Edit Location",
       "profile": "Profile",
       "name": "Name",
       "description": "Description",
-      "url": "URL Localization",
+      "url": "URL Location",
       "images": "Images",
       "noImages": "There is no images",
-      "localization": "Localization",
+      "localization": "Location",
       "button": "Update"
     },
     "index": {
-      "addButton": "Add Localization",
+      "title": "Locations",
+      "addButton": "Add Location",
       "checkButton": "Check Unconfirmed",
       "name": "Name",
       "see": "See more"
@@ -47,7 +48,7 @@
       "unfollow": "Unfollow",
       "follow": "Follow",
       "web": "Go to the website",
-      "localizations": "Localizations"
+      "localizations": "Location"
     },
     "unconfirmed": {
       "name": "Name",
@@ -64,7 +65,7 @@
       "country": "Country",
       "region": "Region",
       "city": "City",
-      "localizations": "Localizations",
+      "localizations": "Locations",
       "center": "Routes' Center",
       "button": "Add"
     },
@@ -76,12 +77,13 @@
       "country": "Country",
       "region": "Region",
       "city": "City",
-      "localizations": "Localizations",
+      "localizations": "Locations",
       "center": "Routes' Center",
       "button": "Update"
     },
     "index": {
-      "addButton": "Add Localization",
+      "title": "Routes",
+      "addButton": "Add Route",
       "checkButton": "Check unconfirmed",
       "name": "Name",
       "type": "Type",
@@ -93,7 +95,9 @@
       "noVotes": "There is no votes",
       "user": "User",
       "actions": "Actions",
-      "see": "See More"
+      "see": "See More",
+      "unfollow": "Unfollow",
+      "follow": "Follow"
     },
     "show": {
       "creator": "Creator",
@@ -103,9 +107,9 @@
       "noVotes": "There is no votes",
       "noSaved": "Not saved yet",
       "saved": "Saved",
-      "localizations": "Localizations",
+      "localizations": "Location",
       "modal": {
-        "goTo": "Go to the localization"
+        "goTo": "Go to the location"
       }
     }
   },

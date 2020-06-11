@@ -162,7 +162,7 @@ export class AddLocalizationComponent implements OnInit {
                 receivers.forEach((receiver) => {
 
                   let notification: Notification = {
-                    content: `${this.userService.getCurrentUserName()} a creado una nueva ruta llamada ${this.localization.get("name").value}`,
+                    content: `${this.userService.getCurrentUserName()} ha creado una nueva ruta llamada ${localization.get("name").value}`,
                     sender: sender,
                     receiver: receiver,
                     seen: false,
@@ -195,7 +195,7 @@ export class AddLocalizationComponent implements OnInit {
         receivers.forEach((receiver) => {
 
           let notification: Notification = {
-            content: `${this.userService.getCurrentUserName()} a creado una nueva ruta llamada ${this.localization.get("name").value}`,
+            content: `${this.userService.getCurrentUserName()} ha creado una nueva ruta llamada ${localization.get("name").value}`,
             sender: sender,
             receiver: receiver,
             seen: false,
